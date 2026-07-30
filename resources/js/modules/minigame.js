@@ -23,12 +23,59 @@ export class MiniGameModule {
 
   startAutoRefresh() {
     if (this.updateTimer) clearInterval(this.updateTimer);
-    this.updateTimer = setInterval(() => {
-      const growingPlots = this.plots.filter(p => p.current_planting && p.current_planting.status === 'growing');
-      if (growingPlots.length > 0) {
-        this.render();
+    this.updateTimer = setInterval(() => this.tickGrowthProgress(), 1000);
+  }
+
+  /**
+   * Lightweight tick: updates only progress bars & countdowns in-place.
+   * When a plant finishes growing, triggers a full re-render once.
+   */
+  tickGrowthProgress() {
+    let needsFullRender = false;
+    const now = Date.now();
+
+    this.plots.forEach(plot => {
+      const planting = plot.current_planting;
+      if (!planting || planting.status !== 'growing') return;
+
+      const plantedAt = planting.planted_at ? new Date(planting.planted_at).getTime() : now;
+      const readyAt = planting.ready_at ? new Date(planting.ready_at).getTime() : now;
+      const totalMs = Math.max(1, readyAt - plantedAt);
+      const elapsedMs = Math.max(0, now - plantedAt);
+      const remainingSec = Math.max(0, Math.ceil((readyAt - now) / 1000));
+
+      if (remainingSec <= 0) {
+        planting.status = 'ready';
+        needsFullRender = true;
+        return;
       }
-    }, 1000);
+
+      const percent = Math.min(99, Math.max(1, Math.floor((elapsedMs / totalMs) * 100)));
+      const plotEl = this.containerElement?.querySelector(`[data-plot-slot="${plot.slot_number}"]`);
+      if (!plotEl) return;
+
+      // Update progress bar width
+      const bar = plotEl.querySelector('.growth-bar-fill');
+      if (bar) bar.style.width = `${percent}%`;
+
+      // Update countdown text
+      const countdown = plotEl.querySelector('.growth-countdown');
+      if (countdown) countdown.textContent = this.formatTimeRemaining(remainingSec);
+
+      // Update header time pill
+      const pill = plotEl.querySelector('.growth-time-pill');
+      if (pill) pill.textContent = `⏳ ${this.formatTimeRemaining(remainingSec)}`;
+
+      // Update plant stage label
+      const stageLabel = plotEl.querySelector('.growth-stage-label');
+      if (stageLabel) {
+        if (percent < 35) stageLabel.textContent = `Tunas Mungil (${percent}%)`;
+        else if (percent < 75) stageLabel.textContent = `Tumbuh Berdaun (${percent}%)`;
+        else stageLabel.textContent = `Hampir Matang (${percent}%)`;
+      }
+    });
+
+    if (needsFullRender) this.loadPlots();
   }
 
   async loadPlots() {
@@ -109,7 +156,7 @@ export class MiniGameModule {
       return `
         <div class="relative flex flex-col items-center justify-center h-24 my-1 sway-animation">
           <div class="text-3xl filter drop-shadow-sm">🌱</div>
-          <span class="text-[9px] font-bold text-[#F5F4DA] bg-[#2B1B10]/80 px-2 py-0.5 rounded-full mt-1 border border-[#7A5840]/40">
+          <span class="growth-stage-label text-[9px] font-bold text-[#F5F4DA] bg-[#2B1B10]/80 px-2 py-0.5 rounded-full mt-1 border border-[#7A5840]/40">
             Tunas Mungil (${progressPercent}%)
           </span>
         </div>
@@ -120,7 +167,7 @@ export class MiniGameModule {
       return `
         <div class="relative flex flex-col items-center justify-center h-24 my-1 sway-animation">
           <div class="text-4xl filter drop-shadow-sm">🌿</div>
-          <span class="text-[9px] font-bold text-[#F5F4DA] bg-[#2B1B10]/80 px-2 py-0.5 rounded-full mt-1 border border-[#7A5840]/40">
+          <span class="growth-stage-label text-[9px] font-bold text-[#F5F4DA] bg-[#2B1B10]/80 px-2 py-0.5 rounded-full mt-1 border border-[#7A5840]/40">
             Tumbuh Berdaun (${progressPercent}%)
           </span>
         </div>
@@ -130,7 +177,7 @@ export class MiniGameModule {
     return `
       <div class="relative flex flex-col items-center justify-center h-24 my-1 sway-animation">
         <div class="text-4xl filter drop-shadow-sm">${seedInfo.icon}</div>
-        <span class="text-[9px] font-bold text-[#F5F4DA] bg-[#2B1B10]/90 px-2 py-0.5 rounded-full mt-1 border border-[#7A5840]/40">
+        <span class="growth-stage-label text-[9px] font-bold text-[#F5F4DA] bg-[#2B1B10]/90 px-2 py-0.5 rounded-full mt-1 border border-[#7A5840]/40">
           Hampir Matang (${progressPercent}%)
         </span>
       </div>
@@ -271,10 +318,10 @@ export class MiniGameModule {
       const remainingSeconds = Math.max(0, Math.ceil((readyAt.getTime() - now.getTime()) / 1000));
 
       return `
-        <div class="card-gg p-4 flex flex-col justify-between items-center text-center bg-[#FBFAF0] border-2 border-[#8B6A4C] shadow-lg">
+        <div class="card-gg p-4 flex flex-col justify-between items-center text-center bg-[#FBFAF0] border-2 border-[#8B6A4C] shadow-lg" data-plot-slot="${plot.slot_number}">
           <div class="flex items-center justify-between w-full mb-1">
             <span class="text-[10px] font-baloo font-bold text-[#1F3D20]">Lahan #${plot.slot_number}</span>
-            <span class="px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] text-[9px] font-baloo font-bold">
+            <span class="growth-time-pill px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] text-[9px] font-baloo font-bold">
               ⏳ ${this.formatTimeRemaining(remainingSeconds)}
             </span>
           </div>
@@ -291,10 +338,10 @@ export class MiniGameModule {
           <div class="w-full space-y-1 my-1">
             <div class="flex justify-between items-center text-[10px] font-baloo font-bold text-[#1F3D20] px-0.5">
               <span>⏳ Menunggu Panen:</span>
-              <span class="text-[#8B5A2B] font-extrabold">${this.formatTimeRemaining(remainingSeconds)}</span>
+              <span class="growth-countdown text-[#8B5A2B] font-extrabold">${this.formatTimeRemaining(remainingSeconds)}</span>
             </div>
             <div class="w-full bg-[#E2E1C4] rounded-full h-3 overflow-hidden border border-[#1F3D20]/10 p-0.5">
-              <div class="bg-[#1F3D20] h-full rounded-full transition-all duration-500" style="width: ${progressPercent}%;"></div>
+              <div class="growth-bar-fill bg-gradient-to-r from-[#1F3D20] to-[#27AE60] h-full rounded-full transition-[width] duration-1000 ease-linear" style="width: ${progressPercent}%;"></div>
             </div>
           </div>
 

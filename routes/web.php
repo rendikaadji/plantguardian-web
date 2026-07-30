@@ -44,6 +44,10 @@ Route::middleware(['auth', 'viewer'])->group(function () {
     Route::get('/minigame', function () {
         return view('minigame');
     })->name('minigame');
+
+    Route::get('/shop', function () {
+        return view('shop');
+    })->name('shop');
 });
 
 // Ranger Web Views (Protected by 'ranger' middleware)

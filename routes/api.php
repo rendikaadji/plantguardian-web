@@ -13,6 +13,8 @@ use App\Http\Controllers\Ranger\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\ShopController;
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -35,6 +37,10 @@ Route::middleware(['auth:sanctum,web', 'viewer'])->group(function () {
     Route::post('/minigame/plant', [MiniGameController::class, 'plant']);
     Route::post('/minigame/water', [MiniGameController::class, 'water']);
     Route::post('/minigame/harvest', [MiniGameController::class, 'harvest']);
+
+    // Shop Routes
+    Route::get('/shop', [ShopController::class, 'index']);
+    Route::post('/shop/buy', [ShopController::class, 'buy']);
 
     // Compost Challenge & Real Planting Routes
     Route::get('/compost-materials', [CompostController::class, 'materials']);

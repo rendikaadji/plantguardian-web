@@ -1,0 +1,63 @@
+@extends('layouts.app')
+
+@section('title', 'Shop Kebun & Benih — PlantGuardian')
+
+@section('content')
+<div class="space-y-8">
+    <!-- Header Section -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1F3D20] text-[#F5F4DA] text-xs font-semibold mb-2 shadow-xs">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                </svg>
+                <span>Toko Resmi Garden Guardian</span>
+            </div>
+            <h1 class="text-3xl font-extrabold text-[#1F3D20] tracking-tight font-baloo">Shop Benih & Alat</h1>
+            <p class="text-xs text-[#6B6B55] mt-1 font-nunito">Tukarkan Coin (NC) kamu untuk membeli benih tanaman hias, pupuk, dan perlengkapan kompos.</p>
+        </div>
+
+        <!-- Wallet Card Summary -->
+        <div class="card-gg p-4 flex items-center gap-3 bg-[#FBFAF0] shadow-xs self-start md:self-auto">
+            <div class="w-10 h-10 rounded-full bg-[#1F3D20] text-[#F5F4DA] flex items-center justify-center font-baloo font-bold text-lg">
+                🪙
+            </div>
+            <div>
+                <span class="text-[11px] font-bold text-[#6B6B55] block leading-none">Saldo Coin</span>
+                <span class="font-baloo font-extrabold text-xl text-[#1F3D20]">
+                    {{ auth()->user()->coin ?? 0 }} <span class="text-xs font-bold text-[#6B6B55]">NC</span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Filters -->
+    <div id="shop-categories" class="flex flex-wrap items-center gap-2">
+        <!-- Rendered dynamically by shop.js -->
+    </div>
+
+    <!-- Shop Container & Items Grid -->
+    <div id="shop-container" class="space-y-6">
+        <div id="shop-items-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Rendered dynamically by shop.js -->
+            <div class="col-span-full text-center py-12 text-[#6B6B55]">
+                <span class="animate-pulse inline-block text-2xl mb-2">🌿</span>
+                <p class="font-baloo font-bold">Memuat katalog toko...</p>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
+
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        if (window.ShopModule) {
+            const shop = new window.ShopModule({
+                containerElement: document.querySelector('#shop-container')
+            });
+            await shop.init();
+        }
+    });
+</script>
+@endpush

@@ -1,6 +1,6 @@
 /**
  * Shop Module (Toko Benih, Alat & Material Kebun)
- * Garden Guardian Design System
+ * Plant Guardian Design System
  */
 
 import apiClient from '../api-client.js';

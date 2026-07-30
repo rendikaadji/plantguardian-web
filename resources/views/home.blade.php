@@ -1,11 +1,11 @@
 @extends('layouts.app')
 
-@section('title', 'Beranda — Garden Guardian')
+@section('title', 'Beranda — Plant Guardian')
 
 @section('content')
 <div class="space-y-6">
 
-    <!-- Hero Card: Hero Banner (Garden Guardian Signature) -->
+    <!-- Hero Card: Hero Banner (Plant Guardian Signature) -->
     <div class="relative overflow-hidden rounded-3xl bg-[#1F3D20] text-[#F5F4DA] p-6 sm:p-8 shadow-md">
         <!-- Background Pattern Decor -->
         <div class="absolute -right-10 -bottom-10 opacity-15 pointer-events-none">

@@ -1,5 +1,5 @@
 /**
- * Leaflet Real Map Module (Garden Guardian Design System)
+ * Leaflet Real Map Module (Plant Guardian Design System)
  * Rujuk docs/architecture.md §5 & §5.0a & docs/design.md §3.2
  */
 

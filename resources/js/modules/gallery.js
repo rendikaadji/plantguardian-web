@@ -1,5 +1,5 @@
 /**
- * Seedex Gallery Module (Garden Guardian Design System)
+ * Seedex Gallery Module (Plant Guardian Design System)
  * Rujuk docs/design.md §3.3 & §1.3
  */
 

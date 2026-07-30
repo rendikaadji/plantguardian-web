@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Peta Temuan & Radar Flora — Garden Guardian')
+@section('title', 'Peta Temuan & Radar Flora — Plant Guardian')
 
 @push('scripts')
 <!-- Leaflet.js CSS & JS CDN -->

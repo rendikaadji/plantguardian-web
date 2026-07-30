@@ -1,6 +1,6 @@
 /**
  * MiniGame Module (Kebun Virtual Visual & Interaksi Lahan Tanam)
- * Garden Guardian RPG Visual Design System
+ * Plant Guardian RPG Visual Design System
  */
 
 import apiClient from '../api-client.js';

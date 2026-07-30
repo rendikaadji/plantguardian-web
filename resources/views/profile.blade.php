@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Profil — Garden Guardian')
+@section('title', 'Profil — Plant Guardian')
 
 @section('content')
 <div class="space-y-6 max-w-md mx-auto py-2">

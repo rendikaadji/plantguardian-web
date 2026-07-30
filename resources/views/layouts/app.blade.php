@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'Garden Guardian — Konservasi & Kebun Fantasi')</title>
+    <title>@yield('title', 'Plant Guardian — Konservasi & Kebun Fantasi')</title>
 
     <!-- Google Fonts: Baloo 2 (Headings) & Nunito (Body) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -24,7 +24,7 @@
 </head>
 <body class="min-h-screen flex flex-col antialiased" style="background-color: #F5F4DA !important; color: #2A2A22 !important;">
 
-    <!-- Top Header Bar (Garden Guardian Design System) -->
+    <!-- Top Header Bar (Plant Guardian Design System) -->
     <header class="sticky top-0 z-50 border-b border-[#1F3D20]/10 shadow-xs" style="background-color: rgba(245, 244, 218, 0.95) !important; backdrop-filter: blur(8px);">
         <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3">
             <div class="flex items-center justify-between gap-4">
@@ -44,7 +44,7 @@
                         </div>
                         <div class="flex flex-col">
                             <span class="font-baloo font-extrabold text-xl sm:text-2xl leading-none text-[#1F3D20] tracking-tight">
-                                Garden Guardian
+                                Plant Guardian
                             </span>
                             <span class="text-[11px] font-bold text-[#6B6B55] tracking-wide flex items-center gap-1">
                                 {{ auth()->user()->name ?? 'Penjelajah Flora' }}
@@ -138,7 +138,9 @@
                     <!-- 2. Plants / Seedex (Galeri) -->
                     <a href="{{ route('galeri') }}" class="flex flex-col items-center px-3 py-1.5 rounded-full transition-colors {{ request()->routeIs('galeri') ? 'bg-[#1F3D20] text-[#F5F4DA]' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2C6.5 6 4 10.5 4 15a8 8 0 0016 0c0-4.5-2.5-9-8-13z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2v20"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-2 2-3 4.5-3 7M12 11c2 1.5 3 3.5 3 6"/>
                         </svg>
                         <span class="text-[10px] font-baloo font-bold">Plants</span>
                     </a>

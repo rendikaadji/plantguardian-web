@@ -120,3 +120,51 @@ html, body {
     color: #F5F4DA !important;
     border-radius: 9999px !important;
 }
+
+/* Farm Soil & Visual Plant Styles */
+.plot-soil-bed {
+    background: radial-gradient(circle at 50% 30%, #7A5840 0%, #523724 60%, #362215 100%) !important;
+    border: 3px solid #2B1B10 !important;
+    box-shadow: inset 0 4px 10px rgba(0, 0, 0, 0.4), 0 6px 16px rgba(31, 61, 32, 0.15) !important;
+}
+
+.plot-grass-frame {
+    background-color: #436B42 !important;
+    border: 2px solid #264225 !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+@keyframes plantGlow {
+    0%, 100% { filter: drop-shadow(0 0 6px rgba(245, 244, 218, 0.8)); transform: scale(1); }
+    50% { filter: drop-shadow(0 0 16px rgba(255, 215, 0, 0.9)); transform: scale(1.05); }
+}
+
+.plant-glow-animation {
+    animation: plantGlow 2s ease-in-out infinite;
+}
+
+@keyframes swaySlow {
+    0%, 100% { transform: rotate(-2deg); }
+    50% { transform: rotate(2deg); }
+}
+
+.sway-animation {
+    animation: swaySlow 3s ease-in-out infinite;
+}
+
+/* Farm Field Background & Visual Garden Enclosure */
+.farm-field-background {
+    background: radial-gradient(circle at 50% 20%, #355C33 0%, #1F3D20 70%, #162B17 100%) !important;
+    border: 4px solid #8B6A4C !important;
+    box-shadow: 0 10px 30px rgba(31, 61, 32, 0.25), inset 0 0 30px rgba(0, 0, 0, 0.4) !important;
+    position: relative;
+}
+
+.wooden-fence-header {
+    background: linear-gradient(180deg, #9C6644 0%, #7F4F31 100%) !important;
+    border: 2px solid #5C3A24 !important;
+    color: #F5F4DA !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25) !important;
+}
+
+

@@ -26,10 +26,9 @@ export class ShopModule {
       this.inventory = response.inventory || [];
       this.userCoin = response.user_coin || 0;
 
-      // Update header coin display if available
-      const coinElement = document.querySelector('#user-coin');
-      if (coinElement) {
-        coinElement.textContent = this.userCoin;
+      // Synchronize all coin displays on page
+      if (typeof window.updateUserCoin === 'function') {
+        window.updateUserCoin(this.userCoin);
       }
 
       this.render();
@@ -79,10 +78,9 @@ export class ShopModule {
       
       this.userCoin = response.user_coin;
 
-      // Update coin display
-      const coinElement = document.querySelector('#user-coin');
-      if (coinElement) {
-        coinElement.textContent = this.userCoin;
+      // Synchronize all coin displays (Header & Shop Card)
+      if (typeof window.updateUserCoin === 'function') {
+        window.updateUserCoin(this.userCoin);
       }
 
       // Update inventory record locally
@@ -105,33 +103,18 @@ export class ShopModule {
   }
 
   showToast(message, type = 'success') {
-    const toast = document.createElement('div');
-    toast.className = `fixed top-5 right-5 z-50 px-4 py-3 rounded-2xl shadow-lg font-baloo font-bold text-sm transition-all duration-300 transform translate-y-0 ${
-      type === 'success' 
-        ? 'bg-[#1F3D20] text-[#F5F4DA] border border-[#E2E1C4]/20' 
-        : 'bg-[#C0392B] text-white border border-red-400/20'
-    }`;
-    toast.innerHTML = `
-      <div class="flex items-center gap-2">
-        <span>${type === 'success' ? '✨' : '⚠️'}</span>
-        <span>${message}</span>
-      </div>
-    `;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => {
-      toast.classList.add('opacity-0', '-translate-y-2');
-      setTimeout(() => toast.remove(), 300);
-    }, 3000);
+    if (typeof window.showToast === 'function') {
+      window.showToast(message, type);
+    } else {
+      alert(message);
+    }
   }
 
   renderCategoryFilters() {
     const categories = [
       { id: 'all', label: 'Semua Item', icon: '🛒' },
       { id: 'seed', label: 'Benih Flora', icon: '🌱' },
-      { id: 'tool', label: 'Alat & Perlengkapan', icon: '🛠️' },
-      { id: 'material', label: 'Bahan Kompos', icon: '📦' },
+      { id: 'tool', label: 'Alat Kebun', icon: '🛠️' },
     ];
 
     const filterContainer = document.querySelector('#shop-categories');
@@ -197,15 +180,56 @@ export class ShopModule {
               ${item.name}
             </h3>
 
-            <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed mb-4">
+            <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed mb-2">
               ${item.description}
             </p>
+
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              ${item.item_type === 'seed' && item.growth_duration_minutes ? `
+                <span class="px-2 py-0.5 rounded-md bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-bold">
+                  ⏱️ ${item.growth_duration_minutes}m Tumbuh
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-[#D4E6C4] text-[#1F3D20] text-[10px] font-baloo font-bold">
+                  ✨ +${item.exp_reward} EXP
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-[#FEF0C7] text-[#8B5A2B] text-[10px] font-baloo font-bold flex items-center gap-1">
+                  ${typeof window.getNcIconSvg === 'function' ? window.getNcIconSvg('w-3.5 h-3.5') : '🪙'} +${item.coin_reward} NC
+                </span>
+              ` : ''}
+
+              ${item.item_type === 'tool' && item.time_reduction_minutes ? `
+                <span class="px-2 py-0.5 rounded-md bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-bold">
+                  ⏱️ Potong -${item.time_reduction_minutes}m
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-[#FADBD8] text-[#78281F] text-[10px] font-baloo font-bold">
+                  🧪 Sekali Pakai (Kebun)
+                </span>
+              ` : ''}
+
+              ${item.item_type === 'tool' && item.discount_percent ? `
+                <span class="px-2 py-0.5 rounded-md bg-[#FEF0C7] text-[#8B5A2B] text-[10px] font-baloo font-bold">
+                  ⛏️ Diskon ${item.discount_percent}% Lahan
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-bold">
+                  📜 Alat Permanen (Kebun)
+                </span>
+              ` : ''}
+
+              ${item.item_type === 'material' ? `
+                <span class="px-2 py-0.5 rounded-md bg-[#D4E6C4] text-[#1F3D20] text-[10px] font-baloo font-bold">
+                  ✨ +${item.exp_reward || 50} EXP Bonus
+                </span>
+                <span class="px-2 py-0.5 rounded-md bg-[#FEF0C7] text-[#8B5A2B] text-[10px] font-baloo font-bold flex items-center gap-1">
+                  ${typeof window.getNcIconSvg === 'function' ? window.getNcIconSvg('w-3.5 h-3.5') : '🪙'} +${item.coin_reward} NC
+                </span>
+              ` : ''}
+            </div>
           </div>
 
           <!-- Price & Action Button -->
           <div class="pt-4 border-t border-[#1F3D20]/10 flex items-center justify-between gap-3">
             <div class="flex items-center gap-1.5 font-baloo font-bold text-sm text-[#1F3D20]">
-              <span class="text-base">🪙</span>
+              ${typeof window.getNcIconSvg === 'function' ? window.getNcIconSvg('w-4 h-4') : '🪙'}
               <span>${item.price}</span>
               <span class="text-[10px] text-[#6B6B55]">NC</span>
             </div>

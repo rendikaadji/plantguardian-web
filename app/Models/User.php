@@ -45,6 +45,32 @@ class User extends Authenticatable
     }
 
     /**
+     * Get user level based on progressive EXP thresholds:
+     * Lvl 1: 0 - 999
+     * Lvl 2: 1000 - 1999
+     * Lvl 3: 2000 - 3499
+     * Lvl 4: 3500 - 5499
+     * Lvl 5: 5500 - 7999
+     * Lvl 6: 8000+
+     */
+    public function getLevelAttribute(): int
+    {
+        $exp = $this->exp ?? 0;
+
+        if ($exp < 1000) return 1;
+        if ($exp < 2000) return 2;
+        if ($exp < 3500) return 3;
+        if ($exp < 5500) return 4;
+        if ($exp < 8000) return 5;
+        if ($exp < 11000) return 6;
+        if ($exp < 14500) return 7;
+        if ($exp < 18500) return 8;
+        if ($exp < 23000) return 9;
+
+        return 10 + (int) floor(($exp - 23000) / 5000);
+    }
+
+    /**
      * Check if user is a Ranger.
      */
     public function isRanger(): bool

@@ -15,6 +15,7 @@ class Planting extends Model
     protected $fillable = [
         'garden_plot_id',
         'plant_species_id',
+        'seed_code',
         'planted_at',
         'ready_at',
         'last_watered_at',

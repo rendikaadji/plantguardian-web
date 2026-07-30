@@ -52,12 +52,18 @@ class CompostController extends Controller
     {
         $validated = $request->validate([
             'compost_material_id' => ['nullable', 'integer', 'exists:compost_materials,id'],
+            'inventory_item_code' => ['nullable', 'string'],
         ]);
 
-        $process = $this->compostService->startProcess($request->user(), $validated['compost_material_id'] ?? null);
+        $process = $this->compostService->startProcess(
+            $request->user(),
+            $validated['compost_material_id'] ?? null,
+            50,
+            $validated['inventory_item_code'] ?? null
+        );
 
         return response()->json([
-            'message' => 'Tantangan proses kompos berhasil dimulai! (+50 EXP)',
+            'message' => 'Tantangan proses kompos berhasil dimulai!',
             'data' => $process,
         ], 201);
     }

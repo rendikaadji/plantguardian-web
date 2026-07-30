@@ -75,7 +75,7 @@
             </div>
             <div class="flex justify-between text-[11px] font-baloo font-bold text-[#6B6B55]">
                 <span>Progress: 60%</span>
-                <span class="text-[#1F3D20]">+150 EXP & 50 NC</span>
+                <span class="text-[#1F3D20]">+150 EXP & 🪙 50 NC</span>
             </div>
         </div>
     </div>
@@ -146,31 +146,31 @@
                 </div>
             </a>
 
-            <!-- Card 3: Koleksi Achievement -->
+            <!-- Card 3: Kebun Virtual & Mini Game -->
             <a href="{{ route('minigame') }}" class="card-gg card-gg-hover p-5 flex flex-col justify-between group">
                 <div class="space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="w-12 h-12 rounded-2xl bg-[#8B6A4C] text-[#FBFAF0] flex items-center justify-center shadow-xs">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                             </svg>
                         </div>
                         <span class="px-2.5 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-extrabold">
-                            ACHIEVEMENT
+                            MINIGAME & SIMULASI
                         </span>
                     </div>
 
                     <h3 class="font-baloo font-bold text-lg text-[#2D4A2E] group-hover:text-[#1F3D20] transition-colors">
-                        Koleksi Achievement
+                        Kebun Virtual & Mini Game
                     </h3>
 
                     <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed">
-                        Lihat album lencana, pencapaian, dan penghargaan yang telah kamu dapatkan sebagai Viewer.
+                        Tanam benih di lahan simulasi, siram berkala hingga siap panen, serta kumpulkan Coin & EXP.
                     </p>
                 </div>
 
                 <div class="pt-4 flex items-center justify-between text-xs font-baloo font-bold text-[#1F3D20]">
-                    <span>Buka Achievement</span>
+                    <span>Masuk Kebun</span>
                     <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
                 </div>
             </a>

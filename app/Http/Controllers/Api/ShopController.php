@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\InventoryItem;
+use App\Services\GardenService;
 use App\Services\RewardService;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -20,37 +21,29 @@ class ShopController extends Controller
     }
 
     /**
-     * List shop catalog items and user inventory.
+     * Get full shop catalog item list.
      */
-    public function index(Request $request): JsonResponse
+    protected function getCatalog(): array
     {
-        $user = $request->user();
+        $seedCodes = ['seed_sunflower', 'seed_tomato', 'seed_monstera', 'seed_orchid'];
 
-        $catalog = [
-            [
-                'item_code' => 'seed_sunflower',
-                'name' => 'Benih Bunga Matahari',
+        $catalog = [];
+        foreach ($seedCodes as $code) {
+            $config = GardenService::getSeedConfig($code);
+            $catalog[] = [
+                'item_code' => $code,
+                'name' => $config['name'],
                 'item_type' => 'seed',
-                'price' => 50,
-                'icon' => '🌻',
-                'description' => 'Benih bunga matahari hias berkualitas tinggi.',
-            ],
-            [
-                'item_code' => 'seed_tomato',
-                'name' => 'Benih Tomat Organik',
-                'item_type' => 'seed',
-                'price' => 75,
-                'icon' => '🍅',
-                'description' => 'Benih buah tomat cepat tumbuh dan manis.',
-            ],
-            [
-                'item_code' => 'seed_monstera',
-                'name' => 'Benih Monstera Deliciosa',
-                'item_type' => 'seed',
-                'price' => 120,
-                'icon' => '🌿',
-                'description' => 'Benih tanaman hias indoor eksotis favorit.',
-            ],
+                'price' => $config['price'],
+                'icon' => $config['icon'],
+                'description' => $config['description'],
+                'growth_duration_minutes' => $config['growth_duration_minutes'],
+                'exp_reward' => $config['exp_reward'],
+                'coin_reward' => $config['coin_reward'],
+            ];
+        }
+
+        $otherItems = [
             [
                 'item_code' => 'tool_fertilizer',
                 'name' => 'Pupuk Organik Super',
@@ -58,6 +51,8 @@ class ShopController extends Controller
                 'price' => 30,
                 'icon' => '🧪',
                 'description' => 'Mempercepat pertumbuhan tanaman di kebun.',
+                'time_reduction_minutes' => 5,
+                'usage_label' => 'Potong Waktu Tumbuh 5m',
             ],
             [
                 'item_code' => 'tool_watering_can',
@@ -65,34 +60,22 @@ class ShopController extends Controller
                 'item_type' => 'tool',
                 'price' => 100,
                 'icon' => '🚿',
-                'description' => 'Menjaga kelembapan lahan secara otomatis.',
-            ],
-            [
-                'item_code' => 'tool_shovel',
-                'name' => 'Sekop Kebun Emas',
-                'item_type' => 'tool',
-                'price' => 150,
-                'icon' => '⛏️',
-                'description' => 'Alat olah tanah premium untuk efisiensi tinggi.',
-            ],
-            [
-                'item_code' => 'material_compost_kit',
-                'name' => 'Starter Kit Kompos',
-                'item_type' => 'material',
-                'price' => 80,
-                'icon' => '📦',
-                'description' => 'Wadah dan akselerator pengolah sampah dapur.',
-            ],
-            [
-                'item_code' => 'material_bio_activator',
-                'name' => 'Bio-Akselerator Mikroba',
-                'item_type' => 'material',
-                'price' => 60,
-                'icon' => '🧫',
-                'description' => 'Bahan pengurai organik untuk mempercepat kompos.',
+                'description' => 'Alat siram otomatis untuk memotong waktu tunggu tumbuh.',
+                'time_reduction_minutes' => 10,
+                'usage_label' => 'Potong Waktu Tumbuh 10m',
             ],
         ];
 
+        return array_merge($catalog, $otherItems);
+    }
+
+    /**
+     * List shop catalog items and user inventory.
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $catalog = $this->getCatalog();
         $userInventory = InventoryItem::where('user_id', $user->id)->get();
 
         return response()->json([
@@ -115,17 +98,7 @@ class ShopController extends Controller
         $user = $request->user();
         $itemCode = $request->input('item_code');
 
-        $catalog = collect([
-            ['item_code' => 'seed_sunflower', 'name' => 'Benih Bunga Matahari', 'item_type' => 'seed', 'price' => 50],
-            ['item_code' => 'seed_tomato', 'name' => 'Benih Tomat Organik', 'item_type' => 'seed', 'price' => 75],
-            ['item_code' => 'seed_monstera', 'name' => 'Benih Monstera Deliciosa', 'item_type' => 'seed', 'price' => 120],
-            ['item_code' => 'tool_fertilizer', 'name' => 'Pupuk Organik Super', 'item_type' => 'tool', 'price' => 30],
-            ['item_code' => 'tool_watering_can', 'name' => 'Penyiram Otomatis', 'item_type' => 'tool', 'price' => 100],
-            ['item_code' => 'tool_shovel', 'name' => 'Sekop Kebun Emas', 'item_type' => 'tool', 'price' => 150],
-            ['item_code' => 'material_compost_kit', 'name' => 'Starter Kit Kompos', 'item_type' => 'material', 'price' => 80],
-            ['item_code' => 'material_bio_activator', 'name' => 'Bio-Akselerator Mikroba', 'item_type' => 'material', 'price' => 60],
-        ]);
-
+        $catalog = collect($this->getCatalog());
         $itemData = $catalog->firstWhere('item_code', $itemCode);
 
         if (!$itemData) {

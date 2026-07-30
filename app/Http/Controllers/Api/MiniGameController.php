@@ -21,13 +21,38 @@ class MiniGameController extends Controller
      */
     public function plots(Request $request): JsonResponse
     {
+        $user = $request->user();
+
+        $plotsCount = GardenPlot::where('user_id', $user->id)->count();
+        if ($plotsCount === 0) {
+            // Auto initialize 4 initial plots for user
+            GardenPlot::create(['user_id' => $user->id, 'slot_number' => 1, 'unlocked' => true, 'purchase_cost' => 0]);
+            GardenPlot::create(['user_id' => $user->id, 'slot_number' => 2, 'unlocked' => false, 'purchase_cost' => 50]);
+            GardenPlot::create(['user_id' => $user->id, 'slot_number' => 3, 'unlocked' => false, 'purchase_cost' => 100]);
+            GardenPlot::create(['user_id' => $user->id, 'slot_number' => 4, 'unlocked' => false, 'purchase_cost' => 150]);
+        }
+
         $plots = GardenPlot::with(['currentPlanting.plantSpecies'])
-            ->where('user_id', $request->user()->id)
+            ->where('user_id', $user->id)
             ->orderBy('slot_number')
+            ->get();
+
+        $seeds = \App\Models\InventoryItem::where('user_id', $user->id)
+            ->where('item_type', 'seed')
+            ->where('quantity', '>', 0)
+            ->get();
+
+        $tools = \App\Models\InventoryItem::where('user_id', $user->id)
+            ->whereIn('item_type', ['tool', 'material'])
+            ->where('quantity', '>', 0)
             ->get();
 
         return response()->json([
             'data' => $plots,
+            'seeds' => $seeds,
+            'tools' => $tools,
+            'user_coin' => $user->coin,
+            'user_exp' => $user->exp,
         ]);
     }
 
@@ -74,6 +99,22 @@ class MiniGameController extends Controller
 
         return response()->json([
             'message' => 'Tanaman berhasil disiram.',
+            'data' => new PlantingResource($planting),
+        ]);
+    }
+
+    /**
+     * Apply fertilizer (Pupuk Organik Super) to speed up growth.
+     */
+    public function fertilize(PlantingRequest $request): JsonResponse
+    {
+        $planting = $this->gardenService->applyFertilizer(
+            $request->user(),
+            (int) $request->validated('planting_id')
+        );
+
+        return response()->json([
+            'message' => 'Pupuk Organik Super berhasil digunakan! Pertumbuhan dipercepat 15 menit 🧪',
             'data' => new PlantingResource($planting),
         ]);
     }

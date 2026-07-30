@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum,web', 'viewer'])->group(function () {
     Route::post('/minigame/plots/{id}/unlock', [MiniGameController::class, 'unlockPlot']);
     Route::post('/minigame/plant', [MiniGameController::class, 'plant']);
     Route::post('/minigame/water', [MiniGameController::class, 'water']);
+    Route::post('/minigame/fertilize', [MiniGameController::class, 'fertilize']);
     Route::post('/minigame/harvest', [MiniGameController::class, 'harvest']);
 
     // Shop Routes

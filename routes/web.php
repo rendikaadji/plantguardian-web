@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Auth Routes (Guest Only)
@@ -33,9 +34,7 @@ Route::middleware(['auth', 'viewer'])->group(function () {
         return view('peta');
     })->name('peta');
 
-    Route::get('/profile', function () {
-        return view('profile');
-    })->name('profile');
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
     Route::get('/galeri', function () {
         return view('galeri');

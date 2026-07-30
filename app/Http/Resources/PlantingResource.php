@@ -18,6 +18,7 @@ class PlantingResource extends JsonResource
             'id' => $this->id,
             'garden_plot_id' => $this->garden_plot_id,
             'plant_species_id' => $this->plant_species_id,
+            'seed_code' => $this->seed_code,
             'species' => $this->whenLoaded('plantSpecies', function () {
                 return [
                     'id' => $this->plantSpecies->id,

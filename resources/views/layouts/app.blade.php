@@ -38,7 +38,7 @@
                             </div>
                             @if(auth()->check() && auth()->user()->role !== 'ranger')
                                 <span class="absolute -bottom-1 -right-1 bg-[#1F3D20] text-[#F5F4DA] text-[9px] font-extrabold px-1.5 py-0.2 rounded-full font-baloo border border-[#F5F4DA]">
-                                    LVL 1
+                                    LVL {{ auth()->user()->level }}
                                 </span>
                             @endif
                         </div>
@@ -62,8 +62,11 @@
                         @if(auth()->user()->role !== 'ranger')
                             <!-- Coin Pill (Viewer Only) -->
                             <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs sm:text-sm shadow-xs">
-                                <svg class="w-4 h-4 text-[#F5F4DA]" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M10 2a8 8 0 100 16 8 8 0 000-16zm1 11H9v-2h2v2zm0-4H9V5h2v4z"/>
+                                <svg class="w-4.5 h-4.5 shrink-0" viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="10" fill="#F4C430" stroke="#B8860B" stroke-width="1.5"/>
+                                    <circle cx="12" cy="12" r="7.5" fill="#FFD700" stroke="#DAA520" stroke-width="1"/>
+                                    <path d="M12 6.5c-3 3.5-3.5 7.5-1.2 10.5 3-3.5 3.5-7.5 1.2-10.5z" fill="#1F3D20"/>
+                                    <path d="M12 6.5c3 3.5 3.5 7.5 1.2 10.5-3-3.5-3.5-7.5-1.2-10.5z" fill="#27AE60"/>
                                 </svg>
                                 <span id="user-coin">0</span>
                                 <span class="text-[10px] opacity-80">NC</span>
@@ -97,7 +100,7 @@
     </header>
 
     <!-- Main View Content -->
-    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 pb-24 md:pb-8">
+    <main class="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 py-6 pb-36 md:pb-40">
         @yield('content')
     </main>
 
@@ -140,12 +143,12 @@
                         <span class="text-[10px] font-baloo font-bold">Plants</span>
                     </a>
 
-                    <!-- 3. Achievement -->
+                    <!-- 3. Mini Game -->
                     <a href="{{ route('minigame') }}" class="flex flex-col items-center px-3 py-1.5 rounded-full transition-colors {{ request()->routeIs('minigame') ? 'bg-[#1F3D20] text-[#F5F4DA]' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
                         </svg>
-                        <span class="text-[10px] font-baloo font-bold">Achievement</span>
+                        <span class="text-[10px] font-baloo font-bold">Mini Game</span>
                     </a>
 
                     <!-- 4. Shop -->

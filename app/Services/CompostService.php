@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\CompostProcess;
 use App\Models\CompostProgressLog;
+use App\Models\InventoryItem;
 use App\Models\RealPlanting;
 use App\Models\User;
 use Exception;
@@ -19,9 +20,23 @@ class CompostService
     /**
      * Start a new compost process for the user.
      */
-    public function startProcess(User $user, ?int $compostMaterialId = null, int $expReward = 50): CompostProcess
+    public function startProcess(User $user, ?int $compostMaterialId = null, int $expReward = 50, ?string $inventoryItemCode = null): CompostProcess
     {
-        return DB::transaction(function () use ($user, $compostMaterialId, $expReward) {
+        return DB::transaction(function () use ($user, $compostMaterialId, $expReward, $inventoryItemCode) {
+            if ($inventoryItemCode) {
+                $item = InventoryItem::where('user_id', $user->id)
+                    ->where('item_code', $inventoryItemCode)
+                    ->where('quantity', '>', 0)
+                    ->first();
+
+                if (! $item) {
+                    throw new Exception('Bahan kompos tidak ditemukan di inventaris Anda.');
+                }
+
+                $item->decrement('quantity');
+                $expReward += 50; // Bonus +50 EXP when using shop compost kit/activator
+            }
+
             $process = CompostProcess::create([
                 'user_id' => $user->id,
                 'compost_material_id' => $compostMaterialId,

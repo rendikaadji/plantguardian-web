@@ -5,13 +5,20 @@
 @section('content')
 <div class="space-y-6">
     <!-- Top Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between gap-3">
         <div>
             <span class="text-xs font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">HERBARIUM DIGITAL</span>
             <h1 class="font-baloo font-extrabold text-2xl sm:text-3xl text-[#1F3D20]">Koleksi Seedex</h1>
         </div>
-        <div class="px-3 py-1 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-extrabold text-xs">
-            SEEDEX ALBUM
+        <div class="flex items-center gap-2">
+            <!-- Achievement Button inside Plants Menu -->
+            <button id="open-achievement-modal-btn" class="px-3.5 py-1.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] hover:bg-[#2D4A2E] font-baloo font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs">
+                <span>🏆</span>
+                <span>Achievement</span>
+            </button>
+            <div class="hidden sm:block px-3 py-1 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-extrabold text-xs">
+                SEEDEX ALBUM
+            </div>
         </div>
     </div>
 
@@ -30,6 +37,81 @@
     <!-- Gallery Grid Container -->
     <div id="gallery-container" class="min-h-[50vh]">
         <!-- Dynamic Seedex Cards rendered by gallery.js -->
+    </div>
+</div>
+
+<!-- Achievement Viewer Modal -->
+<div id="achievement-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
+    <div class="card-gg max-w-lg w-full p-6 shadow-2xl space-y-5 bg-[#FBFAF0] max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-[#1F3D20] text-[#F5F4DA] flex items-center justify-center text-xl">
+                    🏆
+                </div>
+                <div>
+                    <h3 class="font-baloo font-extrabold text-2xl text-[#1F3D20]">Achievement Viewer</h3>
+                    <p class="font-nunito text-xs text-[#6B6B55]">Koleksi lencana dan pencapaian eksplorasi floramu.</p>
+                </div>
+            </div>
+            <button id="achievement-modal-close-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>
+        </div>
+
+        <!-- Badges Grid List -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            <!-- Badge 1 -->
+            <div class="p-3.5 rounded-2xl bg-[#FBFAF0] border border-[#1F3D20]/15 flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-[#1F3D20] text-2xl flex items-center justify-center shadow-xs">
+                    🌱
+                </div>
+                <div>
+                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">Penjelajah Flora</h4>
+                    <p class="text-[11px] text-[#6B6B55]">Temukan spesies tumbuhan pertama di Peta.</p>
+                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20]">Terselesaikan ✨</span>
+                </div>
+            </div>
+
+            <!-- Badge 2 -->
+            <div class="p-3.5 rounded-2xl bg-[#FBFAF0] border border-[#1F3D20]/15 flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-[#8B6A4C] text-2xl flex items-center justify-center shadow-xs">
+                    ♻️
+                </div>
+                <div>
+                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">Pahlawan Kompos</h4>
+                    <p class="text-[11px] text-[#6B6B55]">Selesaikan proses pembuatan kompos organik.</p>
+                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20]">Terselesaikan ✨</span>
+                </div>
+            </div>
+
+            <!-- Badge 3 -->
+            <div class="p-3.5 rounded-2xl bg-[#FBFAF0] border border-[#1F3D20]/15 flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-[#2E6DA4] text-2xl flex items-center justify-center shadow-xs">
+                    🌳
+                </div>
+                <div>
+                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">Penanam Sejati</h4>
+                    <p class="text-[11px] text-[#6B6B55]">Kirim bukti penanaman pohon nyata di lapangan.</p>
+                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20]">Terselesaikan ✨</span>
+                </div>
+            </div>
+
+            <!-- Badge 4 -->
+            <div class="p-3.5 rounded-2xl bg-[#FBFAF0] border border-[#1F3D20]/15 flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-[#7D5BA6] text-2xl flex items-center justify-center shadow-xs">
+                    📚
+                </div>
+                <div>
+                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">Pakar Seedex</h4>
+                    <p class="text-[11px] text-[#6B6B55]">Kumpulkan 5+ spesies tumbuhan di album Seedex.</p>
+                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E7E6BE] text-[#6B6B55]">Sedang Berjalan</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pt-2 text-center">
+            <button id="achievement-modal-done-btn" class="w-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold py-2.5 rounded-full text-xs hover:bg-[#2D4A2E] transition-colors cursor-pointer">
+                Tutup Achievement
+            </button>
+        </div>
     </div>
 </div>
 
@@ -106,6 +188,26 @@
                 document.querySelector('#gallery-modal').classList.add('hidden');
             });
         }
+
+        // Achievement Modal Handlers inside Plants Page
+        const achievementModal = document.querySelector('#achievement-modal');
+        const openAchievementBtn = document.querySelector('#open-achievement-modal-btn');
+        const closeAchievementBtn = document.querySelector('#achievement-modal-close-btn');
+        const doneAchievementBtn = document.querySelector('#achievement-modal-done-btn');
+
+        if (openAchievementBtn && achievementModal) {
+            openAchievementBtn.addEventListener('click', () => {
+                achievementModal.classList.remove('hidden');
+            });
+        }
+
+        [closeAchievementBtn, doneAchievementBtn].forEach(btn => {
+            if (btn && achievementModal) {
+                btn.addEventListener('click', () => {
+                    achievementModal.classList.add('hidden');
+                });
+            }
+        });
     });
 </script>
 @endpush

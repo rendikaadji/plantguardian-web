@@ -7,7 +7,9 @@
 1. **Konsistensi di atas kecepatan.** Lebih baik bertanya/klarifikasi daripada menebak dan menghasilkan kode yang menyimpang dari 4 dokumen lain.
 2. **Tidak ada scope creep diam-diam.** Fitur baru yang tidak ada di `prd.md` tidak boleh langsung dikerjakan — catat dulu di `prd.md`, baru implementasi.
 3. **Clean code, bukan quick hack.** Proyek ini dikerjakan dengan standar developer profesional walau berasal dari proyek sekolah — kode harus bisa dipelihara jangka panjang.
-4. **Role separation (Ranger vs Viewer) adalah aturan keras.** Jangan pernah mencampur logic/akses dua role ini dalam satu controller/service yang sama tanpa pemisahan jelas.
+4. **Role separation (Ranger vs Viewer) adalah aturan keras.** Semua route Ranger wajib dibungkus middleware `ranger` (`EnsureUserIsRanger`, lihat `architecture.md` §4.7) — **termasuk `POST /api/scan`, yang sekarang eksklusif Ranger** (perubahan — sebelumnya dianggap fitur Viewer). **Semua route Viewer (home, peta [catch/discover], galeri, minigame, kompos, leaderboard) wajib dibungkus middleware `viewer` (`EnsureUserIsViewer`)** — bukan cuma Ranger yang dibatasi, Viewer juga tidak boleh bisa mengakses route Ranger dan sebaliknya. Jangan pernah mencampur logic/akses dua role ini dalam satu controller/service yang sama tanpa pemisahan jelas.
+4.1. **Redirect berbasis role wajib berlaku di SETIAP login, bukan cuma sekali saat onboarding.** Setelah proses login berhasil (baik login pertama kali maupun login berikutnya), sistem wajib mengecek `role` user dan mengarahkan ke dashboard yang sesuai (`ranger.dashboard` untuk Ranger, `home` untuk Viewer) — lihat `architecture.md` §4.8.
+5. **Pengecualian scoping untuk data katalog bersama.** `plant_species` dan `compost_materials` adalah data bersama (dibaca lintas-role), bukan data personal — query bacanya **tidak** perlu discope per `created_by` (beda dengan aturan scoping umum di §2.4). Ini pengecualian yang sudah dicatat sadar di `architecture.md` §4.7, bukan pelanggaran.
 
 ## 2. Aturan Backend (Laravel)
 
@@ -49,6 +51,12 @@
 - Semua foreign key didefinisikan di migration dengan `onDelete` yang eksplisit.
 - Nama tabel/kolom mengikuti `schema.md` — jika butuh kolom/tabel baru, tambahkan dulu ke `schema.md` sebelum membuat migration.
 
+## 4.1 Aturan Privasi Lokasi (Wajib)
+
+- Koordinat lokasi **hanya** disimpan sebagai kolom pada record aksi spesifik (`compost_progress_logs.latitude/longitude`, `real_plantings.latitude/longitude`) — **dilarang** membuat tabel/kolom lokasi persisten di `users` atau tabel manapun yang menyimpan riwayat pergerakan pengguna.
+- Frontend **tidak boleh** memanggil `navigator.geolocation.watchPosition` (pelacakan berkelanjutan) — hanya `getCurrentPosition` (ambil sesaat) pada momen upload bukti.
+- Jika izin lokasi ditolak pengguna, backend harus tetap menerima request dengan `latitude`/`longitude` bernilai `null` — jangan menolak/memblokir fitur hanya karena lokasi tidak tersedia.
+
 ## 5. Konvensi Penamaan
 
 | Elemen | Konvensi | Contoh |
@@ -82,6 +90,7 @@ Sebelum AI mulai menulis kode untuk sebuah task, pastikan:
 - ❌ Membuat tabel/kolom baru tanpa mencatatnya di `schema.md`.
 - ❌ Mencampur logic Ranger dan Viewer dalam satu alur/controller yang sama.
 - ❌ Memanggil AI service Python langsung dari frontend.
+- ❌ Menyimpan lokasi pengguna secara persisten/berkelanjutan (lihat §4.1) — lokasi hanya menempel pada record aksi spesifik.
 
 ## 8. Definition of Done (per fitur)
 

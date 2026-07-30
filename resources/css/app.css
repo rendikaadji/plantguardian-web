@@ -1,9 +1,122 @@
 @import 'tailwindcss';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+:root {
+    --color-bg: #F5F4DA;
+    --color-surface: #FBFAF0;
+    --color-primary: #1F3D20;
+    --color-primary-text: #2D4A2E;
+    --color-text: #2A2A22;
+    --color-text-muted: #6B6B55;
+    --color-accent-blue: #2E6DA4;
+    --color-accent-coral: #D96C63;
+    --color-accent-brown: #8B6A4C;
+    --color-danger: #C0392B;
+    --color-rarity-common: #9E9E8A;
+    --color-rarity-uncommon: #4C8C4A;
+    --color-rarity-rare: #7D5BA6;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+html, body {
+    background-color: #F5F4DA !important;
+    color: #2A2A22 !important;
+    font-family: 'Nunito', system-ui, -apple-system, sans-serif;
+}
+
+/* Typography Classes */
+.font-baloo {
+    font-family: 'Baloo 2', display, cursive, sans-serif !important;
+}
+
+.font-nunito {
+    font-family: 'Nunito', sans-serif !important;
+}
+
+/* Garden Guardian Design System Utility Classes */
+.card-gg {
+    background-color: #FBFAF0 !important;
+    border: 1.5px solid rgba(31, 61, 32, 0.12) !important;
+    border-radius: 1.25rem !important;
+    box-shadow: 0 4px 12px rgba(31, 61, 32, 0.04) !important;
+}
+
+.card-gg-hover {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-gg-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(31, 61, 32, 0.08) !important;
+    border-color: rgba(31, 61, 32, 0.25) !important;
+}
+
+/* Buttons */
+.btn-gg-primary {
+    background-color: #1F3D20 !important;
+    color: #F5F4DA !important;
+    font-family: 'Baloo 2', display, cursive, sans-serif !important;
+    font-weight: 700 !important;
+    border-radius: 9999px !important;
+    padding: 0.625rem 1.5rem !important;
+    transition: all 0.2s ease;
+}
+
+.btn-gg-primary:hover {
+    background-color: #2D5A2F !important;
+    box-shadow: 0 4px 12px rgba(31, 61, 32, 0.2) !important;
+}
+
+.btn-gg-secondary {
+    background-color: #FBFAF0 !important;
+    color: #1F3D20 !important;
+    border: 2px solid #1F3D20 !important;
+    font-family: 'Baloo 2', display, cursive, sans-serif !important;
+    font-weight: 700 !important;
+    border-radius: 9999px !important;
+    padding: 0.5rem 1.25rem !important;
+    transition: all 0.2s ease;
+}
+
+.btn-gg-secondary:hover {
+    background-color: #F5F4DA !important;
+}
+
+/* Badges & Pills */
+.pill-currency {
+    background-color: #1F3D20 !important;
+    color: #F5F4DA !important;
+    border-radius: 9999px !important;
+    padding: 0.35rem 0.85rem !important;
+    font-family: 'Baloo 2', display, cursive, sans-serif !important;
+    font-weight: 700 !important;
+}
+
+.pill-currency-light {
+    background-color: #E7E6BE !important;
+    color: #1F3D20 !important;
+    border-radius: 9999px !important;
+    padding: 0.35rem 0.85rem !important;
+    font-family: 'Baloo 2', display, cursive, sans-serif !important;
+    font-weight: 700 !important;
+}
+
+/* Thick Rounded Progress Bar */
+.progress-bar-gg {
+    height: 12px;
+    background-color: #E2E1C4;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progress-fill-gg {
+    height: 100%;
+    background-color: #1F3D20;
+    border-radius: 9999px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Bottom Nav Active Pill */
+.nav-tab-active {
+    background-color: #1F3D20 !important;
+    color: #F5F4DA !important;
+    border-radius: 9999px !important;
 }

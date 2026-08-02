@@ -178,6 +178,7 @@
             if (window.HomeModule) {
                 const home = new window.HomeModule();
                 home.loadWalletBalance();
+                home.loadDailyMission();
             }
         });
     </script>

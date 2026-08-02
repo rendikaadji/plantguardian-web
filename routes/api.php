@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\CompostController;
+use App\Http\Controllers\Api\DailyMissionController;
 use App\Http\Controllers\Api\DiscoveryController;
 use App\Http\Controllers\Api\GalleryController;
 use App\Http\Controllers\Api\LeaderboardController;
@@ -60,6 +61,10 @@ Route::middleware(['auth:sanctum,web', 'viewer'])->group(function () {
     // Leaderboard Routes
     Route::get('/leaderboard/current', [LeaderboardController::class, 'current']);
     Route::get('/leaderboard/history', [LeaderboardController::class, 'history']);
+
+    // Daily Mission Routes
+    Route::get('/daily-mission', [DailyMissionController::class, 'index']);
+    Route::post('/daily-mission/claim', [DailyMissionController::class, 'claim']);
 });
 
 // Ranger Protected API Routes (Protected by 'ranger' middleware)

@@ -46,7 +46,7 @@
     </div>
 
     <!-- Active Daily Quest / Card Misi Signature -->
-    <div class="card-gg p-5 sm:p-6 space-y-4">
+    <div id="daily-mission-card" class="card-gg p-5 sm:p-6 space-y-4">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-2xl bg-[#D96C63]/15 text-[#D96C63] flex items-center justify-center font-baloo font-bold">
@@ -55,28 +55,35 @@
                     </svg>
                 </div>
                 <div>
-                    <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">MISI HARIAN</span>
-                    <h3 class="font-baloo font-bold text-lg text-[#2D4A2E] leading-none">Penjelajah Lapangan</h3>
+                    <div class="flex items-center gap-2">
+                        <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">MISI HARIAN</span>
+                        <span class="text-[9px] font-baloo font-bold bg-[#E2E1C4] text-[#1F3D20] px-1.5 py-0.2 rounded-full">RESETS 00:00</span>
+                    </div>
+                    <h3 id="daily-mission-title" class="font-baloo font-bold text-lg text-[#2D4A2E] leading-none">Penjelajah Lapangan</h3>
                 </div>
             </div>
-            <span class="px-3 py-1 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-extrabold text-xs">
-                3 / 5
+            <span id="daily-mission-count" class="px-3 py-1 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-extrabold text-xs">
+                0 / 5
             </span>
         </div>
 
-        <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed">
+        <p id="daily-mission-desc" class="text-xs text-[#6B6B55] font-nunito leading-relaxed">
             Temukan 5 marker spesies yang diverifikasi oleh Ranger di peta sekitar tempat tinggalmu hari ini.
         </p>
 
         <!-- Thick Progress Bar GG -->
         <div class="space-y-1.5">
             <div class="progress-bar-gg">
-                <div class="progress-fill-gg" style="width: 60%;"></div>
+                <div id="daily-mission-progress-bar" class="progress-fill-gg" style="width: 0%;"></div>
             </div>
-            <div class="flex justify-between text-[11px] font-baloo font-bold text-[#6B6B55]">
-                <span>Progress: 60%</span>
+            <div class="flex items-center justify-between text-[11px] font-baloo font-bold text-[#6B6B55]">
+                <span id="daily-mission-progress-text">Progress: 0%</span>
                 <span class="text-[#1F3D20]">+150 EXP & 🪙 50 NC</span>
             </div>
+        </div>
+
+        <div id="daily-mission-action" class="pt-1">
+            <!-- Dynamic Action (Klaim Hadiah button or Selesai badge) -->
         </div>
     </div>
 

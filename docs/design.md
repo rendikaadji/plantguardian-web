@@ -8,21 +8,21 @@
 
 ### 1.1 Palet Warna
 
-| Token | Hex (perkiraan dari referensi) | Penggunaan |
-|---|---|---|
-| `--color-bg` | `#F5F4DA` | Latar utama — krem kehijauan pucat |
-| `--color-surface` | `#FBFAF0` | Kartu/panel (sedikit lebih terang dari bg) |
-| `--color-primary` | `#1F3D20` | Hijau hutan tua — tombol utama, nav aktif, header |
-| `--color-primary-text` | `#2D4A2E` | Teks judul hijau |
-| `--color-text` | `#2A2A22` | Teks utama, hitam hangat |
-| `--color-text-muted` | `#6B6B55` | Teks sekunder |
-| `--color-accent-blue` | `#2E6DA4` | Ikon vitalitas/potion |
-| `--color-accent-coral` | `#D96C63` | Ikon hidrasi, badge hangat |
-| `--color-accent-brown` | `#8B6A4C` | Ikon tool/soil |
-| `--color-danger` | `#C0392B` | Alert, status error/gagal |
-| `--color-rarity-common` | `#9E9E8A` | Badge rarity Common |
-| `--color-rarity-uncommon` | `#4C8C4A` | Badge rarity Uncommon |
-| `--color-rarity-rare` | `#7D5BA6` | Badge rarity Rare |
+| Token                     | Hex (perkiraan dari referensi) | Penggunaan                                        |
+| ------------------------- | ------------------------------ | ------------------------------------------------- |
+| `--color-bg`              | `#F5F4DA`                      | Latar utama — krem kehijauan pucat                |
+| `--color-surface`         | `#FBFAF0`                      | Kartu/panel (sedikit lebih terang dari bg)        |
+| `--color-primary`         | `#1F3D20`                      | Hijau hutan tua — tombol utama, nav aktif, header |
+| `--color-primary-text`    | `#2D4A2E`                      | Teks judul hijau                                  |
+| `--color-text`            | `#2A2A22`                      | Teks utama, hitam hangat                          |
+| `--color-text-muted`      | `#6B6B55`                      | Teks sekunder                                     |
+| `--color-accent-blue`     | `#2E6DA4`                      | Ikon vitalitas/potion                             |
+| `--color-accent-coral`    | `#D96C63`                      | Ikon hidrasi, badge hangat                        |
+| `--color-accent-brown`    | `#8B6A4C`                      | Ikon tool/soil                                    |
+| `--color-danger`          | `#C0392B`                      | Alert, status error/gagal                         |
+| `--color-rarity-common`   | `#9E9E8A`                      | Badge rarity Common                               |
+| `--color-rarity-uncommon` | `#4C8C4A`                      | Badge rarity Uncommon                             |
+| `--color-rarity-rare`     | `#7D5BA6`                      | Badge rarity Rare                                 |
 
 ### 1.2 Tipografi
 
@@ -45,7 +45,8 @@
 ### 1.4 Catatan Cakupan (Penting — jangan dikerjakan diam-diam)
 
 Beberapa elemen di referensi tim **belum tercatat di `prd.md`**:
-- **Alliance Friends** (daftar teman + status online) — fitur sosial, sebelumnya tercatat *out of scope* (`prd.md` §8).
+
+- **Alliance Friends** (daftar teman + status online) — fitur sosial, sebelumnya tercatat _out of scope_ (`prd.md` §8).
 - **Skins/kosmetik** di Shop — belum ada di cakupan fitur manapun.
 - **Daily Free Gift Box** & **Story Quest** — konsep baru, belum tercatat di PRD.
 - **Faction/Rank title** ("GRAND ARBITER RANK") — belum ada konsep fraksi di skema data manapun.
@@ -63,49 +64,54 @@ Beberapa elemen di referensi tim **belum tercatat di `prd.md`**:
 
 Berdasarkan flowchart final (`revisi3_flowchart_rangers.jpg`):
 
-| Layar | View (Blade) | Modul JS terkait | Ringkasan |
-|---|---|---|---|
-| Sign Up / Login | `auth/register.blade.php`, `auth/login.blade.php` | — (form standar) | Form daftar akun & pilih role |
-| Pilih Role | bagian dari alur onboarding | — | Ranger vs Viewer (menentukan redirect) |
-| Tutorial | `onboarding.blade.php` | `home.js` | Onboarding singkat untuk Viewer |
-| Home Screen | `home.blade.php` | `home.js` | Hub navigasi ke Peta/Galeri/MiniGame |
-| Peta / Main (Peta Real + AR Scan) | `peta.blade.php` | `map.js`, `ar-scanner.js` | Peta GPS sungguhan dengan marker lokasi temuan, tap marker/tombol scan untuk buka kamera AR |
-| Hasil Scan | komponen modal di `peta.blade.php` | `ar-scanner.js` | Tampilkan detail tumbuhan + tombol simpan |
-| Penyimpanan / Galeri | `galeri.blade.php` | `gallery.js` | List/grid tumbuhan tersimpan milik user |
-| MiniGame | `minigame.blade.php` | `minigame.js` | Canvas kebun virtual: lahan, tanam, rawat, panen |
-| Izin Lokasi | komponen modal di alur onboarding | `home.js` | Prompt sekali di awal, jelaskan kenapa lokasi dibutuhkan |
-| Tantangan Kompos | `compost/index.blade.php` | `compost.js` | Daftar bahan, mulai proses, lihat instruksi |
-| Progress Kompos | `compost/show.blade.php` | `compost.js` | Timeline check-in, tombol "Check-in", tombol "Tandai Matang" |
-| Tanam Pohon Nyata | `compost/plant.blade.php` | `compost.js` | Form upload bukti tanam (foto + lokasi + jenis pohon) |
-| Papan Peringkat | `leaderboard.blade.php` | `leaderboard.js` | Ranking mingguan, badge/penghargaan |
-| Dashboard Ranger | `ranger/dashboard.blade.php` | `ranger-home.js` | Hub navigasi ke Katalog Spesies/Kompos/Verifikasi |
-| Katalog Spesies | `ranger/species/index.blade.php`, `.../form.blade.php` | `ranger-species.js` | List + tambah/edit `plant_species` |
-| Katalog Bahan Kompos | `ranger/compost-materials/index.blade.php`, `.../form.blade.php` | `ranger-compost.js` | List + tambah/edit `compost_materials` |
-| Verifikasi Temuan | `ranger/verifications/index.blade.php` | `ranger-verify.js` | Queue peninjauan sighting & real planting |
+| Layar                             | View (Blade)                                                     | Modul JS terkait          | Ringkasan                                                                                   |
+| --------------------------------- | ---------------------------------------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------- |
+| Sign Up / Login                   | `auth/register.blade.php`, `auth/login.blade.php`                | — (form standar)          | Form daftar akun & pilih role                                                               |
+| Pilih Role                        | bagian dari alur onboarding                                      | —                         | Ranger vs Viewer (menentukan redirect)                                                      |
+| Tutorial                          | `onboarding.blade.php`                                           | `home.js`                 | Onboarding singkat untuk Viewer                                                             |
+| Home Screen                       | `home.blade.php`                                                 | `home.js`                 | Hub navigasi ke Peta/Galeri/MiniGame                                                        |
+| Peta / Main (Peta Real + AR Scan) | `peta.blade.php`                                                 | `map.js`, `ar-scanner.js` | Peta GPS sungguhan dengan marker lokasi temuan, tap marker/tombol scan untuk buka kamera AR |
+| Hasil Scan                        | komponen modal di `peta.blade.php`                               | `ar-scanner.js`           | Tampilkan detail tumbuhan + tombol simpan                                                   |
+| Penyimpanan / Galeri              | `galeri.blade.php`                                               | `gallery.js`              | List/grid tumbuhan tersimpan milik user                                                     |
+| MiniGame                          | `minigame.blade.php`                                             | `minigame.js`             | Canvas kebun virtual: lahan, tanam, rawat, panen                                            |
+| Izin Lokasi                       | komponen modal di alur onboarding                                | `home.js`                 | Prompt sekali di awal, jelaskan kenapa lokasi dibutuhkan                                    |
+| Tantangan Kompos                  | `compost/index.blade.php`                                        | `compost.js`              | Daftar bahan, mulai proses, lihat instruksi                                                 |
+| Progress Kompos                   | `compost/show.blade.php`                                         | `compost.js`              | Timeline check-in, tombol "Check-in", tombol "Tandai Matang"                                |
+| Tanam Pohon Nyata                 | `compost/plant.blade.php`                                        | `compost.js`              | Form upload bukti tanam (foto + lokasi + jenis pohon)                                       |
+| Papan Peringkat                   | `leaderboard.blade.php`                                          | `leaderboard.js`          | Ranking mingguan, badge/penghargaan                                                         |
+| Dashboard Ranger                  | `ranger/dashboard.blade.php`                                     | `ranger-home.js`          | Hub navigasi ke Katalog Spesies/Kompos/Verifikasi                                           |
+| Katalog Spesies                   | `ranger/species/index.blade.php`, `.../form.blade.php`           | `ranger-species.js`       | List + tambah/edit `plant_species`                                                          |
+| Katalog Bahan Kompos              | `ranger/compost-materials/index.blade.php`, `.../form.blade.php` | `ranger-compost.js`       | List + tambah/edit `compost_materials`                                                      |
+| Verifikasi Temuan                 | `ranger/verifications/index.blade.php`                           | `ranger-verify.js`        | Queue peninjauan sighting & real planting                                                   |
 
 ## 3. Komponen UI Utama
 
 ### 3.1 Home Screen (Viewer)
-- Restyle ke sistem "Garden Guardian" (§1): header dengan avatar+level, pill Coin/EXP di kanan atas.
+
+- Restyle ke sistem "Garden Guardian" (§1): header dengan avatar+level, pill Coin/EXP di kanan atas, **pengalih bahasa (EN/ID)** kecil di header (dekat pill Coin/EXP) atau bisa juga ditempatkan di halaman Profile — lihat `architecture.md` §4.9 untuk mekanisme teknisnya.
 - Bottom tab bar 5 item: **Peta**, **Galeri (Plants)**, **Bag**, **Shop**, **Profile** — menggantikan 3 kartu navigasi sebelumnya (rujuk §1.3 poin 3).
 - Konten utama berupa **hero banner** (event/cuaca harian, opsional) — lihat §1.3 poin 6.
+- **Default bahasa: Inggris.** Semua teks di halaman ini dan seluruh halaman lain wajib lewat sistem terjemahan (`rules.md` §4.2) — tidak ada teks hardcode.
 
 ### 3.2 Peta / Main — **Perilaku BERBEDA per role (perubahan penting)**
 
 > **Perubahan besar:** sebelumnya Viewer yang scan langsung via kamera AR. Sekarang **dibalik** — **Ranger** yang melakukan Scan (AR + AI, fieldwork nyata untuk menambah/verifikasi data), **Viewer tidak punya kamera scan** — Viewer hanya **menjelajah peta dan "menemukan" (catch)** spesies yang sudah pernah di-scan Ranger di sekitar lokasinya, mirip menangkap di Pokemon GO tanpa kamera. Ini berlaku untuk SEMUA turunan dokumen (`prd.md` §3, `architecture.md` §4.5 dst, `schema.md`).
 
 **Untuk Viewer:**
+
 - Peta menampilkan lokasi pengguna (titik) + marker di titik-titik `plant_sightings` **yang sudah `verified`** oleh Ranger di sekitar radius tertentu.
 - Tap marker → bottom sheet menampilkan foto & nama spesies (hasil kartu koleksi §1.3 poin 4), tombol **"Temukan!"** (bukan "Buka Kamera") — tombol ini memicu aksi "catch" (`POST /api/plant-discoveries`, lihat `architecture.md`), tidak perlu kamera sama sekali.
 - Setelah "Temukan!" ditekan → animasi singkat (mirip buka kartu koleksi) + notifikasi EXP/Coin didapat + entri baru masuk ke Galeri pribadi (`plant_discoveries`).
 - Marker yang belum pernah ditemukan tampil dengan ikon "?" (kartu terkunci, §1.3 poin 4); setelah ditemukan berubah jadi foto asli.
 
 **Untuk Ranger:**
+
 - Peta dibuka dengan tombol kamera mengambang (seperti desain lama) untuk mode **AR Scan** — Ranger yang jalan-jalan di lapangan, memotret tumbuhan nyata, dikirim ke AI untuk identifikasi.
 - Setelah scan berhasil → `plant_sightings` baru dibuat berstatus `pending`, menunggu verifikasi (bisa dari Ranger lain) sebelum muncul sebagai marker yang bisa "ditemukan" Viewer.
 - Ranger tetap bisa lihat semua marker di peta (termasuk yang `pending`, ditandai beda — misal ikon jam pasir) untuk konteks lapangan.
 
 ### 3.3 Penyimpanan / Galeri (Viewer) — Gaya "Seedex"
+
 - Header progress: "Seedex Progress — X / Y Ditemukan" dengan progress bar tebal (§1.3 poin 2).
 - Filter tab: Semua / kategori (mengikuti kategori yang relevan dari `plant_species`, jika ada pengelompokan).
 - Grid kartu koleksi (§1.3 poin 4): ditemukan = foto + nama + badge rarity; belum ditemukan = kartu abu-abu terkunci dengan ikon petunjuk.
@@ -113,6 +119,7 @@ Berdasarkan flowchart final (`revisi3_flowchart_rangers.jpg`):
 - Rarity (Common/Uncommon/Rare) dipetakan dari `plant_species.conservation_status` atau field baru — **perlu diputuskan pemetaannya sebelum implementasi**, catat di `schema.md` bila ada kolom baru.
 
 ### 3.4 MiniGame (Kebun Virtual) — restyle "Bag/Inventaris" + Misi
+
 - Grid lahan (petak-petak) tetap seperti sebelumnya secara fungsi (kosong/tumbuh/siap panen), tapi ikon & warna mengikuti §1.3.
 - Progress tumbuh pakai progress bar rounded tebal (§1.3 poin 2), bukan bar tipis lama.
 - Tab terpisah **Bag** menampilkan inventaris (`inventory_items`): grid slot item dengan jumlah (mis. "x12"), slot kosong tampil terkunci (ikon gembok) sesuai kapasitas.
@@ -120,16 +127,19 @@ Berdasarkan flowchart final (`revisi3_flowchart_rangers.jpg`):
 - Setelah panen: animasi + notifikasi EXP/Coin, gaya kartu misi selesai (§1.3 poin 7).
 
 ### 3.4a Shop (Layar Baru)
+
 - Grid tombol kategori bulat: Seeds, Tools, (kategori lain sesuai `inventory_items.item_type`).
 - List item dengan harga (ikon Coin + angka), tombol beli mengurangi `coin_transactions` (lihat `RewardService`/logic beli yang sudah ada di `GardenService`).
 - **Tidak termasuk** dulu: Daily Free Gift Box, Potions/Alchemy, Skins — itu di luar cakupan (§1.4), jangan diimplementasikan tanpa update `prd.md`.
 
 ### 3.5 Izin Lokasi
+
 - Modal singkat sebelum browser memunculkan prompt izin lokasi native — jelaskan dulu **kenapa** dibutuhkan ("Dipakai untuk menandai lokasi saat kamu check-in kompos atau menanam pohon nyata").
 - Tombol "Izinkan" memicu `navigator.geolocation.getCurrentPosition`. Tombol "Lewati dulu" tetap mengizinkan lanjut (fitur kompos/planting tetap jalan tanpa lokasi, kolom lokasi jadi `null`).
 - Tidak ada indikator "lokasi sedang dilacak" yang persisten di UI manapun — sesuai prinsip privasi di `architecture.md` §4.4, lokasi cuma diambil sesaat per aksi.
 
 ### 3.6 Tantangan Kompos
+
 - Halaman daftar bahan kompos (`compost_materials`): kartu berisi nama bahan + ikon, tap untuk lihat detail & instruksi.
 - Tombol besar "Mulai Proses Kompos" di detail bahan.
 - Halaman **Progress Kompos**: tampilan timeline vertikal (mirip riwayat pesanan) — tiap check-in muncul sebagai item dengan foto kecil, label tahap, dan tanggal.
@@ -137,10 +147,12 @@ Berdasarkan flowchart final (`revisi3_flowchart_rangers.jpg`):
 - Saat tahap "Matang" dipilih, tampilkan tombol khusus "Tandai Kompos Matang" yang mengunci proses dan membuka opsi "Lanjut Tanam Pohon".
 
 ### 3.7 Tanam Pohon Nyata
+
 - Form sederhana: foto bukti (wajib), pilih jenis pohon (dropdown dari katalog, atau isi manual jika tidak ada), lokasi (otomatis terisi dari izin lokasi jika diberikan).
 - Setelah submit: layar konfirmasi dengan animasi perayaan + rincian EXP yang didapat — beri penekanan visual bahwa ini adalah pencapaian besar (milestone tertinggi dalam sistem reward).
 
 ### 3.8 Papan Peringkat Mingguan
+
 - Daftar ranking (top 10 misalnya) dengan foto profil, nama, total EXP minggu berjalan.
 - Highlight khusus untuk posisi user yang sedang login (meski di luar top 10, tetap tampil di bagian bawah "Posisimu: #37").
 - Badge/ikon berbeda untuk peringkat 1-3 (emas/perak/perunggu).

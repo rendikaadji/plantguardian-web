@@ -25,6 +25,23 @@ class LeaderboardService
             ->orderByDesc('exp_earned')
             ->get();
 
+        if ($rankings->isEmpty()) {
+            return User::where('role', 'viewer')
+                ->orderByDesc('exp')
+                ->limit(20)
+                ->get()
+                ->values()
+                ->map(function ($user, $index) {
+                    return [
+                        'rank' => $index + 1,
+                        'user_id' => $user->id,
+                        'user_name' => $user->name,
+                        'user_role' => $user->role,
+                        'exp_earned' => (int) $user->exp,
+                    ];
+                });
+        }
+
         $users = User::whereIn('id', $rankings->pluck('user_id'))
             ->get()
             ->keyBy('id');

@@ -24,6 +24,7 @@ PlantGuardian adalah sistem **3-layer** yang terpisah tanggung jawabnya:
 ## 2. Layer 1 — Frontend & WebAR
 
 ### 2.1 Teknologi
+
 - HTML5, CSS3, JavaScript (Vanilla JS), Alpine.js untuk state/interaktivitas ringan.
 - **AR.js / MindAR** untuk modul Scan Tumbuhan (baca kamera browser, overlay info di atas objek yang disorot).
 - **Leaflet.js + OpenStreetMap** untuk peta real di fitur Peta/Main (ringan, gratis, tanpa API key/billing — cocok untuk stack yang sudah dijaga tetap ringan). Alternatif Google Maps JS API bisa dipakai kalau butuh fitur lebih lengkap, tapi berbayar & butuh API key — tidak dipilih di versi awal.
@@ -72,6 +73,7 @@ views/
 ## 3. Layer 2 — Backend (Laravel)
 
 ### 3.1 Tanggung Jawab
+
 1. **Autentikasi & Role Management** — membedakan `ranger` dan `viewer` (lihat `schema.md` tabel `users`).
 2. **Routing & REST API** — endpoint untuk Home, Peta/Scan, Galeri, MiniGame.
 3. **Database MySQL** — relasi user, katalog tumbuhan (input Ranger), hasil temuan (Viewer), inventaris minigame, transaksi coin/EXP.
@@ -147,6 +149,7 @@ routes/
 ```
 
 ### 3.3 Aturan Wajib (ringkas — detail lengkap di `rules.md`)
+
 - **Controller tetap tipis**: hanya menerima Form Request, memanggil Service, mengembalikan Resource/JSON. Tidak ada query Eloquent kompleks langsung di controller.
 - **Form Request** wajib untuk semua input dari user (upload gambar, data planting, dsb).
 - **Service class** memegang seluruh business logic (contoh: `GardenService::checkIfReadyToHarvest()`).
@@ -155,6 +158,7 @@ routes/
 ## 4. Layer 3 — AI & Computer Vision Service (Python)
 
 ### 4.1 Teknologi
+
 - Python + **FastAPI** (disarankan dibanding Flask untuk validasi tipe otomatis dan performa async, tapi Flask tetap valid pilihan bila tim lebih familiar).
 - **OpenCV** untuk pra-pemrosesan gambar (resize, normalisasi, crop daun).
 - **TensorFlow / ANN** untuk model klasifikasi jenis tumbuhan.
@@ -164,28 +168,31 @@ routes/
 **Endpoint:** `POST /classify`
 
 Request:
+
 ```json
 {
-  "image_base64": "<string>",
-  "request_id": "<uuid dari Laravel, untuk tracing/log>"
+    "image_base64": "<string>",
+    "request_id": "<uuid dari Laravel, untuk tracing/log>"
 }
 ```
 
 Response (sukses):
+
 ```json
 {
-  "success": true,
-  "predicted_species_code": "MANGIFERA_INDICA",
-  "confidence": 0.92
+    "success": true,
+    "predicted_species_code": "MANGIFERA_INDICA",
+    "confidence": 0.92
 }
 ```
 
 Response (gagal / tidak yakin):
+
 ```json
 {
-  "success": false,
-  "reason": "confidence_too_low",
-  "confidence": 0.31
+    "success": false,
+    "reason": "confidence_too_low",
+    "confidence": 0.31
 }
 ```
 
@@ -215,18 +222,18 @@ ai_service/
 ## 4.5 Tantangan Kompos & Real Planting (Backend)
 
 - Endpoint terkait (semua lewat `CompostService`, controller tetap tipis sesuai `rules.md`):
-  - `POST /api/compost-processes` — mulai proses kompos baru (pilih `compost_material_id` atau bebas).
-  - `POST /api/compost-processes/{id}/checkin` — kirim `CompostProgressLog` baru (foto, stage_label, lokasi opsional).
-  - `POST /api/compost-processes/{id}/mature` — tandai proses sebagai `matured` (dipicu Viewer secara self-report).
-  - `POST /api/real-plantings` — catat bukti tanam pohon nyata, opsional relasi ke `compost_process_id` yang sudah matang.
+    - `POST /api/compost-processes` — mulai proses kompos baru (pilih `compost_material_id` atau bebas).
+    - `POST /api/compost-processes/{id}/checkin` — kirim `CompostProgressLog` baru (foto, stage_label, lokasi opsional).
+    - `POST /api/compost-processes/{id}/mature` — tandai proses sebagai `matured` (dipicu Viewer secara self-report).
+    - `POST /api/real-plantings` — catat bukti tanam pohon nyata, opsional relasi ke `compost_process_id` yang sudah matang.
 - Setiap endpoint di atas memanggil `RewardService` untuk mencatat EXP sesuai milestone (lihat `prd.md` §4.5).
 
 ## 4.6 Papan Peringkat Mingguan (Backend)
 
 - `LeaderboardService::calculateForWeek(Carbon $weekStart)`:
-  1. Ambil total EXP tiap user dari `exp_logs` dalam rentang `weekStart` s/d `weekStart + 6 hari`.
-  2. Urutkan, tentukan `rank`.
-  3. Simpan snapshot ke tabel `weekly_rewards` (satu baris per user per minggu).
+    1. Ambil total EXP tiap user dari `exp_logs` dalam rentang `weekStart` s/d `weekStart + 6 hari`.
+    2. Urutkan, tentukan `rank`.
+    3. Simpan snapshot ke tabel `weekly_rewards` (satu baris per user per minggu).
 - Dijalankan otomatis lewat **Laravel Scheduler** (`routes/console.php` atau `Kernel.php`), dijadwalkan tiap Senin 00:00 (awal minggu baru → tutup minggu sebelumnya).
 - Endpoint baca: `GET /api/leaderboard/current` (peringkat minggu berjalan, dihitung real-time dari `exp_logs` tanpa nunggu job) dan `GET /api/leaderboard/history` (baca dari snapshot `weekly_rewards`).
 
@@ -236,6 +243,7 @@ ai_service/
 - **Katalog bersama, bukan personal:** query katalog spesies & bahan kompos **tidak** discope per `created_by` untuk keperluan baca (Ranger manapun bisa lihat semua katalog) — scoping `created_by` hanya dipakai untuk mencatat siapa yang menginput, bukan untuk membatasi akses baca. Ini pengecualian sadar terhadap aturan umum scoping di `rules.md` §2.4 (yang berlaku untuk data personal seperti `plant_sightings` milik Viewer), karena katalog memang didesain sebagai data bersama.
 
 **Endpoint:**
+
 - `GET/POST/PUT/DELETE /api/ranger/species` — CRUD `plant_species` lewat `SpeciesCatalogController` + `SpeciesCatalogService`.
 - `GET/POST/PUT/DELETE /api/ranger/compost-materials` — CRUD `compost_materials` lewat `CompostCatalogController` + `CompostCatalogService`.
 - `GET /api/ranger/verifications/pending` — daftar `plant_sightings` (status `pending`) dan `real_plantings` (status `self_reported`) yang menunggu tinjauan.
@@ -249,8 +257,8 @@ Kesalahan yang pernah terjadi: hanya route Ranger yang dilindungi middleware, ro
 
 - **Middleware `EnsureUserIsViewer`** (baru, pasangan dari `EnsureUserIsRanger` di §4.7): mengecek `auth()->user()->role === 'viewer'`, dipasang di seluruh route group Viewer (`home`, `peta`, `galeri`, `minigame`, `compost/*`, `leaderboard`).
 - **Redirect berbasis role setelah login:** dibuat di `LoginResponse` custom (jika pakai Laravel Fortify) atau di method `authenticated()` pada `LoginController`/`AuthenticatedSessionController` (jika pakai Breeze) — cek `role` user yang baru login, arahkan ke:
-  - `role === 'ranger'` → route `ranger.dashboard`
-  - `role === 'viewer'` → route `home`
+    - `role === 'ranger'` → route `ranger.dashboard`
+    - `role === 'viewer'` → route `home`
 - Redirect ini berlaku **setiap kali login**, tidak hanya sekali di alur onboarding pilih-role. Alur onboarding pilih-role tetap dipakai khusus untuk **penentuan role pertama kali** (saat `role` user masih kosong/null setelah register).
 - Navigasi (nav bar) juga wajib dirender kondisional sesuai role — Viewer tidak boleh melihat link ke Dashboard Ranger di nav bar-nya, begitu pula sebaliknya.
 
@@ -291,14 +299,63 @@ Kesalahan yang pernah terjadi: hanya route Ranger yang dilindungi middleware, ro
 7. Viewer memakai kompos untuk tanam pohon nyata → `POST /api/real-plantings` (foto, lokasi, `compost_process_id`, jenis pohon) → status `compost_processes` berubah jadi `used_for_planting`, `RewardService` memberi EXP milestone terbesar.
 8. Semua EXP dari langkah 3–7 otomatis terakumulasi ke `exp_logs` → dipakai `LeaderboardService` untuk peringkat mingguan.
 
+## 4.9 Bahasa (i18n) — Bahasa Inggris Default, Pilihan Bahasa Indonesia
+
+**Prinsip inti: satu sumber teks per key, tidak ada teks hardcode di Blade/JS manapun.** Ini yang menjamin konsistensi — lihat aturan wajib di `rules.md` §4.2.
+
+### Struktur file bahasa (Laravel)
+
+```
+lang/
+  en/
+    app.php          # umum: nav, tombol, label bersama
+    auth.php          # login, register, pilih role
+    home.php           # Home/Beranda
+    map.php             # Peta/Main (scan Ranger, catch Viewer)
+    gallery.php          # Galeri/Seedex
+    minigame.php          # MiniGame, Bag, Shop
+    compost.php            # Tantangan Kompos, Real Planting
+    leaderboard.php
+    ranger.php              # Dashboard Ranger, Katalog, Verifikasi
+  id/
+    (struktur file sama persis, isi terjemahan Indonesia)
+```
+
+- Setiap file **wajib punya key yang sama persis** di `en/` dan `id/` — kalau nambah key baru, tambahkan di KEDUA bahasa di saat yang sama, jangan cuma satu.
+- Blade memakai `{{ __('map.catch_button') }}`, bukan teks literal.
+
+### Middleware & penyimpanan preferensi
+
+- `SetLocale` middleware (baru): urutan penentuan locale saat request masuk:
+    1. Jika user login dan `users.locale` terisi → pakai itu.
+    2. Jika ada di session (`session('locale')`) → pakai itu (untuk guest/sebelum login).
+    3. Default → `'en'`.
+- Middleware ini dipasang global (bukan cuma route tertentu) di `bootstrap/app.php`, supaya berlaku di semua halaman termasuk halaman auth sebelum login.
+- `POST /locale/switch` (route sederhana, tidak perlu Form Request kompleks — cukup validasi `locale` in `['en','id']`): update `session('locale')`, dan jika user sedang login, update juga `users.locale` supaya persisten lintas device.
+
+### Pengalih Bahasa (Frontend)
+
+- Komponen kecil di header (dekat pill Coin/EXP) atau di halaman Profile — dropdown/toggle "EN / ID".
+- Memanggil `POST /locale/switch` lalu reload halaman (paling sederhana & aman, hindari kompleksitas ganti bahasa tanpa reload untuk versi awal).
+
+### Untuk teks di dalam JavaScript (map.js, minigame.js, dst)
+
+- JS tidak bisa akses `__()` langsung. Solusi: Blade meng-inject objek terjemahan yang relevan ke `window` saat halaman dimuat, contoh di `<head>` layout utama:
+    ```blade
+    <script>
+      window.translations = @json(__('map'));
+    </script>
+    ```
+- JS memakai `window.translations.catch_button`, dst — **bukan** string hardcode di file `.js`.
+
 ## 6. Environment & Konfigurasi
 
-| Variabel | Layer | Keterangan |
-|---|---|---|
-| `AI_SERVICE_URL` | Laravel `.env` | Base URL Python service, contoh `http://ai-service:8000` |
-| `AI_SERVICE_TIMEOUT` | Laravel `.env` | Timeout request ke AI service (detik) |
-| `SANCTUM_STATEFUL_DOMAINS` | Laravel `.env` | Domain frontend yang diizinkan auth |
-| `MODEL_PATH` | Python `.env` | Lokasi file model klasifikasi |
+| Variabel                   | Layer          | Keterangan                                               |
+| -------------------------- | -------------- | -------------------------------------------------------- |
+| `AI_SERVICE_URL`           | Laravel `.env` | Base URL Python service, contoh `http://ai-service:8000` |
+| `AI_SERVICE_TIMEOUT`       | Laravel `.env` | Timeout request ke AI service (detik)                    |
+| `SANCTUM_STATEFUL_DOMAINS` | Laravel `.env` | Domain frontend yang diizinkan auth                      |
+| `MODEL_PATH`               | Python `.env`  | Lokasi file model klasifikasi                            |
 
 ## 7. Deployment (Ringkas)
 

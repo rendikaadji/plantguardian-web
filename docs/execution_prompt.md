@@ -1,4 +1,5 @@
 # Execution Prompt — PlantGuardian
+
 **Gunakan file ini sebagai instruksi awal di setiap sesi vibe coding (chat baru, Claude Code, dsb).**
 
 ---
@@ -33,72 +34,91 @@ Fase yang saya minta sekarang: [ISI SESUAI FASE DI BAWAH]
 ## Tahapan (kerjakan berurutan, satu fase = satu sesi/prompt terpisah)
 
 ### F0 — Setup (sudah selesai)
+
 Laravel project, Sanctum, folder skeleton, stub Model/Controller/Request/Resource, Python venv, migration table siap. ✅
 
 ### F1 — Migration (isi kolom)
+
 ```
 Fase sekarang: F1 - Migration
 Isi migration untuk tabel: plant_species
 Rujuk docs/schema.md bagian 3.
 Hanya kerjakan 1 file migration ini dulu, jangan lanjut ke tabel lain.
 ```
+
 Ulangi F1 untuk tiap tabel satu-satu: `plant_sightings`, `garden_plots`, `plantings`, `inventory_items`, `coin_transactions`, `exp_logs`. Setelah semua terisi:
+
 ```powershell
 php artisan migrate:fresh
 ```
 
 ### F2 — Model (relasi Eloquent + $fillable)
+
 ```
 Fase sekarang: F2 - Model
 Isi Model PlantSpecies.php: relasi, $fillable, sesuai docs/schema.md bagian 3 dan ERD di bagian 1.
 ```
+
 Ulangi per model: `PlantSighting`, `GardenPlot`, `Planting`, `InventoryItem`, `CoinTransaction`, `ExpLog`, dan update `User.php` (tambah relasi + kolom exp/coin).
 
 ### F3 — Service Layer (business logic inti)
+
 Urutan prioritas:
+
 ```
 Fase sekarang: F3 - Service Layer
 Buat GardenService.php: logic tanam benih, rawat tanaman, cek status siap panen, proses panen.
 Rujuk docs/architecture.md bagian 3.2 dan docs/schema.md bagian 6.
 ```
+
 Lanjut: `RewardService.php` (hitung & catat EXP/Coin, rujuk schema.md §8-9), lalu `PlantScanService.php` (nanti setelah F6 Python service siap, karena butuh kontrak API-nya).
 
 ### F4 — Form Request (validasi input)
+
 ```
 Fase sekarang: F4 - Form Request
 Isi ScanRequest.php: validasi upload gambar untuk fitur scan.
 Rujuk docs/architecture.md bagian 5 (alur data scan).
 ```
+
 Lanjut: `PlantSightingRequest`, `PlantingRequest`.
 
 ### F5 — Controller & Routes
+
 ```
 Fase sekarang: F5 - Controller
 Isi ScanController.php: terima ScanRequest, panggil PlantScanService, kembalikan PlantSightingResource.
 Controller HARUS tipis sesuai rules.md §2.1 - jangan taruh logic di sini.
 Tambahkan route terkait di routes/api.php.
 ```
+
 Lanjut: `GalleryController`, `MiniGameController`, `WalletController`.
 
 ### F6 — Python AI Service
+
 ```
 Fase sekarang: F6 - AI Service
 Buat main.py di ai_service/ dengan endpoint POST /classify sesuai kontrak di docs/architecture.md bagian 4.2.
 Gunakan FastAPI, OpenCV untuk preprocessing, load model TensorFlow dari models/plant_classifier.h5.
 Service harus stateless, tidak menyentuh MySQL.
 ```
+
 Setelah ini baru kembali ke F3 untuk isi `PlantScanService.php` yang memanggil endpoint ini.
 
 ### F7 — Frontend (WebAR & MiniGame)
+
 Kerjakan satu modul per prompt, rujuk `docs/design.md`:
+
 ```
 Fase sekarang: F7 - Frontend
 Buat resources/js/modules/ar-scanner.js: inisialisasi AR.js/MindAR, capture frame, kirim ke api-client.js.
 Rujuk docs/design.md bagian 3.2 untuk alur UI Peta/Main.
 ```
+
 Lanjut modul: `api-client.js` (dibuat duluan sebelum ar-scanner.js kalau belum ada), `gallery.js`, `minigame.js`, `home.js`, lalu view Blade terkait.
 
 ### F8 — Integrasi & Testing Manual
+
 ```
 Fase sekarang: F8 - Integration Test
 Buat test manual/checklist untuk alur: sign up -> pilih role -> home -> scan -> simpan galeri -> dapat EXP/Coin.
@@ -107,24 +127,29 @@ Tidak perlu buat automated test dulu kecuali diminta - fokus checklist manual.
 ```
 
 ### F9 — Izin Lokasi & Tantangan Kompos (Migration + Model)
+
 ```
 Fase sekarang: F9 - Migration & Model Kompos
 Isi migration untuk tabel: compost_materials, compost_processes, compost_progress_logs, real_plantings.
 Rujuk docs/schema.md bagian 11-14.
 Kerjakan satu migration dulu, saya review, baru lanjut migration berikutnya.
 ```
+
 Setelah semua migration terisi, jalankan `php artisan migrate:fresh`, lalu isi Model terkait (`CompostMaterial`, `CompostProcess`, `CompostProgressLog`, `RealPlanting`) satu per satu — relasi & `$fillable` sesuai `schema.md` §11-14.
 
 ### F10 — CompostService & Endpoint Kompos
+
 ```
 Fase sekarang: F10 - CompostService
 Buat CompostService.php: mulai proses kompos, catat check-in, tandai matang, catat real planting.
 Rujuk docs/architecture.md bagian 4.5 dan bagian 5.1 (alur end-to-end).
 Panggil RewardService untuk EXP di tiap milestone.
 ```
+
 Lanjut Form Request (`CompostProcessRequest`, `CompostCheckinRequest`, `RealPlantingRequest`) dan Controller (`CompostController`), sesuai endpoint di `architecture.md` §4.5.
 
 ### F11 — Leaderboard Mingguan
+
 ```
 Fase sekarang: F11 - Leaderboard
 Isi migration & model weekly_rewards sesuai docs/schema.md bagian 15.
@@ -132,19 +157,24 @@ Buat LeaderboardService.php: hitung EXP per user dalam rentang minggu dari exp_l
 Buat Artisan command CalculateWeeklyLeaderboard sesuai docs/architecture.md bagian 4.6.
 Tambahkan endpoint GET /api/leaderboard/current dan /api/leaderboard/history.
 ```
+
 Jadwalkan command di scheduler (`routes/console.php`), rujuk `architecture.md` §4.6 untuk waktu eksekusi (Senin 00:00).
 
 ### F12 — Frontend: Izin Lokasi, Kompos, Real Planting, Leaderboard
+
 Kerjakan satu modul per prompt, rujuk `docs/design.md` §3.5-3.8:
+
 ```
 Fase sekarang: F12 - Frontend Kompos
 Buat resources/js/modules/compost.js: daftar bahan, mulai proses, form check-in, tandai matang, form real planting.
 Rujuk docs/design.md bagian 3.6 dan 3.7.
 Gunakan navigator.geolocation.getCurrentPosition HANYA saat submit check-in/real planting (bukan pelacakan berkelanjutan) - lihat rules.md bagian 4.1.
 ```
+
 Lanjut modul `leaderboard.js` dan view Blade terkait (`compost/index`, `compost/show`, `compost/plant`, `leaderboard.blade.php`).
 
 ### F13 — Integrasi & Testing Manual (update dari F8)
+
 ```
 Fase sekarang: F13 - Integration Test
 Tambahkan ke checklist manual sebelumnya:
@@ -154,6 +184,7 @@ Tambahkan ke checklist manual sebelumnya:
 ```
 
 ### F14 — Migration Kolom Verifikasi & Middleware Role
+
 ```
 Fase sekarang: F14 - Migration Verifikasi & Middleware
 1. Buat migration tambah kolom ke plant_sightings: verification_status, verified_by, verified_at.
@@ -163,9 +194,11 @@ Fase sekarang: F14 - Migration Verifikasi & Middleware
 3. Buat middleware EnsureUserIsRanger.php, daftarkan alias 'ranger' di bootstrap/app.php (Laravel 11).
    Rujuk docs/architecture.md bagian 4.7.
 ```
+
 Jalankan `php artisan migrate` setelah kedua migration terisi.
 
 ### F15 — Katalog Spesies & Kompos (Ranger)
+
 ```
 Fase sekarang: F15 - Katalog Ranger
 Buat SpeciesCatalogService.php dan SpeciesCatalogController.php: CRUD plant_species.
@@ -174,9 +207,11 @@ Rujuk docs/architecture.md bagian 4.7 - ingat, query baca TIDAK discope per user
 (katalog bersama, lihat rules.md bagian 1 poin 5).
 Tambahkan route group /api/ranger/species dengan middleware 'ranger'.
 ```
+
 Lanjut sama untuk `CompostCatalogService`/`CompostCatalogController`/`CompostMaterialRequest` di `/api/ranger/compost-materials`.
 
 ### F16 — Verifikasi Temuan (Ranger)
+
 ```
 Fase sekarang: F16 - Verifikasi
 Buat VerificationService.php: method verifySighting() dan verifyRealPlanting(),
@@ -190,16 +225,20 @@ Rujuk docs/architecture.md bagian 4.7.
 ```
 
 ### F17 — Frontend Ranger
+
 Kerjakan satu modul per prompt, rujuk `docs/design.md` §3.9-3.11:
+
 ```
 Fase sekarang: F17 - Frontend Ranger
 Buat resources/views/ranger/dashboard.blade.php dan resources/js/modules/ranger-home.js.
 Rujuk docs/design.md bagian 3.9 - style "meja arsip", 3 kartu navigasi dengan
 jumlah entri/antrean.
 ```
+
 Lanjut: `ranger/species/*` + `ranger-species.js`, `ranger/compost-materials/*` + `ranger-compost.js`, `ranger/verifications/*` + `ranger-verify.js` (rujuk §3.10-3.11).
 
 ### F18 — Pemisahan Total Akses Viewer vs Ranger (Perbaikan Wajib)
+
 ```
 Fase sekarang: F18 - Pemisahan Akses Role
 Rujuk docs/architecture.md bagian 4.8 dan docs/rules.md bagian 4 & 4.1.
@@ -225,6 +264,7 @@ saling akses.
 ```
 
 ### F19 — Migration Pembalikan Peran Scan (Wajib Duluan Sebelum yang Lain)
+
 ```
 Fase sekarang: F19 - Migration Pembalikan Scan
 Rujuk docs/schema.md bagian 4 dan 4a (sudah diupdate - PENTING baca dulu).
@@ -242,6 +282,7 @@ Jalankan php artisan migrate setelah semua migration ini dibuat.
 ```
 
 ### F20 — Backend: Pindahkan Scan ke Ranger, Buat Endpoint Catch untuk Viewer
+
 ```
 Fase sekarang: F20 - Backend Pembalikan Peran
 Rujuk docs/architecture.md bagian 5 dan 5.0a (sudah diupdate).
@@ -272,6 +313,7 @@ beserta middleware-nya - saya perlu pastikan sudah benar sebelum lanjut ke front
 ```
 
 ### F21 — Redesign Total ke "Garden Guardian" (Visual)
+
 ```
 Fase sekarang: F21 - Redesign Garden Guardian
 Baca docs/design.md bagian 1 (sudah ditulis ulang total - PENTING baca semua
@@ -301,6 +343,7 @@ semua sekaligus.
 ```
 
 ### F22 — Frontend: Restyle Peta (Catch untuk Viewer, Scan untuk Ranger) & Galeri Seedex
+
 ```
 Fase sekarang: F22 - Frontend Peta & Galeri
 Rujuk docs/design.md bagian 3.2 dan 3.3 (sudah diupdate untuk pembalikan peran).
@@ -317,6 +360,55 @@ Rujuk docs/design.md bagian 3.2 dan 3.3 (sudah diupdate untuk pembalikan peran).
 
 Setelah selesai, saya perlu screenshot dari kedua role (Viewer dan Ranger)
 di halaman Peta yang sama, untuk pastikan tombolnya benar-benar beda sesuai role.
+```
+
+### F23 — Setup Infrastruktur Bahasa (i18n)
+
+```
+Fase sekarang: F23 - Setup i18n
+Rujuk docs/architecture.md bagian 4.9 dan docs/rules.md bagian 4.2.
+
+1. Buat migration tambah kolom locale (enum 'en','id', default 'en') ke
+   tabel users. Rujuk docs/schema.md bagian 2 (sudah diupdate).
+2. Buat folder lang/en/ dan lang/id/ dengan file kosong dulu: app.php,
+   auth.php, home.php, map.php, gallery.php, minigame.php, compost.php,
+   leaderboard.php, ranger.php (isi array kosong dulu, akan diisi bertahap
+   per halaman di fase berikutnya).
+3. Buat middleware SetLocale.php sesuai urutan penentuan locale di
+   architecture.md 4.9, daftarkan sebagai middleware global di bootstrap/app.php.
+4. Buat route POST /locale/switch (validasi locale in ['en','id']), update
+   session dan users.locale jika login.
+5. Tambahkan komponen pengalih bahasa kecil (EN/ID) di layout header utama,
+   rujuk docs/design.md bagian 3.1.
+
+Setelah selesai, saya perlu tahu: apakah toggle bahasa di header sudah
+muncul dan bisa diklik (meski isi terjemahannya masih kosong di fase ini)?
+```
+
+### F24 — Isi Terjemahan Per Halaman (Kerjakan SATU FILE per prompt)
+
+```
+Fase sekarang: F24 - Terjemahan [nama halaman]
+Isi lang/en/[nama file].php dan lang/id/[nama file].php SEKALIGUS untuk
+halaman [nama halaman] - rujuk rules.md 4.2 poin 2 (key harus ada di kedua
+bahasa sekaligus).
+
+Cari SEMUA teks hardcode di file Blade/JS halaman ini, ganti dengan __()
+atau window.translations.key. Jangan sisakan satu pun teks hardcode di
+halaman ini (rules.md 4.2 poin 4).
+```
+
+Ulangi untuk tiap halaman satu-satu: Home/Beranda, Auth (login/register/pilih role), Peta, Galeri, MiniGame/Bag/Shop, Kompos, Leaderboard, Dashboard Ranger + Katalog + Verifikasi.
+
+### F25 — Audit Konsistensi Bahasa (Setelah Semua Halaman Selesai)
+
+```
+Fase sekarang: F25 - Audit i18n
+Cari di seluruh project (grep di resources/views dan resources/js) untuk
+teks yang masih terlihat seperti hardcode Bahasa Indonesia atau Inggris
+(bukan lewat __() atau window.translations). Laporkan file & baris mana
+saja yang masih hardcode, jangan langsung perbaiki dulu - saya mau lihat
+daftarnya untuk keputusan mana yang prioritas.
 ```
 
 ---

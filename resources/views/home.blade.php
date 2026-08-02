@@ -93,7 +93,7 @@
             Modul Fitur Utama
         </h2>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
             <!-- Card 1: Peta & Catch Spesies -->
             <a href="{{ route('peta') }}" class="card-gg card-gg-hover p-5 flex flex-col justify-between group">
@@ -182,37 +182,8 @@
                 </div>
             </a>
 
-            <!-- Card 4: Tantangan Kompos & Pohon Nyata -->
-            <a href="{{ url('/compost') }}" class="card-gg card-gg-hover p-5 flex flex-col justify-between group">
-                <div class="space-y-3">
-                    <div class="flex items-center justify-between">
-                        <div class="w-12 h-12 rounded-2xl bg-[#2E6DA4] text-[#FBFAF0] flex items-center justify-center shadow-xs">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-                            </svg>
-                        </div>
-                        <span class="px-2.5 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-extrabold">
-                            AKSI NYATA
-                        </span>
-                    </div>
-
-                    <h3 class="font-baloo font-bold text-lg text-[#2D4A2E] group-hover:text-[#1F3D20] transition-colors">
-                        Tantangan Kompos & Pohon
-                    </h3>
-
-                    <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed">
-                        Olah sampah organik jadi kompos matang melalui check-in foto berkala, dan kirim bukti tanam pohon nyata.
-                    </p>
-                </div>
-
-                <div class="pt-4 flex items-center justify-between text-xs font-baloo font-bold text-[#1F3D20]">
-                    <span>Mulai Kompos</span>
-                    <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
-                </div>
-            </a>
-
-            <!-- Card 5: Papan Peringkat Leaderboard -->
-            <a href="{{ url('/leaderboard') }}" class="card-gg card-gg-hover p-5 flex flex-col justify-between group">
+            <!-- Card 4: Papan Peringkat Leaderboard -->
+            <a href="{{ route('leaderboard') }}" class="card-gg card-gg-hover p-5 flex flex-col justify-between group">
                 <div class="space-y-3">
                     <div class="flex items-center justify-between">
                         <div class="w-12 h-12 rounded-2xl bg-[#7D5BA6] text-[#FBFAF0] flex items-center justify-center shadow-xs">

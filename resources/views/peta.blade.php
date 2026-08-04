@@ -27,12 +27,12 @@
     </div>
 
     <!-- Map Container Container (Responsive Full-Width & Dynamic Screen Height) -->
-    <div class="relative w-full h-[68vh] sm:h-[76vh] lg:h-[80vh] min-h-[480px] rounded-3xl overflow-hidden shadow-lg card-gg p-1 border-2 border-[#1F3D20]/15">
+    <div class="relative w-full h-[60vh] sm:h-[76vh] lg:h-[80vh] min-h-[380px] rounded-3xl overflow-hidden shadow-lg card-gg p-1 border-2 border-[#1F3D20]/15">
         <div id="leaflet-map" class="w-full h-full rounded-2xl z-0"></div>
 
         <!-- Floating Action Controls - FOR RANGER & ADMIN ROLES -->
         @if(in_array(auth()->user()->role, ['ranger', 'admin']))
-            <div class="absolute bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 px-3 py-2 bg-[#1F3D20]/90 backdrop-blur-md rounded-full border border-[#F5F4DA]/20 shadow-2xl flex items-center gap-2 sm:gap-3 max-w-[95vw] sm:max-w-none">
+            <div class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 px-3 py-1.5 bg-[#1F3D20]/90 backdrop-blur-md rounded-full border border-[#F5F4DA]/20 shadow-2xl flex items-center gap-2 sm:gap-3 max-w-[95vw] sm:max-w-none">
                 <button id="open-ar-btn" class="px-3.5 py-2 rounded-full bg-[#F5F4DA] text-[#1F3D20] font-baloo font-extrabold text-xs flex items-center gap-1.5 shadow-sm hover:bg-white transition-all cursor-pointer whitespace-nowrap active:scale-95">
                     <span>📷</span>
                     <span>{{ __('map.open_ar_camera') }}</span>

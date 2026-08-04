@@ -55,7 +55,7 @@
                 </div>
 
                 <!-- Currency Pills & Action Buttons -->
-                <div class="flex items-center gap-1.5 sm:gap-3">">
+                <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
                     @auth
                         @if(auth()->user()->isAdmin())
                             <a href="{{ route('admin.dashboard') }}" class="px-3 py-1 rounded-full bg-[#FFD700] text-[#1F3D20] font-baloo font-extrabold text-xs shadow-xs hover:bg-[#FFD700]/80">

@@ -27,7 +27,7 @@
     </div>
 
     <!-- Map Container Container (Responsive Full-Width & Dynamic Screen Height) -->
-    <div class="relative w-full h-[60vh] sm:h-[76vh] lg:h-[80vh] min-h-[380px] rounded-3xl overflow-hidden shadow-lg card-gg p-1 border-2 border-[#1F3D20]/15">
+    <div class="relative w-full h-[64vh] sm:h-[74vh] lg:h-[78vh] min-h-[420px] max-h-[780px] rounded-3xl overflow-hidden shadow-lg card-gg p-1 border-2 border-[#1F3D20]/15">
         <div id="leaflet-map" class="w-full h-full rounded-2xl z-0"></div>
 
         <!-- Floating Action Controls - FOR RANGER & ADMIN ROLES -->
@@ -258,6 +258,12 @@
                 userRole: window.USER_ROLE
             });
             await mapManager.init();
+
+            window.addEventListener('resize', () => {
+                if (mapManager && mapManager.map) {
+                    mapManager.map.invalidateSize();
+                }
+            });
         }
 
         // AR Scanner, On-Map Verification Modal & Live Form logic for Ranger & Admin

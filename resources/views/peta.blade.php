@@ -32,7 +32,7 @@
 
         <!-- Floating Action Controls - FOR RANGER & ADMIN ROLES -->
         @if(in_array(auth()->user()->role, ['ranger', 'admin']))
-            <div class="absolute bottom-8 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 px-3 py-2 bg-[#1F3D20]/90 backdrop-blur-md rounded-full border border-[#F5F4DA]/20 shadow-2xl flex items-center gap-2 sm:gap-3 max-w-[95vw] sm:max-w-none">
+            <div class="absolute bottom-20 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 px-3 py-2 bg-[#1F3D20]/90 backdrop-blur-md rounded-full border border-[#F5F4DA]/20 shadow-2xl flex items-center gap-2 sm:gap-3 max-w-[95vw] sm:max-w-none">
                 <button id="open-ar-btn" class="px-3.5 py-2 rounded-full bg-[#F5F4DA] text-[#1F3D20] font-baloo font-extrabold text-xs flex items-center gap-1.5 shadow-sm hover:bg-white transition-all cursor-pointer whitespace-nowrap active:scale-95">
                     <span>📷</span>
                     <span>{{ __('map.open_ar_camera') }}</span>
@@ -51,7 +51,7 @@
 <!-- AR Scanner Modal View (Ranger & Admin) -->
 @if(in_array(auth()->user()->role, ['ranger', 'admin']))
     <div id="ar-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-        <div class="card-gg max-w-lg w-full p-6 shadow-2xl space-y-4 relative bg-[#FBFAF0]">
+        <div class="card-gg max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 relative bg-[#FBFAF0]">
             <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
                 <div>
                     <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">{{ __('map.ar_scan_mode') }}</span>
@@ -71,10 +71,24 @@
                 </div>
             </div>
 
-            <button id="scan-trigger-btn" class="w-full btn-gg-primary py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
-                <span>{{ __('map.take_specimen_photo') }}</span>
-            </button>
+            <!-- Action Buttons: Camera & Gallery Upload -->
+            <div class="space-y-2.5">
+                <button id="scan-trigger-btn" class="w-full btn-gg-primary py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><circle cx="12" cy="13" r="3" stroke-width="2"/></svg>
+                    <span>{{ __('map.take_specimen_photo') }}</span>
+                </button>
+
+                <div class="relative flex py-0.5 items-center">
+                    <div class="flex-grow border-t border-[#1F3D20]/15"></div>
+                    <span class="shrink-0 mx-2 text-[10px] text-[#6B6B55] font-baloo font-bold uppercase">ATAU PILIH DARI GALERI HP</span>
+                    <div class="flex-grow border-t border-[#1F3D20]/15"></div>
+                </div>
+
+                <label class="w-full py-2.5 px-4 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs flex items-center justify-center gap-2 cursor-pointer hover:bg-[#d5d4b3] transition-colors border border-[#1F3D20]/20 text-center shadow-xs">
+                    <span>📁 Upload Foto dari HP / Galeri</span>
+                    <input type="file" id="gallery-file-input" accept="image/*" class="hidden">
+                </label>
+            </div>
         </div>
     </div>
 
@@ -319,10 +333,33 @@
                 const arModal = document.querySelector('#ar-modal');
                 const closeArBtn = document.querySelector('#close-ar-btn');
                 const scanTriggerBtn = document.querySelector('#scan-trigger-btn');
+                const galleryFileInput = document.querySelector('#gallery-file-input');
 
                 const scanResultModal = document.querySelector('#scan-result-modal');
                 const closeResultModalBtn = document.querySelector('#close-result-modal-btn');
                 const liveForm = document.querySelector('#ranger-live-plant-form');
+
+                if (galleryFileInput) {
+                    galleryFileInput.addEventListener('change', (e) => {
+                        const file = e.target.files && e.target.files[0];
+                        if (file) {
+                            capturedBlob = file;
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                                document.querySelector('#result-img').src = event.target.result;
+                                document.querySelector('#input-common-name').value = '';
+                                document.querySelector('#input-scientific-name').value = '';
+                                document.querySelector('#input-description').value = '';
+                                document.querySelector('#input-care-instructions').value = '';
+
+                                if (scanner) scanner.stop();
+                                arModal.classList.add('hidden');
+                                scanResultModal.classList.remove('hidden');
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
 
                 if (openArBtn) {
                     openArBtn.addEventListener('click', async () => {

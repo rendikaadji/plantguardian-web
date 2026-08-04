@@ -22,44 +22,40 @@
     <link rel="icon" type="image/jpeg" href="{{ asset('images/logo-plantGuardian.jpeg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen flex flex-col antialiased" style="background-color: #F5F4DA !important; color: #2A2A22 !important;">
-
-    <!-- Top Header Bar (Plant Guardian Design System) -->
+<body class="min-h-screen flex flex-col antialiased" style="background-color: #F5F4DA !important; color: #2A2A22 !important;">    <!-- Top Header Bar (Plant Guardian Design System) -->
     <header class="sticky top-0 z-50 border-b border-[#1F3D20]/10 shadow-xs" style="background-color: rgba(245, 244, 218, 0.95) !important; backdrop-filter: blur(8px);">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3">
-            <div class="flex items-center justify-between gap-4">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5">
+            <div class="flex items-center justify-between gap-2 sm:gap-4 flex-wrap sm:flex-nowrap">
                 
                 <!-- User Avatar & Title -->
-                <div class="flex items-center gap-3">
-                    <a href="{{ route('home') }}" class="flex items-center gap-3 group">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <a href="{{ route('home') }}" class="flex items-center gap-2 sm:gap-3 group">
                         <div class="relative">
-                            <div class="w-11 h-11 rounded-full border-2 border-[#1F3D20] bg-[#FBFAF0] flex items-center justify-center overflow-hidden shadow-xs">
+                            <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-full border-2 border-[#1F3D20] bg-[#FBFAF0] flex items-center justify-center overflow-hidden shadow-xs">
                                 <img src="{{ asset('images/logo-plantGuardian.jpeg') }}" alt="PlantGuardian Logo" class="w-full h-full object-cover">
                             </div>
                             @if(auth()->check() && auth()->user()->role !== 'ranger')
-                                <span class="absolute -bottom-1 -right-1 bg-[#1F3D20] text-[#F5F4DA] text-[9px] font-extrabold px-1.5 py-0.2 rounded-full font-baloo border border-[#F5F4DA]">
+                                <span class="absolute -bottom-1 -right-1 bg-[#1F3D20] text-[#F5F4DA] text-[8px] sm:text-[9px] font-extrabold px-1.5 py-0.2 rounded-full font-baloo border border-[#F5F4DA]">
                                     LVL {{ auth()->user()->level }}
                                 </span>
                             @endif
                         </div>
                         <div class="flex flex-col">
-                            <span class="font-baloo font-extrabold text-xl sm:text-2xl leading-none text-[#1F3D20] tracking-tight">
+                            <span class="font-baloo font-extrabold text-lg sm:text-2xl leading-none text-[#1F3D20] tracking-tight">
                                 Plant Guardian
                             </span>
-                            <span class="text-[11px] font-bold text-[#6B6B55] tracking-wide flex items-center gap-1">
+                            <span class="text-[10px] sm:text-[11px] font-bold text-[#6B6B55] tracking-wide flex items-center gap-1">
                                 {{ auth()->user()->name ?? 'Penjelajah Flora' }}
                                 @if(auth()->check() && auth()->user()->role === 'ranger')
-                                    <span class="bg-[#8B6A4C] text-[#F5F4DA] text-[9px] font-extrabold px-1.5 rounded-full uppercase">RANGER</span>
+                                    <span class="bg-[#8B6A4C] text-[#F5F4DA] text-[8px] sm:text-[9px] font-extrabold px-1.5 rounded-full uppercase">RANGER</span>
                                 @endif
                             </span>
                         </div>
                     </a>
                 </div>
 
-
-
                 <!-- Currency Pills & Action Buttons -->
-                <div class="flex items-center gap-2 sm:gap-3">
+                <div class="flex items-center gap-1.5 sm:gap-3">">
                     @auth
                         @if(auth()->user()->isAdmin())
                             <a href="{{ route('admin.dashboard') }}" class="px-3 py-1 rounded-full bg-[#FFD700] text-[#1F3D20] font-baloo font-extrabold text-xs shadow-xs hover:bg-[#FFD700]/80">

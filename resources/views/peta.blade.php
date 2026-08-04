@@ -401,8 +401,23 @@
                     });
                 }
 
+                const syncCurrentCoordinates = () => {
+                    if (mapManager && mapManager.map) {
+                        const center = mapManager.map.getCenter();
+                        currentLat = center.lat;
+                        currentLng = center.lng;
+                    }
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition(pos => {
+                            currentLat = pos.coords.latitude;
+                            currentLng = pos.coords.longitude;
+                        }, err => console.warn('Peta center fallback digunakan'));
+                    }
+                };
+
                 if (openArBtn) {
                     openArBtn.addEventListener('click', async () => {
+                        syncCurrentCoordinates();
                         arModal.classList.remove('hidden');
                         if (!scanner) {
                             scanner = new window.ArScanner({
@@ -436,13 +451,7 @@
                     scanTriggerBtn.addEventListener('click', async () => {
                         try {
                             scanTriggerBtn.disabled = true;
-                            
-                            if (navigator.geolocation) {
-                                navigator.geolocation.getCurrentPosition(pos => {
-                                    currentLat = pos.coords.latitude;
-                                    currentLng = pos.coords.longitude;
-                                }, err => console.warn('GPS default fallback used'));
-                            }
+                            syncCurrentCoordinates();
 
                             const base64Image = scanner.captureFrame();
                             capturedBlob = dataURLtoBlob(base64Image);
@@ -478,6 +487,8 @@
                         submitBtn.disabled = true;
 
                         try {
+                            syncCurrentCoordinates();
+
                             const formData = new FormData();
                             if (capturedBlob) {
                                 formData.append('image', capturedBlob, capturedBlob.name || 'live_plant.jpg');
@@ -491,15 +502,17 @@
                             formData.append('care_instructions', document.querySelector('#input-care-instructions').value);
 
                             const res = await window.apiClient.post('/scan', formData, true);
-                            const sighting = res.data || res;
+                            const sighting = res.data?.data || res.data || res;
 
-                            if (mapManager && sighting) {
-                                mapManager.addSightingMarker(sighting);
-                            }
-
-                            alert('Tumbuhan berhasil disimpan & dipublikasikan!');
+                            alert('Tumbuhan berhasil disimpan & dipublikasikan di lokasi peta saat ini!');
                             scanResultModal.classList.add('hidden');
-                            window.location.reload();
+
+                            if (mapManager) {
+                                await mapManager.refreshMarkers();
+                                if (sighting && sighting.latitude && sighting.longitude) {
+                                    mapManager.map.setView([sighting.latitude, sighting.longitude], 16);
+                                }
+                            }
                         } catch (err) {
                             alert('Gagal menyimpan tumbuhan: ' + (err.response?.data?.message || err.message));
                         } finally {

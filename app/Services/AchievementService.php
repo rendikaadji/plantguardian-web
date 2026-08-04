@@ -60,7 +60,7 @@ class AchievementService
                 'exp_reward' => 100,
                 'coin_reward' => 50,
                 'target' => 1,
-                'current' => max(1, $totalFloraExplored), // Initial milestone unlocked for new guardians
+                'current' => $totalFloraExplored,
             ],
             [
                 'code' => 'region_mapper',
@@ -69,7 +69,7 @@ class AchievementService
                 'exp_reward' => 150,
                 'coin_reward' => 75,
                 'target' => 3,
-                'current' => max(1, $totalFloraExplored),
+                'current' => $totalFloraExplored,
             ],
             [
                 'code' => 'seedex_expert',
@@ -87,7 +87,7 @@ class AchievementService
                 'exp_reward' => 150,
                 'coin_reward' => 75,
                 'target' => 1,
-                'current' => max(1, $harvestedCount), // Digital garden starter milestone
+                'current' => $harvestedCount,
             ],
             [
                 'code' => 'hydrator_master',
@@ -96,7 +96,7 @@ class AchievementService
                 'exp_reward' => 120,
                 'coin_reward' => 60,
                 'target' => 5,
-                'current' => max(1, $totalPlantings),
+                'current' => $totalPlantings,
             ],
             [
                 'code' => 'super_fertilizer',
@@ -114,7 +114,7 @@ class AchievementService
                 'exp_reward' => 200,
                 'coin_reward' => 100,
                 'target' => 1,
-                'current' => max(1, $inventoryCount),
+                'current' => $inventoryCount,
             ],
             [
                 'code' => 'rare_seed_collector',
@@ -123,7 +123,7 @@ class AchievementService
                 'exp_reward' => 220,
                 'coin_reward' => 110,
                 'target' => 1,
-                'current' => max(1, $rareSeedCount),
+                'current' => $rareSeedCount,
             ],
             [
                 'code' => 'alliance_guardian',
@@ -132,7 +132,7 @@ class AchievementService
                 'exp_reward' => 200,
                 'coin_reward' => 100,
                 'target' => 1,
-                'current' => max(1, $friendCount),
+                'current' => $friendCount,
             ],
             [
                 'code' => 'alliance_courier',

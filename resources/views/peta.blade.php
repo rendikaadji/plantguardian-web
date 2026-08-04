@@ -103,10 +103,22 @@
                 <button id="close-result-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>
             </div>
 
-            <!-- Preview Photo Captured -->
-            <div class="h-40 rounded-2xl overflow-hidden bg-[#1F3D20] relative border border-[#1F3D20]/20">
-                <img id="result-img" src="" class="w-full h-full object-cover" />
-                <span class="absolute bottom-2 left-2 bg-[#1F3D20]/80 text-[#F5F4DA] text-[10px] px-2.5 py-0.5 rounded-full font-baloo font-bold">{{ __('map.live_photo') }}</span>
+            <!-- Preview Photo Captured / File Upload Option -->
+            <div class="space-y-2">
+                <div class="h-40 rounded-2xl overflow-hidden bg-[#1F3D20] relative border border-[#1F3D20]/20 flex items-center justify-center">
+                    <img id="result-img" src="" class="w-full h-full object-cover hidden" />
+                    <div id="no-photo-placeholder" class="text-center p-3">
+                        <span class="text-3xl block mb-1">📷</span>
+                        <span class="text-xs text-[#F5F4DA] font-baloo font-bold block">Belum Ada Foto Tumbuhan</span>
+                        <span class="text-[10px] text-[#F5F4DA]/70 font-nunito block">Klik tombol di bawah untuk memilih foto dari HP</span>
+                    </div>
+                    <span id="photo-badge" class="absolute bottom-2 left-2 bg-[#1F3D20]/80 text-[#F5F4DA] text-[10px] px-2.5 py-0.5 rounded-full font-baloo font-bold hidden">{{ __('map.live_photo') }}</span>
+                </div>
+
+                <label class="w-full py-2.5 px-4 rounded-xl bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs flex items-center justify-center gap-2 cursor-pointer hover:bg-[#d5d4b3] transition-colors border border-[#1F3D20]/20 text-center shadow-xs">
+                    <span>📸 Pilih / Upload Foto Tumbuhan dari HP</span>
+                    <input type="file" id="direct-modal-file-input" accept="image/*" class="hidden">
+                </label>
             </div>
 
             <!-- Live Form Inputs -->
@@ -338,6 +350,20 @@
                 const scanResultModal = document.querySelector('#scan-result-modal');
                 const closeResultModalBtn = document.querySelector('#close-result-modal-btn');
                 const liveForm = document.querySelector('#ranger-live-plant-form');
+                const directModalFileInput = document.querySelector('#direct-modal-file-input');
+
+                const updatePhotoPreview = (srcUrl) => {
+                    const imgEl = document.querySelector('#result-img');
+                    const placeholder = document.querySelector('#no-photo-placeholder');
+                    const badge = document.querySelector('#photo-badge');
+
+                    if (imgEl && srcUrl) {
+                        imgEl.src = srcUrl;
+                        imgEl.classList.remove('hidden');
+                    }
+                    if (placeholder) placeholder.classList.add('hidden');
+                    if (badge) badge.classList.remove('hidden');
+                };
 
                 if (galleryFileInput) {
                     galleryFileInput.addEventListener('change', (e) => {
@@ -346,7 +372,7 @@
                             capturedBlob = file;
                             const reader = new FileReader();
                             reader.onload = (event) => {
-                                document.querySelector('#result-img').src = event.target.result;
+                                updatePhotoPreview(event.target.result);
                                 document.querySelector('#input-common-name').value = '';
                                 document.querySelector('#input-scientific-name').value = '';
                                 document.querySelector('#input-description').value = '';
@@ -355,6 +381,20 @@
                                 if (scanner) scanner.stop();
                                 arModal.classList.add('hidden');
                                 scanResultModal.classList.remove('hidden');
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    });
+                }
+
+                if (directModalFileInput) {
+                    directModalFileInput.addEventListener('change', (e) => {
+                        const file = e.target.files && e.target.files[0];
+                        if (file) {
+                            capturedBlob = file;
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                                updatePhotoPreview(event.target.result);
                             };
                             reader.readAsDataURL(file);
                         }
@@ -394,7 +434,7 @@
 
                             const capturedImage = scanner.captureFrame();
                             capturedBlob = capturedImage.blob;
-                            document.querySelector('#result-img').src = capturedImage.dataUrl;
+                            updatePhotoPreview(capturedImage.dataUrl);
 
                             document.querySelector('#input-common-name').value = '';
                             document.querySelector('#input-scientific-name').value = '';
@@ -417,12 +457,18 @@
                     liveForm.addEventListener('submit', async (e) => {
                         e.preventDefault();
                         const submitBtn = document.querySelector('#save-live-plant-btn');
+
+                        if (!capturedBlob) {
+                            alert('Harap pilih atau ambil foto tumbuhan terlebih dahulu dengan menekan tombol "Pilih / Upload Foto Tumbuhan"!');
+                            return;
+                        }
+
                         submitBtn.disabled = true;
 
                         try {
                             const formData = new FormData();
                             if (capturedBlob) {
-                                formData.append('image', capturedBlob, 'live_plant.jpg');
+                                formData.append('image', capturedBlob, capturedBlob.name || 'live_plant.jpg');
                             }
                             formData.append('latitude', currentLat);
                             formData.append('longitude', currentLng);
@@ -441,6 +487,7 @@
 
                             alert('Tumbuhan berhasil disimpan & dipublikasikan!');
                             scanResultModal.classList.add('hidden');
+                            window.location.reload();
                         } catch (err) {
                             alert('Gagal menyimpan tumbuhan: ' + (err.response?.data?.message || err.message));
                         } finally {

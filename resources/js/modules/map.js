@@ -88,8 +88,12 @@ export default class MapManager {
     this.markersGroup.clearLayers();
 
     try {
-      const sightings = await window.apiClient.get('/sightings');
-      const list = Array.isArray(sightings) ? sightings : (sightings.data || []);
+      const endpoint = (this.userRole === 'ranger' || this.userRole === 'admin')
+        ? '/sightings'
+        : '/plant-sightings/nearby';
+
+      const res = await window.apiClient.get(endpoint);
+      const list = Array.isArray(res) ? res : (res.data || []);
 
       list.forEach((sighting) => {
         this.addSightingMarker(sighting);

@@ -116,18 +116,20 @@ export class MiniGameModule {
   }
 
   getSeedDetails(seedCode) {
+    const isEn = (window.translations && window.translations.title && window.translations.title.includes('Virtual Garden')) || document.documentElement.lang === 'en';
     const seedMap = {
-      'seed_sunflower': { name: 'Bunga Matahari', icon: '🌻', duration: 6, exp: 50, coin: 70, price: 50 },
-      'seed_tomato': { name: 'Tomat Organik', icon: '🍅', duration: 12, exp: 90, coin: 110, price: 75 },
-      'seed_monstera': { name: 'Monstera Deliciosa', icon: '🌿', duration: 21, exp: 160, coin: 180, price: 120 },
-      'seed_orchid': { name: 'Anggrek Hitam', icon: '🪻', duration: 36, exp: 300, coin: 310, price: 200 },
-      'SEED_DEFAULT': { name: 'Bunga Matahari', icon: '🌻', duration: 6, exp: 50, coin: 70, price: 50 },
+      'seed_sunflower': { name: isEn ? 'Sunflower' : 'Bunga Matahari', icon: '🌻', duration: 6, exp: 50, coin: 70, price: 50 },
+      'seed_tomato': { name: isEn ? 'Organic Tomato' : 'Tomat Organik', icon: '🍅', duration: 12, exp: 90, coin: 110, price: 75 },
+      'seed_monstera': { name: isEn ? 'Monstera Deliciosa' : 'Monstera Deliciosa', icon: '🌿', duration: 21, exp: 160, coin: 180, price: 120 },
+      'seed_orchid': { name: isEn ? 'Black Orchid' : 'Anggrek Hitam', icon: '🪻', duration: 36, exp: 300, coin: 310, price: 200 },
+      'SEED_DEFAULT': { name: isEn ? 'Sunflower' : 'Bunga Matahari', icon: '🌻', duration: 6, exp: 50, coin: 70, price: 50 },
     };
-    return seedMap[seedCode] || { name: 'Benih Spesies', icon: '🌱', duration: 6, exp: 50, coin: 70, price: 50 };
+    return seedMap[seedCode] || { name: isEn ? 'Species Seed' : 'Benih Spesies', icon: '🌱', duration: 6, exp: 50, coin: 70, price: 50 };
   }
 
   formatTimeRemaining(seconds) {
-    if (seconds <= 0) return 'Siap panen!';
+    const isEn = (window.translations && window.translations.title && window.translations.title.includes('Virtual Garden')) || document.documentElement.lang === 'en';
+    if (seconds <= 0) return isEn ? 'Ready to harvest!' : 'Siap panen!';
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     if (mins > 0) {

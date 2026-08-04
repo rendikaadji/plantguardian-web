@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\CompostController;
 use App\Http\Controllers\Api\DailyMissionController;
 use App\Http\Controllers\Api\DiscoveryController;
 use App\Http\Controllers\Api\GalleryController;
@@ -8,13 +7,12 @@ use App\Http\Controllers\Api\LeaderboardController;
 use App\Http\Controllers\Api\MapController;
 use App\Http\Controllers\Api\MiniGameController;
 use App\Http\Controllers\Api\ScanController;
+use App\Http\Controllers\Api\ShopController;
 use App\Http\Controllers\Api\WalletController;
 use App\Http\Controllers\Ranger\SpeciesCatalogController;
 use App\Http\Controllers\Ranger\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
-use App\Http\Controllers\Api\ShopController;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
@@ -25,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
 // Viewer Protected API Routes (Protected by 'viewer' middleware)
 Route::middleware(['auth:sanctum,web', 'viewer'])->group(function () {
     Route::post('/plant-discoveries', [DiscoveryController::class, 'store']);
+    Route::post('/map/sightings/{id}/claim', [DiscoveryController::class, 'claimFromMap']);
     Route::get('/plant-sightings/nearby', [MapController::class, 'nearby']);
 
     // Gallery Routes
@@ -43,15 +42,6 @@ Route::middleware(['auth:sanctum,web', 'viewer'])->group(function () {
     // Shop Routes
     Route::get('/shop', [ShopController::class, 'index']);
     Route::post('/shop/buy', [ShopController::class, 'buy']);
-
-    // Compost Challenge & Real Planting Routes
-    Route::get('/compost-materials', [CompostController::class, 'materials']);
-    Route::get('/compost-processes', [CompostController::class, 'processes']);
-    Route::get('/compost-processes/{id}', [CompostController::class, 'showProcess']);
-    Route::post('/compost-processes', [CompostController::class, 'startProcess']);
-    Route::post('/compost-processes/{id}/checkin', [CompostController::class, 'checkin']);
-    Route::post('/compost-processes/{id}/mature', [CompostController::class, 'mature']);
-    Route::post('/real-plantings', [CompostController::class, 'storeRealPlanting']);
 
     // Wallet Routes
     Route::get('/wallet/balance', [WalletController::class, 'balance']);
@@ -73,10 +63,8 @@ Route::middleware(['auth:sanctum,web', 'ranger'])->group(function () {
 
     Route::prefix('ranger')->group(function () {
         Route::apiResource('/species', SpeciesCatalogController::class);
-        Route::apiResource('/compost-materials', \App\Http\Controllers\Ranger\CompostCatalogController::class);
         Route::apiResource('/sightings', \App\Http\Controllers\Ranger\SightingController::class);
         Route::get('/verifications/pending', [VerificationController::class, 'pending']);
         Route::post('/verifications/sightings/{id}', [VerificationController::class, 'verifySighting']);
-        Route::post('/verifications/real-plantings/{id}', [VerificationController::class, 'verifyRealPlanting']);
     });
 });

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('common_name');
             $table->string('scientific_name')->nullable();
             $table->text('description');
+            $table->text('care_instructions')->nullable();
+            $table->string('category')->nullable();
             $table->string('conservation_status')->nullable();
             $table->string('reference_image_path')->nullable();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');

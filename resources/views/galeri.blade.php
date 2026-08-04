@@ -1,32 +1,50 @@
 @extends('layouts.app')
 
-@section('title', 'Seedex — Koleksi Tumbuhan & Benih')
+@php
+    $isRangerOrAdmin = auth()->user() && in_array(auth()->user()->role, ['ranger', 'admin']);
+@endphp
+
+@section('title', $isRangerOrAdmin ? __('gallery.ranger_title') : __('gallery.title'))
+
+@push('scripts')
+<script>
+    window.translations = Object.assign(window.translations || {}, @json(__('gallery')));
+</script>
+@endpush
 
 @section('content')
 <div class="space-y-6">
     <!-- Top Header -->
     <div class="flex items-center justify-between gap-3">
         <div>
-            <span class="text-xs font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">HERBARIUM DIGITAL</span>
-            <h1 class="font-baloo font-extrabold text-2xl sm:text-3xl text-[#1F3D20]">Koleksi Seedex</h1>
+            <span class="text-xs font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">
+                {{ $isRangerOrAdmin ? __('gallery.ranger_subheading') : __('gallery.herbarium_digital') }}
+            </span>
+            <h1 class="font-baloo font-extrabold text-2xl sm:text-3xl text-[#1F3D20]">
+                {{ $isRangerOrAdmin ? __('gallery.ranger_heading') : __('gallery.heading') }}
+            </h1>
         </div>
         <div class="flex items-center gap-2">
             <!-- Achievement Button inside Plants Menu -->
-            <button id="open-achievement-modal-btn" class="px-3.5 py-1.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] hover:bg-[#2D4A2E] font-baloo font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs">
+            <a href="{{ route('achievement') }}" class="px-3.5 py-1.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] hover:bg-[#2D4A2E] font-baloo font-bold text-xs flex items-center gap-1.5 transition-colors cursor-pointer shadow-xs">
                 <span>🏆</span>
                 <span>Achievement</span>
-            </button>
+            </a>
             <div class="hidden sm:block px-3 py-1 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-extrabold text-xs">
-                SEEDEX ALBUM
+                {{ $isRangerOrAdmin ? __('gallery.ranger_badge') : __('gallery.seedex_album') }}
             </div>
         </div>
     </div>
 
-    <!-- Seedex Progress Bar Card Signature -->
+    <!-- Seedex / Ranger Progress Bar Card Signature -->
     <div class="card-gg p-5 space-y-3">
         <div class="flex items-center justify-between font-baloo font-bold text-sm text-[#1F3D20]">
-            <span id="seedex-progress-text">0 / 0 Seedex Ditemukan</span>
-            <span class="text-xs text-[#6B6B55]">Koleksi Kamu</span>
+            <span id="seedex-progress-text">
+                0 {{ $isRangerOrAdmin ? __('gallery.ranger_uploaded') : ('/ 0 ' . __('gallery.discovered')) }}
+            </span>
+            <span class="text-xs text-[#6B6B55]">
+                {{ $isRangerOrAdmin ? __('gallery.ranger_your_uploads') : __('gallery.your_collection') }}
+            </span>
         </div>
 
         <div class="progress-bar-gg">
@@ -49,8 +67,8 @@
                     🏆
                 </div>
                 <div>
-                    <h3 class="font-baloo font-extrabold text-2xl text-[#1F3D20]">Achievement Viewer</h3>
-                    <p class="font-nunito text-xs text-[#6B6B55]">Koleksi lencana dan pencapaian eksplorasi floramu.</p>
+                    <h3 class="font-baloo font-extrabold text-2xl text-[#1F3D20]">{{ __('gallery.achievement_title') }}</h3>
+                    <p class="font-nunito text-xs text-[#6B6B55]">{{ __('gallery.achievement_subtitle') }}</p>
                 </div>
             </div>
             <button id="achievement-modal-close-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>

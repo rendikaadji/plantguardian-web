@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
-@yield('title', 'Leaderboard Mingguan — Plant Guardian')
+@section('title', __('leaderboard.title'))
+
+@push('scripts')
+<script>
+    window.translations = Object.assign(window.translations || {}, @json(__('leaderboard')));
+</script>
+@endpush
 
 @section('content')
 <div class="space-y-6 max-w-4xl mx-auto">

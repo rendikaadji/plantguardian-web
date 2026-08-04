@@ -51,53 +51,55 @@ class GardenService
      */
     public static function getSeedConfig(string $seedCode): array
     {
+        $isEn = app()->getLocale() === 'en';
+
         $seeds = [
             'seed_sunflower' => [
-                'name' => 'Benih Bunga Matahari',
+                'name' => $isEn ? 'Sunflower Seed' : 'Benih Bunga Matahari',
                 'price' => 50,
                 'growth_duration_minutes' => 6,
                 'exp_reward' => 50,
                 'coin_reward' => 70,
                 'icon' => '🌻',
-                'description' => 'Benih bunga matahari hias berkualitas tinggi.',
+                'description' => $isEn ? 'High quality ornamental sunflower seed.' : 'Benih bunga matahari hias berkualitas tinggi.',
             ],
             'seed_tomato' => [
-                'name' => 'Benih Tomat Organik',
+                'name' => $isEn ? 'Organic Tomato Seed' : 'Benih Tomat Organik',
                 'price' => 75,
                 'growth_duration_minutes' => 12,
                 'exp_reward' => 90,
                 'coin_reward' => 110,
                 'icon' => '🍅',
-                'description' => 'Benih buah tomat cepat tumbuh dan manis.',
+                'description' => $isEn ? 'Fast-growing sweet organic tomato seed.' : 'Benih buah tomat cepat tumbuh dan manis.',
             ],
             'seed_monstera' => [
-                'name' => 'Benih Monstera Deliciosa',
+                'name' => $isEn ? 'Monstera Deliciosa Seed' : 'Benih Monstera Deliciosa',
                 'price' => 120,
                 'growth_duration_minutes' => 21,
                 'exp_reward' => 160,
                 'coin_reward' => 180,
                 'icon' => '🌿',
-                'description' => 'Benih tanaman hias indoor eksotis favorit.',
+                'description' => $isEn ? 'Exotic favorite indoor ornamental plant seed.' : 'Benih tanaman hias indoor eksotis favorit.',
             ],
             'seed_orchid' => [
-                'name' => 'Benih Anggrek Hitam',
+                'name' => $isEn ? 'Black Orchid Seed' : 'Benih Anggrek Hitam',
                 'price' => 200,
                 'growth_duration_minutes' => 36,
                 'exp_reward' => 300,
                 'coin_reward' => 310,
                 'icon' => '🪻',
-                'description' => 'Benih anggrek langka bernilai tinggi.',
+                'description' => $isEn ? 'Rare high-value black orchid seed.' : 'Benih anggrek langka bernilai tinggi.',
             ],
         ];
 
         return $seeds[$seedCode] ?? [
-            'name' => 'Benih Spesies',
+            'name' => $isEn ? 'Species Seed' : 'Benih Spesies',
             'price' => 50,
             'growth_duration_minutes' => 6,
             'exp_reward' => 50,
             'coin_reward' => 70,
             'icon' => '🌱',
-            'description' => 'Benih standar.',
+            'description' => $isEn ? 'Standard plant seed.' : 'Benih standar.',
         ];
     }
 

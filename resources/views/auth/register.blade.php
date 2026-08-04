@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Daftar Akun Baru — PlantGuardian</title>
+    <title>{{ __('auth.register_title') }}</title>
 
     <!-- Google Fonts: Fraunces, Public Sans, IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22,25 +22,41 @@
         <div class="p-8 sm:p-10 rounded-sm relative" style="background-color: #EDE6D3 !important; border: 2px dashed rgba(156, 102, 68, 0.4) !important;">
             
             <!-- Brand Logo & Sub-header -->
-            <div class="flex items-center gap-3 mb-6">
-                <img src="{{ asset('images/logo-plantGuardian.jpeg') }}" alt="PlantGuardian Logo" class="w-10 h-10 rounded-xs object-cover border border-[#2A2823] shadow-xs">
-                <div class="flex flex-col">
-                    <span class="font-serif-headline font-bold text-xl leading-none" style="font-family: 'Fraunces', Georgia, serif !important; color: #2F4A3C !important;">
-                        PlantGuardian
-                    </span>
-                    <span class="font-mono-code text-[10px] uppercase tracking-widest pt-0.5" style="font-family: 'IBM Plex Mono', monospace !important; color: #5C574C !important;">
-                        HERBARIUM & FIELD JOURNAL
-                    </span>
+            <div class="flex items-center justify-between mb-6">
+                <div class="flex items-center gap-3">
+                    <img src="{{ asset('images/logo-plantGuardian.jpeg') }}" alt="PlantGuardian Logo" class="w-10 h-10 rounded-xs object-cover border border-[#2A2823] shadow-xs">
+                    <div class="flex flex-col">
+                        <span class="font-serif-headline font-bold text-xl leading-none" style="font-family: 'Fraunces', Georgia, serif !important; color: #2F4A3C !important;">
+                            PlantGuardian
+                        </span>
+                        <span class="font-mono-code text-[10px] uppercase tracking-widest pt-0.5" style="font-family: 'IBM Plex Mono', monospace !important; color: #5C574C !important;">
+                            HERBARIUM & FIELD JOURNAL
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Language Switcher Pills -->
+                <div class="flex items-center bg-[#E3DABF] p-0.5 rounded-full border border-[#2F4A3C]/20 font-mono-code text-[10px] font-bold">
+                    <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                        @csrf
+                        <input type="hidden" name="locale" value="en">
+                        <button type="submit" class="px-2 py-0.5 rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'en' ? 'bg-[#2F4A3C] text-[#EDE6D3]' : 'text-[#5C574C]' }}">EN</button>
+                    </form>
+                    <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                        @csrf
+                        <input type="hidden" name="locale" value="id">
+                        <button type="submit" class="px-2 py-0.5 rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'id' ? 'bg-[#2F4A3C] text-[#EDE6D3]' : 'text-[#5C574C]' }}">ID</button>
+                    </form>
                 </div>
             </div>
 
             <!-- Page Title & Subtitle -->
             <div class="space-y-2 mb-6">
                 <h1 class="font-serif-headline text-3xl font-bold tracking-tight" style="font-family: 'Fraunces', Georgia, serif !important; color: #2F4A3C !important;">
-                    Buat Akun Jurnal
+                    {{ __('auth.join_title') }}
                 </h1>
                 <p class="text-sm leading-relaxed" style="color: #5C574C !important;">
-                    Daftarkan dirimu untuk mulai mendokumentasikan flora dan mengumpulkan spesimen.
+                    {{ __('auth.register_subtitle') }}
                 </p>
             </div>
 
@@ -60,47 +76,47 @@
                 <!-- Name Input -->
                 <div class="space-y-1">
                     <label for="name" class="block font-mono-code text-xs font-bold uppercase tracking-wider" style="font-family: 'IBM Plex Mono', monospace !important; color: #5C574C !important;">
-                        NAMA LENGKAP
+                        {{ __('auth.name_label') }}
                     </label>
-                    <input type="text" id="name" name="name" value="{{ old('name') }}" required autofocus placeholder="Nama Anda" class="w-full px-4 py-2.5 rounded-xs border font-sans text-sm transition-colors focus:outline-none" style="background-color: #E3DABF !important; border-color: #2F4A3C !important; color: #2A2823 !important;">
+                    <input type="text" id="name" name="name" value="{{ old('name') }}" required autofocus placeholder="{{ __('auth.name_placeholder') }}" class="w-full px-4 py-2.5 rounded-xs border font-sans text-sm transition-colors focus:outline-none" style="background-color: #E3DABF !important; border-color: #2F4A3C !important; color: #2A2823 !important;">
                 </div>
 
                 <!-- Email Input -->
                 <div class="space-y-1">
                     <label for="email" class="block font-mono-code text-xs font-bold uppercase tracking-wider" style="font-family: 'IBM Plex Mono', monospace !important; color: #5C574C !important;">
-                        EMAIL
+                        {{ __('auth.email_label') }}
                     </label>
-                    <input type="email" id="email" name="email" value="{{ old('email') }}" required placeholder="nama@email.com" class="w-full px-4 py-2.5 rounded-xs border font-sans text-sm transition-colors focus:outline-none" style="background-color: #E3DABF !important; border-color: #2F4A3C !important; color: #2A2823 !important;">
+                    <input type="email" id="email" name="email" value="{{ old('email') }}" required placeholder="{{ __('auth.email_placeholder') }}" class="w-full px-4 py-2.5 rounded-xs border font-sans text-sm transition-colors focus:outline-none" style="background-color: #E3DABF !important; border-color: #2F4A3C !important; color: #2A2823 !important;">
                 </div>
 
                 <!-- Password Input -->
                 <div class="space-y-1">
                     <label for="password" class="block font-mono-code text-xs font-bold uppercase tracking-wider" style="font-family: 'IBM Plex Mono', monospace !important; color: #5C574C !important;">
-                        KATA SANDI
+                        {{ __('auth.password_label') }}
                     </label>
-                    <input type="password" id="password" name="password" required placeholder="Minimal 8 karakter" class="w-full px-4 py-2.5 rounded-xs border font-sans text-sm transition-colors focus:outline-none" style="background-color: #E3DABF !important; border-color: #2F4A3C !important; color: #2A2823 !important;">
+                    <input type="password" id="password" name="password" required placeholder="{{ __('auth.password_placeholder') }}" class="w-full px-4 py-2.5 rounded-xs border font-sans text-sm transition-colors focus:outline-none" style="background-color: #E3DABF !important; border-color: #2F4A3C !important; color: #2A2823 !important;">
                 </div>
 
                 <!-- Password Confirmation Input -->
                 <div class="space-y-1">
                     <label for="password_confirmation" class="block font-mono-code text-xs font-bold uppercase tracking-wider" style="font-family: 'IBM Plex Mono', monospace !important; color: #5C574C !important;">
-                        KONFIRMASI KATA SANDI
+                        {{ __('auth.confirm_password_label') }}
                     </label>
-                    <input type="password" id="password_confirmation" name="password_confirmation" required placeholder="Ulangi kata sandi" class="w-full px-4 py-2.5 rounded-xs border font-sans text-sm transition-colors focus:outline-none" style="background-color: #E3DABF !important; border-color: #2F4A3C !important; color: #2A2823 !important;">
+                    <input type="password" id="password_confirmation" name="password_confirmation" required placeholder="{{ __('auth.confirm_password_placeholder') }}" class="w-full px-4 py-2.5 rounded-xs border font-sans text-sm transition-colors focus:outline-none" style="background-color: #E3DABF !important; border-color: #2F4A3C !important; color: #2A2823 !important;">
                 </div>
 
                 <!-- Submit Button -->
                 <div class="pt-3">
-                    <button type="submit" class="w-full py-3.5 px-4 font-semibold text-sm rounded-xs transition-colors shadow-xs" style="background-color: #2F4A3C !important; color: #EDE6D3 !important;">
-                        Daftar & Lanjut Pilih Peran
+                    <button type="submit" class="w-full py-3.5 px-4 font-semibold text-sm rounded-xs transition-colors shadow-xs cursor-pointer" style="background-color: #2F4A3C !important; color: #EDE6D3 !important;">
+                        {{ __('auth.register_button') }}
                     </button>
                 </div>
             </form>
 
             <!-- Login Redirect Link -->
             <div class="mt-6 text-center text-sm" style="color: #5C574C !important;">
-                <span>Sudah punya akun? </span>
-                <a href="{{ route('login') }}" class="font-bold underline" style="color: #2F4A3C !important;">Masuk ke Jurnal</a>
+                <span>{{ __('auth.already_have_account') }} </span>
+                <a href="{{ route('login') }}" class="font-bold underline" style="color: #2F4A3C !important;">{{ __('auth.login_now') }}</a>
             </div>
 
             <!-- Footer Metadata -->

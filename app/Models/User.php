@@ -22,6 +22,7 @@ class User extends Authenticatable
         'role',
         'exp',
         'coin',
+        'locale',
     ];
 
     protected $hidden = [
@@ -68,6 +69,14 @@ class User extends Authenticatable
         if ($exp < 23000) return 9;
 
         return 10 + (int) floor(($exp - 23000) / 5000);
+    }
+
+    /**
+     * Check if user is an Admin.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
     }
 
     /**
@@ -132,5 +141,32 @@ class User extends Authenticatable
     public function expLogs(): HasMany
     {
         return $this->hasMany(ExpLog::class);
+    }
+
+    /**
+     * Friendships initiated by this user.
+     */
+    public function friendships(): HasMany
+    {
+        return $this->hasMany(Friendship::class, 'user_id');
+    }
+
+    /**
+     * Friendships targeting this user.
+     */
+    public function friendOf(): HasMany
+    {
+        return $this->hasMany(Friendship::class, 'friend_id');
+    }
+
+    /**
+     * Get list of accepted User models for this user.
+     */
+    public function getFriendsAttribute()
+    {
+        $sentFriendIds = Friendship::where('user_id', $this->id)->where('status', 'accepted')->pluck('friend_id');
+        $receivedFriendIds = Friendship::where('friend_id', $this->id)->where('status', 'accepted')->pluck('user_id');
+
+        return User::whereIn('id', $sentFriendIds->merge($receivedFriendIds))->get();
     }
 }

@@ -15,7 +15,7 @@ class EnsureUserIsViewer
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user() || ! in_array($request->user()->role, ['viewer', 'ranger'])) {
+        if (! $request->user() || ! in_array($request->user()->role, ['viewer', 'ranger', 'admin'])) {
             if ($request->expectsJson() || $request->is('api/*')) {
                 return response()->json([
                     'message' => 'Akses ditolak. Endpoint ini memerlukan role terautentikasi.',

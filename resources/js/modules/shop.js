@@ -111,42 +111,20 @@ export class ShopModule {
   }
 
   renderCategoryFilters() {
-    const categories = [
-      { id: 'all', label: 'Semua Item', icon: '🛒' },
-      { id: 'seed', label: 'Benih Flora', icon: '🌱' },
-      { id: 'tool', label: 'Alat Kebun', icon: '🛠️' },
-    ];
-
-    const filterContainer = document.querySelector('#shop-categories');
-    if (!filterContainer) return;
-
-    filterContainer.innerHTML = categories.map(cat => {
-      const isActive = this.activeCategory === cat.id;
-      return `
-        <button data-category="${cat.id}" class="px-4 py-2 rounded-full font-baloo font-bold text-xs sm:text-sm transition-all cursor-pointer ${
-          isActive 
-            ? 'bg-[#1F3D20] text-[#F5F4DA] shadow-xs' 
-            : 'bg-[#E7E6BE] text-[#1F3D20] hover:bg-[#1F3D20]/10'
-        }">
-          <span class="mr-1.5">${cat.icon}</span>${cat.label}
-        </button>
-      `;
-    }).join('');
+    // Categories filter removed per user requirement
   }
 
   renderItems() {
     const itemsGrid = document.querySelector('#shop-items-grid');
     if (!itemsGrid) return;
 
-    const filteredItems = this.catalog.filter(item => {
-      if (this.activeCategory === 'all') return true;
-      return item.item_type === this.activeCategory;
-    });
+    const filteredItems = this.catalog;
 
     if (filteredItems.length === 0) {
+      const t = window.translations || {};
       itemsGrid.innerHTML = `
         <div class="col-span-full text-center py-12 text-[#6B6B55]">
-          <p class="font-baloo font-bold text-base">Tidak ada item di kategori ini.</p>
+          <p class="font-baloo font-bold text-base">${t.out_of_stock || 'Stok Habis'}</p>
         </div>
       `;
       return;

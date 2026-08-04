@@ -39,6 +39,7 @@ class ShopControllerTest extends TestCase
         $viewer = User::factory()->create([
             'role' => 'viewer',
             'coin' => 100,
+            'locale' => 'id',
         ]);
 
         $response = $this->actingAs($viewer)

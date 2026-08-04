@@ -10,7 +10,7 @@ class RoleAccessProtectionTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_user_without_role_redirects_to_onboarding_pilih_role_on_login(): void
+    public function test_user_without_role_is_assigned_viewer_and_redirected_to_home_on_login(): void
     {
         $user = User::factory()->create([
             'email' => 'norole@plantguardian.id',
@@ -23,7 +23,28 @@ class RoleAccessProtectionTest extends TestCase
             'password' => 'password123',
         ]);
 
-        $response->assertRedirect(route('onboarding.pilih-role'));
+        $response->assertRedirect(route('home'));
+        $this->assertDatabaseHas('users', [
+            'id' => $user->id,
+            'role' => 'viewer',
+        ]);
+    }
+
+    public function test_user_registration_automatically_assigns_viewer_role(): void
+    {
+        $response = $this->post('/register', [
+            'name' => 'Pengguna Baru',
+            'email' => 'penggunabaru@plantguardian.id',
+            'password' => 'password123',
+            'password_confirmation' => 'password123',
+        ]);
+
+        $response->assertRedirect(route('onboarding.tutorial-viewer'));
+
+        $this->assertDatabaseHas('users', [
+            'email' => 'penggunabaru@plantguardian.id',
+            'role' => 'viewer',
+        ]);
     }
 
     public function test_user_with_ranger_role_visiting_pilih_role_is_redirected_to_ranger_dashboard(): void

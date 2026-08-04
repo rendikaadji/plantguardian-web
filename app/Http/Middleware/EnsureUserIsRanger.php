@@ -10,12 +10,13 @@ class EnsureUserIsRanger
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * Allows both Ranger and Admin roles to access Ranger resources.
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! $request->user() || $request->user()->role !== 'ranger') {
+        $user = $request->user();
+
+        if (! $user || ! in_array($user->role, ['ranger', 'admin'])) {
             if ($request->expectsJson() || $request->is('api/*')) {
                 return response()->json([
                     'message' => 'Akses ditolak. Halaman atau endpoint ini khusus untuk pengguna ber-role Ranger.',

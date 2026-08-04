@@ -1,6 +1,6 @@
 /**
  * Home Module (Navigation Hub, Wallet Balance & Daily Mission Display)
- * Rujuk docs/architecture.md §2.2 & docs/design.md §3.1
+ * Rujuk docs/architecture.md §2.2, §4.9 & docs/design.md §3.1
  */
 
 import apiClient from '../api-client.js';
@@ -14,6 +14,13 @@ export class HomeModule {
     this.missionProgressBar = document.querySelector('#daily-mission-progress-bar');
     this.missionProgressText = document.querySelector('#daily-mission-progress-text');
     this.missionActionElement = document.querySelector('#daily-mission-action');
+  }
+
+  /**
+   * Helper getter for current locale translations object
+   */
+  get t() {
+    return window.translations || {};
   }
 
   /**
@@ -59,6 +66,7 @@ export class HomeModule {
    */
   renderDailyMission(data) {
     const { current_count, target_count, percentage, is_completed, is_claimed, reward } = data;
+    const t = this.t;
 
     if (this.missionCountElement) {
       this.missionCountElement.textContent = `${current_count} / ${target_count}`;
@@ -69,24 +77,29 @@ export class HomeModule {
     }
 
     if (this.missionProgressText) {
-      this.missionProgressText.textContent = `Progress: ${percentage}% • Resets 00:00`;
+      const progressLabel = t.progress || 'Progress';
+      this.missionProgressText.textContent = `${progressLabel}: ${percentage}% • Resets 00:00`;
     }
 
     if (this.missionActionElement) {
       if (is_claimed) {
+        const completedText = t.mission_completed_claimed || 'Misi Harian Selesai & Hadiah Diklaim Hari Ini';
+        const autoResetText = t.auto_reset_tomorrow || 'Teriset otomatis besok';
         this.missionActionElement.innerHTML = `
           <div class="flex items-center justify-between p-2.5 rounded-xl bg-[#E2E1C4]/40 border border-[#1F3D20]/10">
             <span class="text-xs font-baloo font-bold text-[#1F3D20] flex items-center gap-1.5">
-              <span>✅</span> Misi Harian Selesai & Hadiah Diklaim Hari Ini
+              <span>✅</span> ${completedText}
             </span>
-            <span class="text-[10px] font-baloo font-bold text-[#6B6B55]">Teriset otomatis besok</span>
+            <span class="text-[10px] font-baloo font-bold text-[#6B6B55]">${autoResetText}</span>
           </div>
         `;
       } else if (is_completed) {
+        let btnText = t.btn_claim_reward || 'Klaim Hadiah Misi (+:exp EXP & 🪙 :coin NC)';
+        btnText = btnText.replace(':exp', reward.exp).replace(':coin', reward.coin);
         this.missionActionElement.innerHTML = `
           <button id="btn-claim-daily-mission" class="w-full py-2.5 px-4 rounded-xl bg-[#1F3D20] hover:bg-[#2D4A2E] text-[#F5F4DA] font-baloo font-extrabold text-sm transition-all duration-200 shadow-md flex items-center justify-center gap-2 cursor-pointer transform hover:-translate-y-0.5">
             <span>✨</span>
-            <span>Klaim Hadiah Misi (+${reward.exp} EXP & 🪙 ${reward.coin} NC)</span>
+            <span>${btnText}</span>
           </button>
         `;
         const btnClaim = this.missionActionElement.querySelector('#btn-claim-daily-mission');
@@ -95,9 +108,11 @@ export class HomeModule {
         }
       } else {
         const remaining = target_count - current_count;
+        let hintText = t.remaining_hint || '💡 Temukan :count marker tumbuhan lagi hari ini di Peta untuk mengklaim reward!';
+        hintText = hintText.replace(':count', `<span>${remaining}</span>`);
         this.missionActionElement.innerHTML = `
           <div class="text-[11px] font-baloo font-bold text-[#6B6B55] bg-[#E2E1C4]/20 p-2 rounded-lg text-center">
-            💡 Temukan <span>${remaining}</span> marker tumbuhan lagi hari ini di Peta untuk mengklaim reward!
+            ${hintText}
           </div>
         `;
       }
@@ -109,9 +124,11 @@ export class HomeModule {
    */
   async claimDailyMissionReward() {
     const btnClaim = this.missionActionElement?.querySelector('#btn-claim-daily-mission');
+    const t = this.t;
+
     if (btnClaim) {
       btnClaim.disabled = true;
-      btnClaim.innerText = 'Mengklaim...';
+      btnClaim.innerText = t.claiming || 'Mengklaim...';
     }
 
     try {
@@ -132,11 +149,13 @@ export class HomeModule {
       }
     } catch (error) {
       if (window.showToast) {
-        window.showToast(error.message || 'Gagal mengklaim hadiah misi harian.', 'error');
+        window.showToast(error.message || t.claim_failed || 'Gagal mengklaim hadiah misi harian.', 'error');
       }
       if (btnClaim) {
         btnClaim.disabled = false;
-        btnClaim.innerText = 'Klaim Hadiah Misi';
+        let btnText = t.btn_claim_reward || 'Klaim Hadiah Misi';
+        btnText = btnText.replace(':exp', 150).replace(':coin', 50);
+        btnClaim.innerText = btnText;
       }
     }
   }

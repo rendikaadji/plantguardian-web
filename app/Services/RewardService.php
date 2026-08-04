@@ -82,15 +82,24 @@ class RewardService
     }
 
     /**
-     * Convenience method to grant scan rewards (EXP + Coin).
+     * Convenience method to grant scan rewards (EXP + Coin) scaled by conservation status / rarity.
      */
-    public function grantScanReward(User $user, Model $sighting, int $expAmount = 100, int $coinAmount = 50): array
+    public function grantScanReward(User $user, Model $reference, ?string $conservationStatus = 'Common'): array
     {
-        return DB::transaction(function () use ($user, $sighting, $expAmount, $coinAmount) {
-            $expLog = $this->grantExp($user, $expAmount, 'scan_reward', $sighting);
-            $coinTx = $this->addCoin($user, $coinAmount, 'scan_reward', $sighting);
+        [$expAmount, $coinAmount] = match (strtolower((string) $conservationStatus)) {
+            'vulnerable' => [200, 100],
+            'endangered' => [350, 175],
+            'protected'  => [500, 250],
+            default      => [100, 50],
+        };
+
+        return DB::transaction(function () use ($user, $reference, $expAmount, $coinAmount) {
+            $expLog = $this->grantExp($user, $expAmount, 'scan_reward', $reference);
+            $coinTx = $this->addCoin($user, $coinAmount, 'scan_reward', $reference);
 
             return [
+                'exp_gained' => $expAmount,
+                'coin_gained' => $coinAmount,
                 'exp_log' => $expLog,
                 'coin_transaction' => $coinTx,
             ];

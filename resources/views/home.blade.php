@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Beranda — Plant Guardian')
+@section('title', __('home.title'))
 
 @section('content')
 <div class="space-y-6">
@@ -18,16 +18,16 @@
             <!-- Event Badge -->
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FBFAF0]/15 text-[#F5F4DA] text-xs font-baloo font-bold">
                 <span class="w-2 h-2 rounded-full bg-[#D96C63] animate-pulse"></span>
-                ECO-EVENT AKTIF: SUNNY SKIES
+                {{ __('home.event_active') }}
             </div>
 
             <!-- Main Heading in Baloo 2 -->
             <h1 class="font-baloo font-extrabold text-3xl sm:text-4xl leading-tight text-[#F5F4DA]">
-                Jaga & Temukan Keanekaragaman Tumbuhan
+                {{ __('home.hero_heading') }}
             </h1>
 
             <p class="text-sm font-nunito leading-relaxed text-[#F5F4DA]/90">
-                Jelajahi peta temuan spesies dari Ranger, kumpulkan benih di Seedex, serta selesaikan tantangan fisik pemuatan kompos dan penanaman pohon nyata.
+                {{ __('home.hero_desc') }}
             </p>
 
             <div class="flex flex-wrap items-center gap-3 pt-2">
@@ -36,10 +36,10 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
-                    <span>Buka Peta Temuan</span>
+                    <span>{{ __('home.btn_open_map') }}</span>
                 </a>
-                <a href="{{ route('minigame') }}" class="px-5 py-2.5 rounded-full bg-[#FBFAF0]/15 text-[#F5F4DA] hover:bg-[#FBFAF0]/25 font-baloo font-bold text-sm transition-colors inline-flex items-center gap-2">
-                    <span>Koleksi Achievement</span>
+                <a href="{{ route('achievement') }}" class="px-5 py-2.5 rounded-full bg-[#FBFAF0]/15 text-[#F5F4DA] hover:bg-[#FBFAF0]/25 font-baloo font-bold text-sm transition-colors inline-flex items-center gap-2">
+                    <span>{{ __('home.btn_achievements') }}</span>
                 </a>
             </div>
         </div>
@@ -56,10 +56,10 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">MISI HARIAN</span>
-                        <span class="text-[9px] font-baloo font-bold bg-[#E2E1C4] text-[#1F3D20] px-1.5 py-0.2 rounded-full">RESETS 00:00</span>
+                        <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('home.daily_mission_badge') }}</span>
+                        <span class="text-[9px] font-baloo font-bold bg-[#E2E1C4] text-[#1F3D20] px-1.5 py-0.2 rounded-full">{{ __('home.resets_info') }}</span>
                     </div>
-                    <h3 id="daily-mission-title" class="font-baloo font-bold text-lg text-[#2D4A2E] leading-none">Penjelajah Lapangan</h3>
+                    <h3 id="daily-mission-title" class="font-baloo font-bold text-lg text-[#2D4A2E] leading-none">{{ __('home.mission_title') }}</h3>
                 </div>
             </div>
             <span id="daily-mission-count" class="px-3 py-1 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-extrabold text-xs">
@@ -68,7 +68,7 @@
         </div>
 
         <p id="daily-mission-desc" class="text-xs text-[#6B6B55] font-nunito leading-relaxed">
-            Temukan 5 marker spesies yang diverifikasi oleh Ranger di peta sekitar tempat tinggalmu hari ini.
+            {{ __('home.mission_desc') }}
         </p>
 
         <!-- Thick Progress Bar GG -->
@@ -77,8 +77,8 @@
                 <div id="daily-mission-progress-bar" class="progress-fill-gg" style="width: 0%;"></div>
             </div>
             <div class="flex items-center justify-between text-[11px] font-baloo font-bold text-[#6B6B55]">
-                <span id="daily-mission-progress-text">Progress: 0%</span>
-                <span class="text-[#1F3D20]">+150 EXP & 🪙 50 NC</span>
+                <span id="daily-mission-progress-text">{{ __('home.progress') }}: 0%</span>
+                <span class="text-[#1F3D20]">{{ __('home.reward_text') }}</span>
             </div>
         </div>
 
@@ -87,10 +87,10 @@
         </div>
     </div>
 
-    <!-- Quick Access Modules Grid (5 Core Features) -->
+    <!-- Quick Access Modules Grid (4 Core Features) -->
     <div class="space-y-4 pt-2">
         <h2 class="font-baloo font-extrabold text-xl text-[#2D4A2E]">
-            Modul Fitur Utama
+            {{ __('home.core_modules_title') }}
         </h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -105,21 +105,21 @@
                             </svg>
                         </div>
                         <span class="px-2.5 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-extrabold">
-                            GPS REAL
+                            {{ __('home.badge_gps_real') }}
                         </span>
                     </div>
 
                     <h3 class="font-baloo font-bold text-lg text-[#2D4A2E] group-hover:text-[#1F3D20] transition-colors">
-                        Peta Temuan & Catch
+                        {{ __('home.card_map_title') }}
                     </h3>
 
                     <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed">
-                        Cari marker tumbuhan yang telah dipindai Ranger, tap "Temukan!" untuk menambahkan ke koleksi.
+                        {{ __('home.card_map_desc') }}
                     </p>
                 </div>
 
                 <div class="pt-4 flex items-center justify-between text-xs font-baloo font-bold text-[#1F3D20]">
-                    <span>Jelajahi Peta</span>
+                    <span>{{ __('home.card_map_action') }}</span>
                     <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
                 </div>
             </a>
@@ -134,21 +134,21 @@
                             </svg>
                         </div>
                         <span class="px-2.5 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-extrabold">
-                            SEEDEX
+                            {{ __('home.badge_seedex') }}
                         </span>
                     </div>
 
                     <h3 class="font-baloo font-bold text-lg text-[#2D4A2E] group-hover:text-[#1F3D20] transition-colors">
-                        Koleksi Seedex
+                        {{ __('home.card_seedex_title') }}
                     </h3>
 
                     <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed">
-                        Lihat album koleksi benih dan tumbuhan yang sudah kamu temukan lengkap dengan rarity & deskripsinya.
+                        {{ __('home.card_seedex_desc') }}
                     </p>
                 </div>
 
                 <div class="pt-4 flex items-center justify-between text-xs font-baloo font-bold text-[#1F3D20]">
-                    <span>Buka Seedex</span>
+                    <span>{{ __('home.card_seedex_action') }}</span>
                     <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
                 </div>
             </a>
@@ -163,21 +163,21 @@
                             </svg>
                         </div>
                         <span class="px-2.5 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-extrabold">
-                            MINIGAME & SIMULASI
+                            {{ __('home.badge_minigame') }}
                         </span>
                     </div>
 
                     <h3 class="font-baloo font-bold text-lg text-[#2D4A2E] group-hover:text-[#1F3D20] transition-colors">
-                        Kebun Virtual & Mini Game
+                        {{ __('home.card_minigame_title') }}
                     </h3>
 
                     <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed">
-                        Tanam benih di lahan simulasi, siram berkala hingga siap panen, serta kumpulkan Coin & EXP.
+                        {{ __('home.card_minigame_desc') }}
                     </p>
                 </div>
 
                 <div class="pt-4 flex items-center justify-between text-xs font-baloo font-bold text-[#1F3D20]">
-                    <span>Masuk Kebun</span>
+                    <span>{{ __('home.card_minigame_action') }}</span>
                     <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
                 </div>
             </a>
@@ -192,21 +192,21 @@
                             </svg>
                         </div>
                         <span class="px-2.5 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-extrabold">
-                            RANKING
+                            {{ __('home.badge_ranking') }}
                         </span>
                     </div>
 
                     <h3 class="font-baloo font-bold text-lg text-[#2D4A2E] group-hover:text-[#1F3D20] transition-colors">
-                        Leaderboard Mingguan
+                        {{ __('home.card_leaderboard_title') }}
                     </h3>
 
                     <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed">
-                        Pantau peringkat perolehan EXP mingguanmu dibanding Guardian lainnya di papan peringkat global.
+                        {{ __('home.card_leaderboard_desc') }}
                     </p>
                 </div>
 
                 <div class="pt-4 flex items-center justify-between text-xs font-baloo font-bold text-[#1F3D20]">
-                    <span>Lihat Ranking</span>
+                    <span>{{ __('home.card_leaderboard_action') }}</span>
                     <span class="group-hover:translate-x-1 transition-transform">&rarr;</span>
                 </div>
             </a>
@@ -216,3 +216,9 @@
 
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    window.translations = Object.assign(window.translations || {}, @json(__('home')));
+</script>
+@endpush

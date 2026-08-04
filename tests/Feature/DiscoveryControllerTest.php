@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\PlantSighting;
+use App\Models\PlantSpecies;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -41,6 +42,32 @@ class DiscoveryControllerTest extends TestCase
 
         $this->assertEquals(100, $viewer->fresh()->exp);
         $this->assertEquals(50, $viewer->fresh()->coin);
+    }
+
+    public function test_rarer_plants_grant_higher_exp_and_coins(): void
+    {
+        $ranger = User::factory()->create(['role' => 'ranger']);
+        $viewer = User::factory()->create(['role' => 'viewer', 'exp' => 0, 'coin' => 0]);
+
+        $species = PlantSpecies::factory()->create([
+            'conservation_status' => 'Protected',
+        ]);
+
+        $sighting = PlantSighting::factory()->create([
+            'ranger_id' => $ranger->id,
+            'plant_species_id' => $species->id,
+            'verification_status' => 'verified',
+        ]);
+
+        $response = $this->actingAs($viewer, 'sanctum')
+            ->postJson("/api/map/sightings/{$sighting->id}/claim");
+
+        $response->assertStatus(200)
+            ->assertJsonPath('exp_gained', 500)
+            ->assertJsonPath('coin_gained', 250);
+
+        $this->assertEquals(500, $viewer->fresh()->exp);
+        $this->assertEquals(250, $viewer->fresh()->coin);
     }
 
     public function test_viewer_cannot_discover_unverified_plant_sighting(): void

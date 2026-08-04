@@ -14,7 +14,7 @@ class VerificationController extends Controller
     ) {}
 
     /**
-     * Get pending verification queue for sightings and real plantings.
+     * Get pending verification queue for sightings.
      */
     public function pending(): JsonResponse
     {
@@ -37,20 +37,6 @@ class VerificationController extends Controller
         return response()->json([
             'message' => "Hasil scan tumbuhan berhasil ditandai {$decision}.",
             'data' => $sighting,
-        ]);
-    }
-
-    /**
-     * Verify or reject a real tree planting proof item.
-     */
-    public function verifyRealPlanting(VerificationDecisionRequest $request, int $id): JsonResponse
-    {
-        $decision = $request->input('status', $request->input('decision'));
-        $realPlanting = $this->verificationService->verifyRealPlanting($request->user(), $id, $decision);
-
-        return response()->json([
-            'message' => "Bukti penanaman pohon nyata berhasil ditandai {$decision}.",
-            'data' => $realPlanting,
         ]);
     }
 }

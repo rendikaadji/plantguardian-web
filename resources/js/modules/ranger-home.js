@@ -26,19 +26,19 @@ export class RangerHome {
       }
     }
 
-    // 2. Fetch compost materials count
-    const compostEl = document.querySelector('#count-compost');
+    // 2. Fetch pending verifications count
+    const verificationsEl = document.querySelector('#count-verifications');
     try {
-      const compostRes = await apiClient.get('/ranger/compost-materials');
-      const compostData = compostRes.data || compostRes;
-      const compostCount = Array.isArray(compostData) ? compostData.length : 0;
-      if (compostEl) {
-        compostEl.textContent = `${compostCount} Bahan Terdaftar`;
+      const verifRes = await apiClient.get('/ranger/verifications/pending');
+      const verifData = verifRes.data || verifRes;
+      const pendingSightings = verifData.pending_sightings || [];
+      if (verificationsEl) {
+        verificationsEl.textContent = `${pendingSightings.length} Antrean Pending`;
       }
     } catch (error) {
-      console.warn('Gagal memuat statistik bahan kompos Ranger:', error.message);
-      if (compostEl) {
-        compostEl.textContent = '0 Bahan Terdaftar';
+      console.warn('Gagal memuat statistik verifikasi Ranger:', error.message);
+      if (verificationsEl) {
+        verificationsEl.textContent = '0 Antrean Pending';
       }
     }
 

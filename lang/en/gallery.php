@@ -1,0 +1,31 @@
+<?php
+
+return [
+    'title' => 'Seedex Gallery — Plant Guardian',
+    'heading' => 'Seedex — Plant Collection Album',
+    'herbarium_digital' => 'DIGITAL HERBARIUM',
+    'seedex_album' => 'SEEDEX ALBUM',
+    'your_collection' => 'Your Collection',
+
+    'ranger_title' => 'Ranger Field Journal — Plant Guardian',
+    'ranger_heading' => 'Ranger Sightings & Upload Journal',
+    'ranger_subheading' => 'RANGER SPECIMEN PORTFOLIO',
+    'ranger_badge' => 'RANGER JOURNAL',
+    'ranger_uploaded' => 'Specimens Uploaded',
+    'ranger_your_uploads' => 'Your Documentation',
+    'ranger_empty_title' => 'No Uploaded Sightings Yet',
+    'ranger_empty_subtitle' => 'Use the Digital Map or AR Camera to start documenting plant species in the field!',
+
+    'achievement_title' => 'Viewer Achievements',
+    'achievement_subtitle' => 'Collection of your badges and flora exploration milestones.',
+    'progress_title' => 'Seedex Progress',
+    'progress_count' => ':current / :total Discovered',
+    'discovered' => 'Discovered',
+    'locked' => 'Locked',
+    'modal_detail' => 'Seedex Detail',
+    'care_instructions' => 'Tree Care Instructions',
+    'edit_instructions' => 'Edit Care Instructions',
+    'save_instructions' => 'Save Instructions',
+    'instructions_updated' => 'Care instructions updated successfully!',
+    'empty_gallery' => 'No discovered flora species in your collection yet.',
+];

@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CompostProcess;
 use App\Models\Planting;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
@@ -40,8 +38,6 @@ class ProfileController extends Controller
             $query->where('user_id', $user->id);
         })->where('status', 'harvested')->count();
 
-        $totalComposts = CompostProcess::where('user_id', $user->id)->count();
-
         // Dynamic badges
         $badges = [
             [
@@ -56,11 +52,11 @@ class ProfileController extends Controller
             [
                 'code' => 'soil_master',
                 'name' => 'Soil Master',
-                'count' => max(1, $totalComposts + 1),
+                'count' => max(1, $totalPlantings + 1),
                 'icon' => '🍂',
                 'color' => 'bg-[#8B6A4C]',
                 'unlocked' => true,
-                'desc' => 'Diberikan untuk pengolahan sampel kompos.',
+                'desc' => 'Diberikan untuk kesuburan media tanam.',
             ],
             [
                 'code' => 'storm_bringer',
@@ -99,7 +95,6 @@ class ProfileController extends Controller
             'rankName',
             'totalPlantings',
             'harvestedCount',
-            'totalComposts',
             'badges',
             'hydrationPercent',
             'vitalityPercent',

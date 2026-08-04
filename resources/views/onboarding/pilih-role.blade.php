@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Pilih Peranmu — PlantGuardian</title>
+    <title>{{ __('auth.role_title') }}</title>
 
     <!-- Google Fonts: Fraunces, Public Sans, IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -18,14 +18,25 @@
     <div class="w-full max-w-4xl space-y-8 py-8">
         <!-- Top Header Step Indicator -->
         <div class="text-center space-y-2">
-            <span class="font-mono-code text-xs font-semibold uppercase tracking-widest" style="font-family: 'IBM Plex Mono', monospace !important; color: #9C6644 !important;">
-                LANGKAH 1 DARI 3
-            </span>
+            <!-- Language Switcher Pills -->
+            <div class="inline-flex items-center bg-[#E3DABF] p-0.5 rounded-full border border-[#2F4A3C]/20 font-mono-code text-[10px] font-bold mb-2">
+                <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                    @csrf
+                    <input type="hidden" name="locale" value="en">
+                    <button type="submit" class="px-2 py-0.5 rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'en' ? 'bg-[#2F4A3C] text-[#EDE6D3]' : 'text-[#5C574C]' }}">EN</button>
+                </form>
+                <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                    @csrf
+                    <input type="hidden" name="locale" value="id">
+                    <button type="submit" class="px-2 py-0.5 rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'id' ? 'bg-[#2F4A3C] text-[#EDE6D3]' : 'text-[#5C574C]' }}">ID</button>
+                </form>
+            </div>
+
             <h1 class="font-serif-headline text-4xl sm:text-5xl font-bold tracking-tight" style="font-family: 'Fraunces', Georgia, serif !important; color: #2F4A3C !important;">
-                Pilih Peranmu
+                {{ __('auth.role_heading') }}
             </h1>
             <p class="text-base max-w-xl mx-auto" style="color: #5C574C !important;">
-                Setiap peran punya alur dan akses yang berbeda di PlantGuardian.
+                {{ __('auth.role_subtitle') }}
             </p>
         </div>
 
@@ -55,16 +66,16 @@
                         <!-- Title & Description -->
                         <div class="space-y-2">
                             <h3 class="font-serif-headline text-2xl sm:text-3xl font-bold" style="font-family: 'Fraunces', Georgia, serif !important; color: #2F4A3C !important;">
-                                Viewer
+                                {{ __('auth.viewer_role') }}
                             </h3>
                             <p class="text-sm leading-relaxed" style="color: #5C574C !important;">
-                                Jelajahi peta, pindai tumbuhan di sekitarmu, kumpulkan spesimen ke galeri, dan rawat kebun virtualmu.
+                                {{ __('auth.viewer_desc') }}
                             </p>
                         </div>
                     </div>
 
                     <div class="pt-8 mt-6 border-t flex items-center justify-between font-mono-code text-sm font-bold" style="border-color: rgba(156, 102, 68, 0.3) !important; color: #2F4A3C !important; font-family: 'IBM Plex Mono', monospace !important;">
-                        <span>Masuk sebagai Viewer</span>
+                        <span>{{ __('auth.save_role') }} (Viewer)</span>
                         <span>&rarr;</span>
                     </div>
                 </div>
@@ -89,16 +100,16 @@
                         <!-- Title & Description -->
                         <div class="space-y-2">
                             <h3 class="font-serif-headline text-2xl sm:text-3xl font-bold" style="font-family: 'Fraunces', Georgia, serif !important; color: #2F4A3C !important;">
-                                Ranger
+                                {{ __('auth.ranger_role') }}
                             </h3>
                             <p class="text-sm leading-relaxed" style="color: #5C574C !important;">
-                                Input dan kelola katalog data spesies yang akan dipakai Viewer saat memindai tumbuhan.
+                                {{ __('auth.ranger_desc') }}
                             </p>
                         </div>
                     </div>
 
                     <div class="pt-8 mt-6 border-t flex items-center justify-between font-mono-code text-sm font-bold" style="border-color: rgba(156, 102, 68, 0.3) !important; color: #2F4A3C !important; font-family: 'IBM Plex Mono', monospace !important;">
-                        <span>Masuk sebagai Ranger</span>
+                        <span>{{ __('auth.save_role') }} (Ranger)</span>
                         <span>&rarr;</span>
                     </div>
                 </div>

@@ -14,32 +14,33 @@ class OnboardingController extends Controller
         /** @var \App\Models\User|null $user */
         $user = Auth::user();
 
+        if ($user && $user->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+
         if ($user && $user->role === 'ranger') {
             return redirect()->route('ranger.dashboard');
         }
 
-        if ($user && $user->role === 'viewer') {
+        if ($user && (! $user->role || $user->role === 'viewer')) {
+            if (! $user->role) {
+                $user->update(['role' => 'viewer']);
+            }
             return redirect()->route('home');
         }
 
-        return view('onboarding.pilih-role');
+        return redirect()->route('home');
     }
 
     public function storeRole(Request $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'role' => ['required', 'string', 'in:viewer,ranger'],
-        ]);
-
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        $user->update(['role' => $validated['role']]);
-
-        if ($validated['role'] === 'viewer') {
-            return redirect()->route('onboarding.tutorial-viewer');
+        if (! $user->role) {
+            $user->update(['role' => 'viewer']);
         }
 
-        return redirect()->route('ranger.dashboard');
+        return redirect()->route('onboarding.tutorial-viewer');
     }
 
     public function showTutorialViewer(): View

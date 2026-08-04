@@ -116,6 +116,11 @@ export class LeaderboardManager {
 
     let html = '<div class="grid grid-cols-3 gap-2 sm:gap-4 items-end pt-4 pb-2 max-w-xl mx-auto">';
 
+    const t = window.translations || {};
+    const rank1Text = t.rank_1 || 'JUARA 1';
+    const rank2Text = t.rank_2 || 'JUARA 2';
+    const rank3Text = t.rank_3 || 'JUARA 3';
+
     // 2nd Place (Left)
     if (second) {
       html += `
@@ -128,7 +133,7 @@ export class LeaderboardManager {
           </div>
           <span class="font-baloo font-bold text-xs sm:text-sm text-[#2D4A2E] truncate max-w-full">${second.user_name}</span>
           <span class="text-[10px] font-baloo font-extrabold text-[#6B6B55] mt-0.5">${second.exp_earned} EXP</span>
-          <span class="mt-2 text-[10px] font-baloo font-extrabold px-2 py-0.5 rounded-full bg-[#C0C0C0]/20 text-[#2D4A2E]">JUARA 2</span>
+          <span class="mt-2 text-[10px] font-baloo font-extrabold px-2 py-0.5 rounded-full bg-[#C0C0C0]/20 text-[#2D4A2E]">${rank2Text}</span>
         </div>
       `;
     } else {
@@ -147,7 +152,7 @@ export class LeaderboardManager {
           </div>
           <span class="font-baloo font-extrabold text-xs sm:text-base text-[#1F3D20] truncate max-w-full">${first.user_name}</span>
           <span class="text-xs font-baloo font-extrabold text-[#D96C63] mt-0.5">${first.exp_earned} EXP</span>
-          <span class="mt-2 text-[10px] font-baloo font-extrabold px-2.5 py-0.5 rounded-full bg-[#FFD700] text-[#1F3D20] shadow-xs">🥇 JUARA 1</span>
+          <span class="mt-2 text-[10px] font-baloo font-extrabold px-2.5 py-0.5 rounded-full bg-[#FFD700] text-[#1F3D20] shadow-xs">🥇 ${rank1Text}</span>
         </div>
       `;
     } else {
@@ -166,7 +171,7 @@ export class LeaderboardManager {
           </div>
           <span class="font-baloo font-bold text-xs sm:text-sm text-[#2D4A2E] truncate max-w-full">${third.user_name}</span>
           <span class="text-[10px] font-baloo font-extrabold text-[#6B6B55] mt-0.5">${third.exp_earned} EXP</span>
-          <span class="mt-2 text-[10px] font-baloo font-extrabold px-2 py-0.5 rounded-full bg-[#CD7F32]/20 text-[#2D4A2E]">JUARA 3</span>
+          <span class="mt-2 text-[10px] font-baloo font-extrabold px-2 py-0.5 rounded-full bg-[#CD7F32]/20 text-[#2D4A2E]">${rank3Text}</span>
         </div>
       `;
     } else {

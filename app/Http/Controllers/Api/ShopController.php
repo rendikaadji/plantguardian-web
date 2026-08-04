@@ -43,26 +43,28 @@ class ShopController extends Controller
             ];
         }
 
+        $isEn = app()->getLocale() === 'en';
+
         $otherItems = [
             [
                 'item_code' => 'tool_fertilizer',
-                'name' => 'Pupuk Organik Super',
+                'name' => $isEn ? 'Super Organic Fertilizer' : 'Pupuk Organik Super',
                 'item_type' => 'tool',
                 'price' => 30,
                 'icon' => '🧪',
-                'description' => 'Mempercepat pertumbuhan tanaman di kebun.',
+                'description' => $isEn ? 'Accelerates plant growth in garden.' : 'Mempercepat pertumbuhan tanaman di kebun.',
                 'time_reduction_minutes' => 5,
-                'usage_label' => 'Potong Waktu Tumbuh 5m',
+                'usage_label' => $isEn ? 'Speedup Growth 5m' : 'Potong Waktu Tumbuh 5m',
             ],
             [
                 'item_code' => 'tool_watering_can',
-                'name' => 'Penyiram Otomatis',
+                'name' => $isEn ? 'Automatic Watering Can' : 'Penyiram Otomatis',
                 'item_type' => 'tool',
                 'price' => 100,
                 'icon' => '🚿',
-                'description' => 'Alat siram otomatis untuk memotong waktu tunggu tumbuh.',
+                'description' => $isEn ? 'Automatic watering tool to cut growth wait time.' : 'Alat siram otomatis untuk memotong waktu tunggu tumbuh.',
                 'time_reduction_minutes' => 10,
-                'usage_label' => 'Potong Waktu Tumbuh 10m',
+                'usage_label' => $isEn ? 'Speedup Growth 10m' : 'Potong Waktu Tumbuh 10m',
             ],
         ];
 

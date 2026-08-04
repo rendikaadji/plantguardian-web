@@ -26,7 +26,7 @@
                 KODE SPESIES (AI CODE) <span class="text-[#8B3A3A]">*</span>
             </label>
             <input type="text" id="species_code" name="species_code" placeholder="Contoh: MANGIFERA_INDICA" required class="w-full px-3 py-2 border border-[#5C574C]/40 rounded-xs font-mono-code text-sm uppercase focus:outline-none focus:border-[#2F4A3C]" style="font-family: 'IBM Plex Mono', monospace; background-color: #E3DABF !important;">
-            <p class="text-[10px] text-[#5C574C]">Kode ini dicocokkan otomatis oleh Python AI Service (`predicted_species_code`).</p>
+            <p class="text-[10px] text-[#5C574C]">Kode unik katalog spesies tumbuhan (contoh: MANGIFERA_INDICA).</p>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -45,26 +45,42 @@ export class GalleryModule {
   render() {
     if (!this.containerElement) return;
 
-    const totalSpecies = Math.max(this.speciesCatalog.length, 12);
+    const isRangerOrAdmin = ['ranger', 'admin'].includes(this.role);
+    const totalSpecies = isRangerOrAdmin ? this.items.length : Math.max(this.speciesCatalog.length, 12);
     const discoveredCount = this.items.length;
-    const progressPercent = Math.min(Math.round((discoveredCount / totalSpecies) * 100), 100);
+    const progressPercent = isRangerOrAdmin
+      ? (discoveredCount > 0 ? 100 : 0)
+      : Math.min(Math.round((discoveredCount / totalSpecies) * 100), 100);
 
     // Update Progress Header
     if (this.progressTextElement) {
-      this.progressTextElement.textContent = `${discoveredCount} / ${totalSpecies} Seedex Ditemukan`;
+      if (isRangerOrAdmin) {
+        const uploadedLabel = window.translations?.ranger_uploaded || 'Spesimen Di-upload';
+        this.progressTextElement.textContent = `${discoveredCount} ${uploadedLabel}`;
+      } else {
+        const discoveredLabel = window.translations?.discovered || 'Ditemukan';
+        this.progressTextElement.textContent = `${discoveredCount} / ${totalSpecies} Seedex ${discoveredLabel}`;
+      }
     }
     if (this.progressBarElement) {
       this.progressBarElement.style.width = `${progressPercent}%`;
     }
 
-    if (this.items.length === 0 && this.speciesCatalog.length === 0) {
+    if (this.items.length === 0 && (isRangerOrAdmin || this.speciesCatalog.length === 0)) {
+      const emptyTitle = isRangerOrAdmin
+        ? (window.translations?.ranger_empty_title || 'Belum Ada Temuan Di-upload')
+        : (window.translations?.empty_gallery || 'Seedex Masih Kosong');
+      const emptySubtitle = isRangerOrAdmin
+        ? (window.translations?.ranger_empty_subtitle || 'Gunakan Peta Digital atau Kamera AR untuk mulai mendokumentasikan tumbuhan di lapangan!')
+        : 'Jelajahi peta dan temukan marker spesies tumbuhan untuk mengumpulkan entri ke Seedex!';
+
       this.containerElement.innerHTML = `
         <div class="card-gg p-12 text-center space-y-4 max-w-md mx-auto">
           <div class="w-16 h-16 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center mx-auto">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
           </div>
-          <h3 class="font-baloo font-extrabold text-xl text-[#1F3D20]">Seedex Masih Kosong</h3>
-          <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed">Jelajahi peta dan temukan marker spesies tumbuhan untuk mengumpulkan entri ke Seedex!</p>
+          <h3 class="font-baloo font-extrabold text-xl text-[#1F3D20]">${emptyTitle}</h3>
+          <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed">${emptySubtitle}</p>
           <a href="/peta" class="btn-gg-primary inline-flex items-center gap-2 text-xs">Buka Peta Temuan</a>
         </div>
       `;
@@ -83,9 +99,9 @@ export class GalleryModule {
       }
     });
 
-    let cardsHtml = '';
+    let cardsHtml = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">';
 
-    // 1. Render Discovered Cards
+    // 1. Render Discovered Cards / Ranger Sightings Cards
     this.items.forEach(item => {
       const sightingObj = item.sighting || item;
       const speciesObj = sightingObj.species || item.plant_species;
@@ -114,25 +130,28 @@ export class GalleryModule {
       `;
     });
 
-    // 2. Render Locked Cards for remaining catalog items or placeholders
-    const lockedCount = Math.max(totalSpecies - discoveredCount, 4);
-    for (let i = 0; i < lockedCount; i++) {
-      cardsHtml += `
-        <div class="card-gg p-3 rounded-2xl opacity-60 bg-[#E2E1C4]/40 flex flex-col justify-between">
-          <div class="h-36 rounded-xl bg-[#E2E1C4] flex items-center justify-center text-[#6B6B55] mb-2.5">
-            <svg class="w-10 h-10 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-            </svg>
+    // 2. Render Locked Cards for remaining catalog items or placeholders ONLY for Viewers
+    if (!isRangerOrAdmin) {
+      const lockedCount = Math.max(totalSpecies - discoveredCount, 4);
+      for (let i = 0; i < lockedCount; i++) {
+        cardsHtml += `
+          <div class="card-gg p-3 rounded-2xl opacity-60 bg-[#E2E1C4]/40 flex flex-col justify-between">
+            <div class="h-36 rounded-xl bg-[#E2E1C4] flex items-center justify-center text-[#6B6B55] mb-2.5">
+              <svg class="w-10 h-10 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+              </svg>
+            </div>
+            <div>
+              <h4 class="font-baloo font-bold text-sm text-[#6B6B55]">???</h4>
+              <p class="font-nunito text-[11px] text-[#6B6B55]">Locked / Belum Ditemukan</p>
+            </div>
           </div>
-          <div>
-            <h4 class="font-baloo font-bold text-sm text-[#6B6B55]">???</h4>
-            <p class="font-nunito text-[11px] text-[#6B6B55]">Locked / Belum Ditemukan</p>
-          </div>
-        </div>
-      `;
+        `;
+      }
     }
 
-    this.containerElement.innerHTML = `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">${cardsHtml}</div>`;
+    cardsHtml += '</div>';
+    this.containerElement.innerHTML = cardsHtml;
 
     // Attach click listeners to cards
     this.containerElement.querySelectorAll('.seedex-card').forEach(card => {
@@ -210,13 +229,14 @@ export class GalleryModule {
                 if (careTextElem) {
                   careTextElem.textContent = newCareText || 'Belum ada petunjuk perawatan dari Ranger.';
                 }
+                const t = window.translations || {};
                 if (editForm) editForm.classList.add('hidden');
-                alert('✨ Petunjuk perawatan pohon berhasil diperbarui!');
+                alert(t.instructions_updated || '✨ Petunjuk perawatan pohon berhasil diperbarui!');
               } catch (err) {
                 alert('Gagal menyimpan petunjuk perawatan: ' + (err.message || 'Terjadi kesalahan'));
               } finally {
                 saveBtn.disabled = false;
-                saveBtn.textContent = 'Simpan Petunjuk';
+                saveBtn.textContent = (window.translations && window.translations.save_instructions) || 'Simpan Petunjuk';
               }
             };
           }

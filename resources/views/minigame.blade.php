@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Kebun Virtual — Mini Game — PlantGuardian')
+@section('title', __('minigame.title'))
+
+@push('scripts')
+<script>
+    window.translations = Object.assign(window.translations || {}, @json(__('minigame')));
+</script>
+@endpush
 
 @section('content')
 <div class="space-y-8">
@@ -11,15 +17,14 @@
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
                 </svg>
-                <span>Manajemen Lahan Tanam Interaktif</span>
+                <span>SIMULATION</span>
             </div>
-            <h1 class="text-3xl font-extrabold text-[#1F3D20] tracking-tight font-baloo">Kebun Virtual</h1>
-            <p class="text-xs text-[#6B6B55] mt-1 font-nunito">Tanam benih yang dibeli dari Shop, rawat, dan panen hasilnya untuk kumpulkan Coin & EXP.</p>
+            <h1 class="text-3xl font-extrabold text-[#1F3D20] tracking-tight font-baloo">{{ __('minigame.heading') }}</h1>
         </div>
 
         <a href="{{ route('shop') }}" class="btn-gg-primary text-xs py-2.5 px-4 cursor-pointer inline-flex items-center justify-center gap-2 self-start sm:self-auto shadow-xs">
             <span>🛒</span>
-            <span>Beli Benih di Shop</span>
+            <span>Shop</span>
         </a>
     </div>
 

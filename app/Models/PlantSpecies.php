@@ -9,8 +9,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class PlantSpecies extends Model
 {
-    /** @use HasFactory<\Database\Factories\PlantSpeciesFactory> */
     use HasFactory;
+
+    protected $table = 'plant_species';
 
     protected $fillable = [
         'species_code',
@@ -18,6 +19,7 @@ class PlantSpecies extends Model
         'scientific_name',
         'description',
         'care_instructions',
+        'category',
         'conservation_status',
         'reference_image_path',
         'created_by',
@@ -45,13 +47,5 @@ class PlantSpecies extends Model
     public function plantings(): HasMany
     {
         return $this->hasMany(Planting::class);
-    }
-
-    /**
-     * Real plantings using this species.
-     */
-    public function realPlantings(): HasMany
-    {
-        return $this->hasMany(RealPlanting::class);
     }
 }

@@ -5,57 +5,24 @@ namespace App\Services;
 use App\Models\PlantSighting;
 use App\Models\PlantSpecies;
 use App\Models\User;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class PlantScanService
 {
     /**
-     * Handle plant scan request by Ranger: sends image to Python AI service, matches species, and saves pending sighting.
+     * Handle plant scan request by Ranger: matches species locally and saves verified sighting.
      */
     public function scan(User $user, array $validatedData): PlantSighting
     {
         $photoPath = 'sightings/default.jpg';
-        $imageBase64 = null;
 
-        // Process uploaded image file or base64 string
+        // Process uploaded image file
         if (isset($validatedData['image']) && is_object($validatedData['image'])) {
             $file = $validatedData['image'];
             $photoPath = $file->store('sightings', 'public');
-            $imageBase64 = base64_encode(file_get_contents($file->getRealPath()));
-        } elseif (! empty($validatedData['image_base64'])) {
-            $imageBase64 = $validatedData['image_base64'];
         }
-
-        $aiUrl = config('services.ai_service.url', env('AI_SERVICE_URL', 'http://127.0.0.1:8000'));
-        $timeout = (int) config('services.ai_service.timeout', env('AI_SERVICE_TIMEOUT', 10));
 
         $matchedSpeciesId = null;
-        $confidenceScore = null;
-
-        // Call Python AI microservice POST /classify with timeout & fallback
-        if ($imageBase64) {
-            try {
-                $response = Http::timeout($timeout)->post("{$aiUrl}/classify", [
-                    'image_base64' => $imageBase64,
-                    'request_id' => (string) Str::uuid(),
-                ]);
-
-                if ($response->successful()) {
-                    $aiResult = $response->json();
-                    if (! empty($aiResult['success']) && ! empty($aiResult['predicted_species_code'])) {
-                        $confidenceScore = $aiResult['confidence'] ?? null;
-                        $species = PlantSpecies::where('species_code', $aiResult['predicted_species_code'])->first();
-                        if ($species) {
-                            $matchedSpeciesId = $species->id;
-                        }
-                    }
-                }
-            } catch (\Throwable $e) {
-                Log::warning('Gagal menghubungi AI service klasifikasi: ' . $e->getMessage());
-            }
-        }
 
         // On-the-spot plant data entry by Ranger
         if (! empty($validatedData['common_name'])) {
@@ -67,7 +34,7 @@ class PlantScanService
                     'scientific_name' => $validatedData['scientific_name'] ?? $validatedData['common_name'],
                     'conservation_status' => $validatedData['conservation_status'] ?? 'Common',
                     'description' => $validatedData['description'] ?? 'Tumbuhan hasil pemindaian lapangan oleh Ranger.',
-                    'care_instructions' => $validatedData['care_instructions'] ?? 'Penyiraman teratur dan pemupukan kompos berkala.',
+                    'care_instructions' => $validatedData['care_instructions'] ?? 'Penyiraman teratur dan perawatan berkala.',
                     'created_by' => $user->id,
                 ]
             );
@@ -84,17 +51,21 @@ class PlantScanService
             $matchedSpeciesId = $species->id;
         }
 
-        // Fallback: If species specified directly in data
+        // Fallback: If species specified directly in data or existing catalog
         if (! $matchedSpeciesId && ! empty($validatedData['plant_species_id'])) {
             $matchedSpeciesId = $validatedData['plant_species_id'];
         }
 
-        // Save sighting created by Ranger with status 'verified' (directly active for Viewers on the map)
+        if (! $matchedSpeciesId) {
+            $matchedSpeciesId = PlantSpecies::first()?->id;
+        }
+
+        // Save sighting created by Ranger with status 'verified'
         $sighting = PlantSighting::create([
             'ranger_id' => $user->id,
             'plant_species_id' => $matchedSpeciesId,
             'photo_path' => $photoPath,
-            'confidence_score' => $confidenceScore,
+            'confidence_score' => 1.0,
             'latitude' => $validatedData['latitude'] ?? null,
             'longitude' => $validatedData['longitude'] ?? null,
             'saved_to_gallery' => true,

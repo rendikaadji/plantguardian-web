@@ -58,6 +58,14 @@ class PlantSighting extends Model
     }
 
     /**
+     * Alias for plantSpecies relationship.
+     */
+    public function species(): BelongsTo
+    {
+        return $this->belongsTo(PlantSpecies::class, 'plant_species_id');
+    }
+
+    /**
      * Coin transaction audit logs linked to this sighting scan reward.
      */
     public function coinTransactions(): MorphMany

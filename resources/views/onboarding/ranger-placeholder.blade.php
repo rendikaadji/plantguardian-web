@@ -37,8 +37,8 @@
             </div>
 
             <div class="pt-2">
-                <a href="{{ route('onboarding.pilih-role') }}" class="inline-block w-full py-3 px-4 font-semibold text-xs rounded-xs transition-colors" style="background-color: #2F4A3C !important; color: #EDE6D3 !important;">
-                    &larr; Kembali ke Pemilihan Peran
+                <a href="{{ route('home') }}" class="inline-block w-full py-3 px-4 font-semibold text-xs rounded-xs transition-colors" style="background-color: #2F4A3C !important; color: #EDE6D3 !important;">
+                    &larr; Kembali ke Beranda
                 </a>
             </div>
         </div>

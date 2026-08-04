@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Shop Kebun & Benih — PlantGuardian')
+@section('title', __('shop.title'))
+
+@push('scripts')
+<script>
+    window.translations = Object.assign(window.translations || {}, @json(__('shop')));
+</script>
+@endpush
 
 @section('content')
 <div class="space-y-8">
@@ -11,10 +17,10 @@
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
                 </svg>
-                <span>Toko Resmi Plant Guardian</span>
+                <span>{{ __('shop.official_store') }}</span>
             </div>
-            <h1 class="text-3xl font-extrabold text-[#1F3D20] tracking-tight font-baloo">Shop Benih & Alat</h1>
-            <p class="text-xs text-[#6B6B55] mt-1 font-nunito">Tukarkan Coin (NC) kamu untuk membeli benih tanaman hias, pupuk, dan perlengkapan kompos.</p>
+            <h1 class="text-3xl font-extrabold text-[#1F3D20] tracking-tight font-baloo">{{ __('shop.heading') }}</h1>
+            <p class="text-xs text-[#6B6B55] mt-1 font-nunito">{{ __('shop.subtitle') }}</p>
         </div>
 
         <!-- Wallet Card Summary -->
@@ -28,17 +34,12 @@
                 </svg>
             </div>
             <div>
-                <span class="text-[11px] font-bold text-[#6B6B55] block leading-none">Saldo Coin</span>
+                <span class="text-[11px] font-bold text-[#6B6B55] block leading-none">{{ __('shop.coin_balance') }}</span>
                 <span class="font-baloo font-extrabold text-xl text-[#1F3D20]">
                     <span id="shop-user-coin">{{ auth()->user()->coin ?? 0 }}</span> <span class="text-xs font-bold text-[#6B6B55]">NC</span>
                 </span>
             </div>
         </div>
-    </div>
-
-    <!-- Category Filters -->
-    <div id="shop-categories" class="flex flex-wrap items-center gap-2">
-        <!-- Rendered dynamically by shop.js -->
     </div>
 
     <!-- Shop Container & Items Grid -->

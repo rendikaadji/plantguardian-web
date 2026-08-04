@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Models\PlantSighting;
-use App\Models\RealPlanting;
 use App\Models\User;
 use Exception;
 use Illuminate\Support\Carbon;
@@ -16,7 +15,7 @@ class VerificationService
     ) {}
 
     /**
-     * Get pending verification items (plant_sightings pending & real_plantings self_reported).
+     * Get pending verification items (plant_sightings pending).
      * Shared queue for all Rangers (architecture.md §4.7).
      */
     public function getPendingQueue(): array
@@ -26,14 +25,8 @@ class VerificationService
             ->latest()
             ->get();
 
-        $pendingPlantings = RealPlanting::with(['user:id,name,email', 'plantSpecies', 'compostProcess'])
-            ->where('verification_status', 'self_reported')
-            ->latest()
-            ->get();
-
         return [
             'pending_sightings' => $pendingSightings,
-            'pending_real_plantings' => $pendingPlantings,
         ];
     }
 
@@ -64,28 +57,6 @@ class VerificationService
             }
 
             return $sighting->fresh(['ranger', 'plantSpecies', 'verifier']);
-        });
-    }
-
-    /**
-     * Verify or reject a real tree planting proof item.
-     */
-    public function verifyRealPlanting(User $ranger, int $realPlantingId, string $decision): RealPlanting
-    {
-        if (! in_array($decision, ['verified', 'rejected'])) {
-            throw new Exception('Keputusan verifikasi tidak valid.');
-        }
-
-        return DB::transaction(function () use ($ranger, $realPlantingId, $decision) {
-            $planting = RealPlanting::findOrFail($realPlantingId);
-
-            $planting->update([
-                'verification_status' => $decision,
-                'verified_by' => $ranger->id,
-                'verified_at' => Carbon::now(),
-            ]);
-
-            return $planting->fresh(['user', 'plantSpecies', 'verifier']);
         });
     }
 }

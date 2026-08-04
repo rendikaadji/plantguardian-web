@@ -13,9 +13,26 @@ Route::middleware('guest')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
 });
 
+// Locale Switch Route (Accessible to all)
+Route::post('/locale/switch', function (\Illuminate\Http\Request $request) {
+    $validated = $request->validate([
+        'locale' => 'required|in:en,id',
+    ]);
+
+    $locale = $validated['locale'];
+    session(['locale' => $locale]);
+
+    if (auth()->check()) {
+        auth()->user()->update(['locale' => $locale]);
+    }
+
+    return redirect()->back();
+})->name('locale.switch');
+
 // Authenticated User Routes (Common / Onboarding)
+Route::match(['get', 'post'], '/logout', [AuthController::class, 'logout'])->name('logout');
+
 Route::middleware('auth')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // Onboarding Flow
     Route::get('/onboarding/pilih-role', [OnboardingController::class, 'showPilihRole'])->name('onboarding.pilih-role');
@@ -24,11 +41,27 @@ Route::middleware('auth')->group(function () {
     Route::get('/onboarding/ranger-placeholder', [OnboardingController::class, 'showRangerPlaceholder'])->name('onboarding.ranger-placeholder');
 });
 
+// Admin Control Routes (Protected by 'admin' middleware)
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users/{user}/details', [\App\Http\Controllers\AdminController::class, 'userDetails'])->name('users.details');
+    Route::post('/users/{user}/role', [\App\Http\Controllers\AdminController::class, 'updateRole'])->name('users.update-role');
+});
+
 // Viewer Web Views (Protected by 'viewer' middleware)
 Route::middleware(['auth', 'viewer'])->group(function () {
     Route::get('/', function () {
         return view('home');
     })->name('home');
+
+    // Friend & Shop Item Request/Gift Routes
+    Route::get('/api/friends', [\App\Http\Controllers\FriendController::class, 'index'])->name('friends.index');
+    Route::get('/api/friends/search', [\App\Http\Controllers\FriendController::class, 'search'])->name('friends.search');
+    Route::post('/api/friends/add', [\App\Http\Controllers\FriendController::class, 'addFriend'])->name('friends.add');
+    Route::post('/api/friends/accept', [\App\Http\Controllers\FriendController::class, 'acceptFriend'])->name('friends.accept');
+    Route::post('/api/friends/remove', [\App\Http\Controllers\FriendController::class, 'removeFriend'])->name('friends.remove');
+    Route::post('/api/friends/request-item', [\App\Http\Controllers\FriendController::class, 'requestItem'])->name('friends.request-item');
+    Route::post('/api/friends/gift-item', [\App\Http\Controllers\FriendController::class, 'giftItem'])->name('friends.gift-item');
 
     Route::get('/peta', function () {
         return view('peta');
@@ -44,6 +77,9 @@ Route::middleware(['auth', 'viewer'])->group(function () {
         return view('minigame');
     })->name('minigame');
 
+    Route::get('/achievement', [\App\Http\Controllers\Api\AchievementController::class, 'index'])->name('achievement');
+    Route::post('/api/achievements/claim', [\App\Http\Controllers\Api\AchievementController::class, 'claim'])->name('achievements.claim');
+
     Route::get('/shop', function () {
         return view('shop');
     })->name('shop');
@@ -56,7 +92,7 @@ Route::middleware(['auth', 'viewer'])->group(function () {
 // Ranger Web Views (Protected by 'ranger' middleware)
 Route::middleware(['auth', 'ranger'])->prefix('ranger')->name('ranger.')->group(function () {
     Route::get('/dashboard', function () {
-        return view('ranger.dashboard');
+        return redirect()->route('peta');
     })->name('dashboard');
 
     Route::get('/peta', function () {
@@ -75,19 +111,6 @@ Route::middleware(['auth', 'ranger'])->prefix('ranger')->name('ranger.')->group(
     Route::get('/species/{id}/edit', function ($id) {
         return view('ranger.species.form', ['speciesId' => $id]);
     })->name('species.edit');
-
-    // Compost Materials Catalog Web Views
-    Route::get('/compost-materials', function () {
-        return view('ranger.compost-materials.index');
-    })->name('compost-materials.index');
-
-    Route::get('/compost-materials/create', function () {
-        return view('ranger.compost-materials.form', ['materialId' => null]);
-    })->name('compost-materials.create');
-
-    Route::get('/compost-materials/{id}/edit', function ($id) {
-        return view('ranger.compost-materials.form', ['materialId' => $id]);
-    })->name('compost-materials.edit');
 
     // Plant Sightings Edit Web Views
     Route::get('/sightings', function () {

@@ -43,8 +43,11 @@ class DiscoveryService
                 'longitude' => $validatedData['longitude'] ?? null,
             ]);
 
-            // Reward viewer for discovering the plant sighting
-            $this->rewardService->grantScanReward($user, $discovery);
+            // Reward viewer for discovering the plant sighting (scaled by plant rarity)
+            $status = $sighting->plantSpecies ? $sighting->plantSpecies->conservation_status : 'Common';
+            $reward = $this->rewardService->grantScanReward($user, $discovery, $status);
+
+            $discovery->reward_summary = $reward;
 
             return $discovery->load(['plantSighting.plantSpecies', 'user']);
         });

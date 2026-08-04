@@ -32,8 +32,12 @@ class AuthController extends Controller
             $request->session()->regenerate();
 
             $user = Auth::user();
+            if ($user->isAdmin()) {
+                return redirect()->route('admin.dashboard');
+            }
+
             if (! $user->role) {
-                return redirect()->route('onboarding.pilih-role');
+                $user->update(['role' => 'viewer']);
             }
 
             return redirect()->route('home');
@@ -67,20 +71,23 @@ class AuthController extends Controller
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
+            'role' => 'viewer',
             'exp' => 0,
             'coin' => 0,
         ]);
 
         Auth::login($user);
 
-        return redirect()->route('onboarding.pilih-role');
+        return redirect()->route('onboarding.tutorial-viewer');
     }
 
     public function logout(Request $request): RedirectResponse
     {
         Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        if ($request->hasSession()) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
         return redirect()->route('login');
     }

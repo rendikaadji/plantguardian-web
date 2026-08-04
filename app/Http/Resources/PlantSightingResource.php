@@ -30,7 +30,9 @@ class PlantSightingResource extends JsonResource
                     'reference_image_path' => $this->plantSpecies->reference_image_path,
                 ];
             }),
-            'photo_url' => asset('storage/' . $this->photo_path),
+            'photo_url' => $this->photo_path
+                ? (str_starts_with($this->photo_path, 'http') ? $this->photo_path : asset('storage/' . ltrim($this->photo_path, '/')))
+                : null,
             'photo_path' => $this->photo_path,
             'confidence_score' => $this->confidence_score,
             'latitude' => $this->latitude,

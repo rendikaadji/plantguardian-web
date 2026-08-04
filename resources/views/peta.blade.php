@@ -420,6 +420,18 @@
                     });
                 }
 
+                const dataURLtoBlob = (dataurl) => {
+                    const arr = dataurl.split(',');
+                    const mime = arr[0].match(/:(.*?);/)[1];
+                    const bstr = atob(arr[1]);
+                    let n = bstr.length;
+                    const u8arr = new Uint8Array(n);
+                    while (n--) {
+                        u8arr[n] = bstr.charCodeAt(n);
+                    }
+                    return new Blob([u8arr], { type: mime });
+                };
+
                 if (scanTriggerBtn) {
                     scanTriggerBtn.addEventListener('click', async () => {
                         try {
@@ -432,9 +444,9 @@
                                 }, err => console.warn('GPS default fallback used'));
                             }
 
-                            const capturedImage = scanner.captureFrame();
-                            capturedBlob = capturedImage.blob;
-                            updatePhotoPreview(capturedImage.dataUrl);
+                            const base64Image = scanner.captureFrame();
+                            capturedBlob = dataURLtoBlob(base64Image);
+                            updatePhotoPreview(base64Image);
 
                             document.querySelector('#input-common-name').value = '';
                             document.querySelector('#input-scientific-name').value = '';

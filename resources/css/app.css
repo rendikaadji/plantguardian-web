@@ -49,6 +49,14 @@ html, body {
     border-color: rgba(31, 61, 32, 0.25) !important;
 }
 
+/* Leaflet Map Markers */
+.gg-map-marker {
+    background: transparent !important;
+    border: none !important;
+    width: auto !important;
+    height: auto !important;
+}
+
 /* Buttons */
 .btn-gg-primary {
     background-color: #1F3D20 !important;

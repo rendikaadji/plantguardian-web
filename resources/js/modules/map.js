@@ -118,15 +118,16 @@ export default class MapManager {
     const iconLabel = isDiscovered ? '🌿' : (isRangerOrAdmin ? '📍' : '❓');
 
     const markerHtml = `
-      <div style="background-color:#FBFAF0;border:2px solid ${iconColor};padding:4px 10px;border-radius:9999px;font-family:Baloo 2,sans-serif;font-size:11px;font-weight:bold;color:${iconColor};box-shadow:0 3px 8px rgba(0,0,0,0.15);white-space:nowrap;">
-        ${iconLabel} ${displayName}
+      <div style="background-color:#FBFAF0;border:2px solid ${iconColor};padding:4px 12px;border-radius:9999px;font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:bold;color:${iconColor};box-shadow:0 3px 8px rgba(0,0,0,0.2);white-space:nowrap;display:inline-flex;align-items:center;gap:4px;max-width:220px;">
+        <span>${iconLabel}</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;">${displayName}</span>
       </div>
     `;
 
     const customTagIcon = L.divIcon({
       className: 'gg-map-marker',
       html: markerHtml,
-      iconSize: [120, 28],
+      iconSize: null,
       iconAnchor: [60, 14],
     });
 

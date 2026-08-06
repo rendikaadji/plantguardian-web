@@ -5,6 +5,7 @@ export default class MapManager {
     this.map = null;
     this.markersGroup = null;
     this.userLocationMarker = null;
+    this.userLocationCircle = null;
     this.userLat = null;
     this.userLng = null;
     this.watchId = null;
@@ -117,6 +118,20 @@ export default class MapManager {
       this.userLocationMarker = L.marker([lat, lng], { icon: userIcon })
         .addTo(this.map)
         .bindPopup(`<b style="font-family:Baloo 2,sans-serif;">📍 ${gpsText}</b>`);
+    }
+
+    // Visual 50-meter Claim Radius Circle around user
+    if (this.userLocationCircle) {
+      this.userLocationCircle.setLatLng([lat, lng]);
+    } else {
+      this.userLocationCircle = L.circle([lat, lng], {
+        radius: 50, // 50 meters claim radius
+        color: '#1F3D20',
+        fillColor: '#1F3D20',
+        fillOpacity: 0.15,
+        weight: 2,
+        dashArray: '6, 6'
+      }).addTo(this.map).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:11px;color:#1F3D20;">🎯 Area Jangkauan Klaim Spesies (50 Meter)</b>');
     }
   }
 

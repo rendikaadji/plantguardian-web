@@ -126,7 +126,7 @@ export default class MapManager {
 
     try {
       const endpoint = (this.userRole === 'ranger' || this.userRole === 'admin')
-        ? '/sightings'
+        ? '/ranger/sightings'
         : '/plant-sightings/nearby';
 
       const queryParams = (this.userLat !== null && this.userLng !== null)

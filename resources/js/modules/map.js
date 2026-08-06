@@ -125,9 +125,7 @@ export default class MapManager {
     this.markersGroup.clearLayers();
 
     try {
-      const endpoint = (this.userRole === 'ranger' || this.userRole === 'admin')
-        ? '/ranger/sightings'
-        : '/plant-sightings/nearby';
+      const endpoint = '/plant-sightings/nearby';
 
       const queryParams = (this.userLat !== null && this.userLng !== null)
         ? `?lat=${this.userLat}&lng=${this.userLng}`

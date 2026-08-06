@@ -408,22 +408,47 @@
                 }
 
                 const syncCurrentCoordinates = () => {
-                    if (mapManager && mapManager.map) {
-                        const center = mapManager.map.getCenter();
-                        currentLat = center.lat;
-                        currentLng = center.lng;
-                    }
-                    if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(pos => {
-                            currentLat = pos.coords.latitude;
-                            currentLng = pos.coords.longitude;
-                        }, err => console.warn('Peta center fallback digunakan'));
-                    }
+                    return new Promise((resolve) => {
+                        if (mapManager && mapManager.userLat !== null && mapManager.userLng !== null) {
+                            currentLat = mapManager.userLat;
+                            currentLng = mapManager.userLng;
+                        }
+
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition(
+                                (pos) => {
+                                    currentLat = pos.coords.latitude;
+                                    currentLng = pos.coords.longitude;
+                                    if (mapManager && mapManager.addUserMarker) {
+                                        mapManager.addUserMarker(currentLat, currentLng);
+                                    }
+                                    resolve({ lat: currentLat, lng: currentLng });
+                                },
+                                (err) => {
+                                    console.warn('Gagal memperoleh GPS presisi, menggunakan fallback:', err.message);
+                                    if ((currentLat === null || currentLat === -6.2088) && mapManager && mapManager.map) {
+                                        const center = mapManager.map.getCenter();
+                                        currentLat = center.lat;
+                                        currentLng = center.lng;
+                                    }
+                                    resolve({ lat: currentLat, lng: currentLng });
+                                },
+                                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                            );
+                        } else {
+                            if ((currentLat === null || currentLat === -6.2088) && mapManager && mapManager.map) {
+                                const center = mapManager.map.getCenter();
+                                currentLat = center.lat;
+                                currentLng = center.lng;
+                            }
+                            resolve({ lat: currentLat, lng: currentLng });
+                        }
+                    });
                 };
 
                 if (openArBtn) {
                     openArBtn.addEventListener('click', async () => {
-                        syncCurrentCoordinates();
+                        await syncCurrentCoordinates();
                         arModal.classList.remove('hidden');
                         if (!scanner) {
                             scanner = new window.ArScanner({
@@ -457,7 +482,7 @@
                     scanTriggerBtn.addEventListener('click', async () => {
                         try {
                             scanTriggerBtn.disabled = true;
-                            syncCurrentCoordinates();
+                            await syncCurrentCoordinates();
 
                             const base64Image = scanner.captureFrame();
                             capturedBlob = dataURLtoBlob(base64Image);
@@ -493,7 +518,7 @@
                         submitBtn.disabled = true;
 
                         try {
-                            syncCurrentCoordinates();
+                            await syncCurrentCoordinates();
 
                             const formData = new FormData();
                             if (capturedBlob) {

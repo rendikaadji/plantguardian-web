@@ -112,4 +112,29 @@ class DiscoveryControllerTest extends TestCase
         $secondResponse->assertStatus(422)
             ->assertJsonPath('message', 'Anda sudah pernah menemukan tumbuhan ini.');
     }
+
+    public function test_viewer_cannot_claim_sighting_further_than_50_meters(): void
+    {
+        $ranger = User::factory()->create(['role' => 'ranger']);
+        $viewer = User::factory()->create(['role' => 'viewer']);
+
+        // Sighting at Monas (-6.1754, 106.8272)
+        $sighting = PlantSighting::factory()->create([
+            'ranger_id' => $ranger->id,
+            'verification_status' => 'verified',
+            'latitude' => -6.1754,
+            'longitude' => 106.8272,
+        ]);
+
+        // Viewer is ~200 meters away (-6.1772, 106.8272)
+        $response = $this->actingAs($viewer, 'sanctum')
+            ->postJson('/api/plant-discoveries', [
+                'plant_sighting_id' => $sighting->id,
+                'latitude' => -6.1772,
+                'longitude' => 106.8272,
+            ]);
+
+        $response->assertStatus(422)
+            ->assertJsonPath('message', 'Anda berada di luar jangkauan (lebih dari 50 meter) dari lokasi tumbuhan untuk mengklaim temuan ini.');
+    }
 }

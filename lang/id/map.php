@@ -59,7 +59,7 @@ return [
     'scan_new' => 'Pindai Tumbuhan Baru (AR Ranger)',
     'unclaimed_tree' => 'Pohon ini belum diklaim! Tekan tombol di bawah untuk membuka dan mengklaim.',
     'unclaimed_badge' => '🔒 Belum Diklaim',
-    'mystery_plant' => '❓ Tanaman Misterius',
+    'mystery_plant' => 'Tanaman Misterius',
     'edit_data_button' => '✏️ Edit Data Tumbuhan',
     'status_label' => 'Status',
 ];

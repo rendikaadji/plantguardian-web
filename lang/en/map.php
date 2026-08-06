@@ -59,7 +59,7 @@ return [
     'scan_new' => 'Scan New Plant (Ranger AR)',
     'unclaimed_tree' => 'This tree has not been claimed yet! Click the button below to open and claim it.',
     'unclaimed_badge' => '🔒 Unclaimed',
-    'mystery_plant' => '❓ Mysterious Plant',
+    'mystery_plant' => 'Mysterious Plant',
     'edit_data_button' => '✏️ Edit Plant Data',
     'status_label' => 'Status',
 ];

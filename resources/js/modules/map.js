@@ -1,7 +1,7 @@
 export default class MapManager {
   constructor(mapContainerId, options = {}) {
     this.mapContainerId = mapContainerId;
-    this.userRole = options.userRole || 'viewer';
+    this.userRole = (options.userRole || 'viewer').toLowerCase();
     this.map = null;
     this.markersGroup = null;
     this.userLocationMarker = null;
@@ -164,7 +164,7 @@ export default class MapManager {
     const photoUrl = sighting.photo_url || '';
     const isDiscovered = sighting.sudah_ditemukan;
 
-    const isRangerOrAdmin = this.userRole === 'ranger' || this.userRole === 'admin';
+    const isRangerOrAdmin = ['ranger', 'admin'].includes(this.userRole);
     const rawMystery = t.mystery_plant || 'Tanaman Misterius';
     const mysteryPlantName = rawMystery.replace(/^❓\s*/, '');
     const displayName = (isRangerOrAdmin || isDiscovered) ? speciesName : mysteryPlantName;

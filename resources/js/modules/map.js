@@ -11,6 +11,7 @@ export default class MapManager {
     this.lastLat = null;
     this.lastLng = null;
     this.heading = 0;
+    this.smoothedHeading = 0;
     this.isAutoFollow = true;
     this.watchId = null;
   }
@@ -88,16 +89,12 @@ export default class MapManager {
       }
 
       if (compassHeading !== null && !isNaN(compassHeading)) {
-        this.heading = compassHeading;
-        if (this.userLat && this.userLng) {
-          this.addUserMarker(this.userLat, this.userLng);
-        }
+        this.setHeading(compassHeading);
       }
     };
 
     if (window.DeviceOrientationEvent) {
       if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-        // iOS 13+ permission request
         DeviceOrientationEvent.requestPermission()
           .then(state => {
             if (state === 'granted') {
@@ -110,6 +107,41 @@ export default class MapManager {
         window.addEventListener('deviceorientation', handleOrientation, true);
       }
     }
+  }
+
+  setHeading(targetHeading) {
+    if (targetHeading == null || isNaN(targetHeading)) return;
+
+    // Smooth heading interpolation (Low-pass filter)
+    let diff = targetHeading - this.smoothedHeading;
+    while (diff < -180) diff += 360;
+    while (diff > 180) diff -= 360;
+
+    this.smoothedHeading = (this.smoothedHeading + diff * 0.3 + 360) % 360;
+    this.heading = targetHeading;
+
+    this.applyMapRotation(this.smoothedHeading);
+  }
+
+  applyMapRotation(headingDeg) {
+    if (!this.map) return;
+    const mapPane = this.map.getPane('mapPane');
+    if (!mapPane) return;
+
+    const angle = Math.round(headingDeg || 0);
+
+    // Rotate Map Canvas Pane smoothly (Heading-Up Mode)
+    mapPane.style.transformOrigin = '50% 50%';
+    mapPane.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+    mapPane.style.transform = `rotate(-${angle}deg)`;
+
+    // Counter-rotate plant markers and popups so text and labels remain 100% upright and legible
+    const items = document.querySelectorAll('.gg-map-marker, .leaflet-popup, .user-gps-icon-inner');
+    items.forEach(el => {
+      el.style.transformOrigin = 'center center';
+      el.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+      el.style.transform = `rotate(${angle}deg)`;
+    });
   }
 
   setAutoFollow(enabled) {
@@ -170,13 +202,14 @@ export default class MapManager {
       const lng = position.coords.longitude;
       const hwHeading = position.coords.heading;
 
-      // Calculate heading direction if user is walking
+      // Calculate walking direction heading
       if (hwHeading !== null && !isNaN(hwHeading) && hwHeading !== 0) {
-        this.heading = hwHeading;
+        this.setHeading(hwHeading);
       } else if (this.lastLat !== null && this.lastLng !== null) {
         const movedDist = this.calculateDistanceMeters(this.lastLat, this.lastLng, lat, lng);
         if (movedDist && movedDist > 1.2) {
-          this.heading = this.calculateHeading(this.lastLat, this.lastLng, lat, lng);
+          const calcH = this.calculateHeading(this.lastLat, this.lastLng, lat, lng);
+          this.setHeading(calcH);
         }
       }
 
@@ -228,29 +261,19 @@ export default class MapManager {
     const t = window.translations || {};
     const gpsText = t.gps_active || 'GPS Presisi Aktif';
 
-    // Directional Cone SVG rotated precisely according to compass / walking heading
-    const headingDeg = Math.round(this.heading || 0);
-
     const userIcon = L.divIcon({
       className: 'user-gps-marker',
       html: `
-        <div style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
-          <!-- Directional Walking Cone -->
-          <div style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.3s ease-out;pointer-events:none;">
-            <svg viewBox="0 0 40 40" style="width:100%;height:100%;">
-              <path d="M20 2 L29 20 L20 15 L11 20 Z" fill="#2563EB" opacity="0.85" />
-            </svg>
-          </div>
+        <div class="user-gps-icon-inner" style="position:relative;width:32px;height:32px;display:flex;align-items:center;justify-content:center;">
+          <!-- Pulsing Radar Ring -->
+          <div style="position:absolute;inset:4px;background-color:#3B82F6;border-radius:9999px;opacity:0.35;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
 
-          <!-- Pulsing GPS Radar Ring -->
-          <div style="position:absolute;inset:8px;background-color:#3B82F6;border-radius:9999px;opacity:0.35;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
-
-          <!-- Center Blue Dot -->
-          <div style="position:relative;width:18px;height:18px;background-color:#1D4ED8;border:3px solid #FFFFFF;border-radius:9999px;box-shadow:0 2px 10px rgba(0,0,0,0.4);margin:auto;"></div>
+          <!-- Blue Center Dot -->
+          <div style="position:relative;width:18px;height:18px;background-color:#2563EB;border:3px solid #FFFFFF;border-radius:9999px;box-shadow:0 2px 10px rgba(0,0,0,0.4);margin:auto;"></div>
         </div>
       `,
-      iconSize: [40, 40],
-      iconAnchor: [20, 20]
+      iconSize: [32, 32],
+      iconAnchor: [16, 16]
     });
 
     const targetLatLng = L.latLng(lat, lng);
@@ -260,9 +283,10 @@ export default class MapManager {
       this.map.panTo(targetLatLng, { animate: true, duration: 0.5 });
     }
 
-    // 1. Update/Create 50-meter Claim Radar Circle (Always bound to exact same LatLng)
+    // 1. Update/Create 50-meter Claim Radar Circle (Strictly Centered on exact targetLatLng)
     if (this.userLocationCircle) {
       this.userLocationCircle.setLatLng(targetLatLng);
+      if (this.userLocationCircle.redraw) this.userLocationCircle.redraw();
     } else {
       this.userLocationCircle = L.circle(targetLatLng, {
         radius: 50, // 50 meters claim radius
@@ -289,6 +313,8 @@ export default class MapManager {
     if (this.userLocationMarker.bringToFront) {
       this.userLocationMarker.bringToFront();
     }
+
+    this.applyMapRotation(this.smoothedHeading);
   }
 
   async refreshMarkers() {
@@ -308,6 +334,8 @@ export default class MapManager {
       list.forEach((sighting) => {
         this.addSightingMarker(sighting);
       });
+
+      this.applyMapRotation(this.smoothedHeading);
     } catch (err) {
       console.warn('Gagal memuat marker temuan:', err.message);
     }

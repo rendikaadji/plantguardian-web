@@ -13,6 +13,10 @@ return [
     'login_button' => 'Log In Account',
     'no_account' => 'Don\'t have an account yet?',
     'register_now' => 'Register Now',
+    'failed' => 'The provided email or password is incorrect.',
+    'email_required' => 'Email address is required.',
+    'email_invalid' => 'Please enter a valid email address.',
+    'password_required' => 'Password is required.',
 
     // Register
     'register_title' => 'Register — Plant Guardian',
@@ -25,6 +29,9 @@ return [
     'register_button' => 'Register Account',
     'already_have_account' => 'Already have an account?',
     'login_now' => 'Log In Now',
+    'name_required' => 'Full name is required.',
+    'email_unique' => 'This email address is already registered.',
+    'password_confirmed' => 'Password confirmation does not match.',
 
     // Role Selection
     'role_title' => 'Choose Role — Plant Guardian',

@@ -13,6 +13,10 @@ return [
     'login_button' => 'Masuk Akun',
     'no_account' => 'Belum punya akun?',
     'register_now' => 'Daftar Sekarang',
+    'failed' => 'Email atau kata sandi yang Anda masukkan salah.',
+    'email_required' => 'Email wajib diisi.',
+    'email_invalid' => 'Format email tidak valid.',
+    'password_required' => 'Kata sandi wajib diisi.',
 
     // Register
     'register_title' => 'Daftar Akun — Plant Guardian',
@@ -25,6 +29,9 @@ return [
     'register_button' => 'Daftar Akun',
     'already_have_account' => 'Sudah punya akun?',
     'login_now' => 'Masuk Sekarang',
+    'name_required' => 'Nama lengkap wajib diisi.',
+    'email_unique' => 'Email ini sudah terdaftar.',
+    'password_confirmed' => 'Konfirmasi kata sandi tidak cocok.',
 
     // Role Selection
     'role_title' => 'Pilih Peran — Plant Guardian',

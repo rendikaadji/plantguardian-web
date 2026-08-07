@@ -23,9 +23,9 @@ class AuthController extends Controller
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string'],
         ], [
-            'email.required' => 'Email wajib diisi.',
-            'email.email' => 'Format email tidak valid.',
-            'password.required' => 'Kata sandi wajib diisi.',
+            'email.required' => __('auth.email_required'),
+            'email.email' => __('auth.email_invalid'),
+            'password.required' => __('auth.password_required'),
         ]);
 
         if (Auth::attempt($credentials, $request->boolean('remember'))) {
@@ -44,7 +44,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email atau kata sandi yang Anda masukkan salah.',
+            'email' => __('auth.failed'),
         ])->onlyInput('email');
     }
 
@@ -60,11 +60,11 @@ class AuthController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Password::defaults()],
         ], [
-            'name.required' => 'Nama pengguna wajib diisi.',
-            'email.required' => 'Email wajib diisi.',
-            'email.unique' => 'Email ini sudah terdaftar.',
-            'password.required' => 'Kata sandi wajib diisi.',
-            'password.confirmed' => 'Konfirmasi kata sandi tidak cocok.',
+            'name.required' => __('auth.name_required'),
+            'email.required' => __('auth.email_required'),
+            'email.unique' => __('auth.email_unique'),
+            'password.required' => __('auth.password_required'),
+            'password.confirmed' => __('auth.password_confirmed'),
         ]);
 
         $user = User::create([

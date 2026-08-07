@@ -42,6 +42,17 @@ export default class MapManager {
       this.setAutoFollow(false);
     });
 
+    // Event listener: Ensure radar circle stays 100% locked & re-centered on user marker across all zoom levels
+    this.map.on('zoomend zoom moveend viewreset resize', () => {
+      if (this.userLocationMarker && this.userLocationCircle) {
+        const currentPos = this.userLocationMarker.getLatLng();
+        this.userLocationCircle.setLatLng(currentPos);
+        if (this.userLocationCircle.redraw) {
+          this.userLocationCircle.redraw();
+        }
+      }
+    });
+
     // Setup Recenter & Auto-Follow Button Listener
     const recenterBtn = document.getElementById('recenter-gps-btn');
     if (recenterBtn) {
@@ -80,10 +91,7 @@ export default class MapManager {
   updateHeading(rawHeading) {
     if (rawHeading == null || isNaN(rawHeading)) return;
 
-    // Angular difference calculation
     let diff = (rawHeading - this.smoothedHeading + 540) % 360 - 180;
-
-    // Ignore minor compass jitter under 2.5 degrees for rock-solid stability
     if (Math.abs(diff) < 2.5) return;
 
     this.smoothedHeading = (this.smoothedHeading + diff * 0.25 + 360) % 360;
@@ -181,7 +189,6 @@ export default class MapManager {
       const lng = position.coords.longitude;
       const hwHeading = position.coords.heading;
 
-      // Calculate walking direction heading with low-pass filter
       if (hwHeading !== null && !isNaN(hwHeading) && hwHeading !== 0) {
         this.updateHeading(hwHeading);
       } else if (this.lastLat !== null && this.lastLng !== null) {
@@ -202,7 +209,6 @@ export default class MapManager {
 
       this.addUserMarker(lat, lng);
 
-      // Refresh nearby sighting distances when walking
       if (this.lastLat !== null && this.lastLng !== null) {
         const movedMeters = this.calculateDistanceMeters(this.lastLat, this.lastLng, lat, lng);
         if (movedMeters && movedMeters > 3) {
@@ -241,45 +247,39 @@ export default class MapManager {
     const gpsText = t.gps_active || 'GPS Presisi Aktif';
 
     const headingDeg = Math.round(this.heading || 0);
+    const targetLatLng = L.latLng(lat, lng);
 
     const userIcon = L.divIcon({
       className: 'user-gps-marker',
       html: `
-        <div style="position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;">
-          <!-- Stabilized Directional Arrow Cone (44px, Smooth Low-Pass Filtered) -->
-          <div style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);pointer-events:none;display:flex;align-items:center;justify-content:center;">
-            <svg viewBox="0 0 44 44" style="width:44px;height:44px;filter:drop-shadow(0 2px 5px rgba(0,0,0,0.3));">
-              <path d="M22 2 L33 24 L22 18 L11 24 Z" fill="url(#blueConeGrad)" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" opacity="0.95" />
-              <defs>
-                <linearGradient id="blueConeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#3B82F6" />
-                  <stop offset="100%" stop-color="#1D4ED8" />
-                </linearGradient>
-              </defs>
+        <div style="position:relative;width:40px;height:40px;display:flex;align-items:center;justify-content:center;">
+          <!-- Pulsing Radar Outer Ring -->
+          <div style="position:absolute;inset:4px;background-color:#3B82F6;border-radius:9999px;opacity:0.3;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
+
+          <!-- Directional Cone Arrow Pointer (Geometrically Symmetric around center [20,20]) -->
+          <div style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.3s ease-out;pointer-events:none;display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 40 40" style="width:40px;height:40px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
+              <path d="M20 3 L30 22 L20 17 L10 22 Z" fill="#2563EB" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" />
             </svg>
           </div>
 
-          <!-- Pulsing Radar Outer Ring -->
-          <div style="position:absolute;inset:9px;background-color:#3B82F6;border-radius:9999px;opacity:0.35;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
-
-          <!-- Center Blue GPS Dot -->
-          <div style="position:relative;width:18px;height:18px;background-color:#1D4ED8;border:3px solid #FFFFFF;border-radius:9999px;box-shadow:0 2px 8px rgba(0,0,0,0.4);margin:auto;z-index:2;"></div>
+          <!-- Geometrically Centered Blue Dot (Exact center at [20,20]) -->
+          <div style="position:relative;width:16px;height:16px;background-color:#1D4ED8;border:3px solid #FFFFFF;border-radius:9999px;box-shadow:0 2px 8px rgba(0,0,0,0.4);z-index:2;"></div>
         </div>
       `,
-      iconSize: [44, 44],
-      iconAnchor: [22, 22]
+      iconSize: [40, 40],
+      iconAnchor: [20, 20]
     });
-
-    const targetLatLng = L.latLng(lat, lng);
 
     // Live Camera Auto-Follow as User Walks
     if (this.isAutoFollow && this.map) {
       this.map.panTo(targetLatLng, { animate: true, duration: 0.5 });
     }
 
-    // 1. Update/Create 50-meter Claim Radar Circle (Always centered at exact targetLatLng)
+    // 1. Update/Create 50-meter Claim Radar Circle (Strictly Centered on exact targetLatLng)
     if (this.userLocationCircle) {
       this.userLocationCircle.setLatLng(targetLatLng);
+      if (this.userLocationCircle.redraw) this.userLocationCircle.redraw();
     } else {
       this.userLocationCircle = L.circle(targetLatLng, {
         radius: 50, // 50 meters claim radius

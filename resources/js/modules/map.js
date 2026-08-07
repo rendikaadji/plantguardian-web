@@ -292,6 +292,9 @@ export default class MapManager {
     if (this.userLocationCircle) {
       this.userLocationCircle.setLatLng(targetLatLng);
       this.userLocationCircle.setRadius(50);
+      if (typeof this.userLocationCircle.redraw === 'function') {
+        this.userLocationCircle.redraw();
+      }
     } else {
       this.userLocationCircle = L.circle(targetLatLng, {
         radius: 50, // 50 meters claim radius
@@ -326,10 +329,10 @@ export default class MapManager {
       }
     }
 
-    // Smooth Camera Auto-Follow as User Walks
+    // Camera Auto-Follow as User Walks (Use animate: false to prevent Leaflet SVG path freeze on circles)
     if (this.isAutoFollow && this.map) {
       if (this.lastLat === null || this.calculateDistanceMeters(this.lastLat, this.lastLng, lat, lng) > 1.5) {
-        this.map.panTo(targetLatLng, { animate: true, duration: 0.8, easeLinearity: 0.25 });
+        this.map.setView(targetLatLng, this.map.getZoom(), { animate: false });
       }
     }
 

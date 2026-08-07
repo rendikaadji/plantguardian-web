@@ -298,16 +298,12 @@ export default class MapManager {
     } else {
       this.userLocationCircle = L.circle(targetLatLng, {
         radius: 50, // 50 meters claim radius
-        color: '#2563EB', // Vibrant Blue Radar Border
-        fillColor: '#3B82F6', // High visibility Blue Radar Fill
-        fillOpacity: 0.22, // Distinct overlay
-        weight: 2.5,
-        dashArray: '6, 6'
-      }).addTo(this.map).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:12px;color:#1E40AF;">🎯 Zona Jangkauan Klaim Spesies (50 Meter)</b>');
-
-      if (this.userLocationCircle.bringToBack) {
-        this.userLocationCircle.bringToBack();
-      }
+        color: '#10B981', // Vibrant Emerald Green Border
+        fillColor: '#10B981', // High visibility Emerald Green Radar Fill
+        fillOpacity: 0.25, // Distinct overlay above map tiles
+        weight: 3,
+        dashArray: '5, 5'
+      }).addTo(this.map).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:12px;color:#065F46;">🎯 Zona Jangkauan Klaim Spesies (50 Meter)</b>');
     }
 
     // 2. Update/Create User GPS Marker (Centered at exact same LatLng)

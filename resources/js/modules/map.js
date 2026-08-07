@@ -11,6 +11,7 @@ export default class MapManager {
     this.lastLat = null;
     this.lastLng = null;
     this.heading = 0;
+    this.smoothedHeading = 0;
     this.isAutoFollow = true;
     this.watchId = null;
   }
@@ -76,6 +77,19 @@ export default class MapManager {
     };
   }
 
+  updateHeading(rawHeading) {
+    if (rawHeading == null || isNaN(rawHeading)) return;
+
+    // Angular difference calculation
+    let diff = (rawHeading - this.smoothedHeading + 540) % 360 - 180;
+
+    // Ignore minor compass jitter under 2.5 degrees for rock-solid stability
+    if (Math.abs(diff) < 2.5) return;
+
+    this.smoothedHeading = (this.smoothedHeading + diff * 0.25 + 360) % 360;
+    this.heading = this.smoothedHeading;
+  }
+
   startCompassListener() {
     const handleOrientation = (event) => {
       let compassHeading = null;
@@ -86,7 +100,7 @@ export default class MapManager {
       }
 
       if (compassHeading !== null && !isNaN(compassHeading)) {
-        this.heading = compassHeading;
+        this.updateHeading(compassHeading);
         if (this.userLat && this.userLng) {
           this.addUserMarker(this.userLat, this.userLng);
         }
@@ -167,13 +181,14 @@ export default class MapManager {
       const lng = position.coords.longitude;
       const hwHeading = position.coords.heading;
 
-      // Calculate walking direction heading
+      // Calculate walking direction heading with low-pass filter
       if (hwHeading !== null && !isNaN(hwHeading) && hwHeading !== 0) {
-        this.heading = hwHeading;
+        this.updateHeading(hwHeading);
       } else if (this.lastLat !== null && this.lastLng !== null) {
         const movedDist = this.calculateDistanceMeters(this.lastLat, this.lastLng, lat, lng);
         if (movedDist && movedDist > 1.2) {
-          this.heading = this.calculateHeading(this.lastLat, this.lastLng, lat, lng);
+          const calcH = this.calculateHeading(this.lastLat, this.lastLng, lat, lng);
+          this.updateHeading(calcH);
         }
       }
 
@@ -230,12 +245,11 @@ export default class MapManager {
     const userIcon = L.divIcon({
       className: 'user-gps-marker',
       html: `
-        <div style="position:relative;width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
-          <!-- Prominent Large Directional Pointer Cone (Rotated by heading) -->
-          <div style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.3s ease-out;pointer-events:none;display:flex;align-items:center;justify-content:center;">
-            <svg viewBox="0 0 56 56" style="width:56px;height:56px;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.35));">
-              <!-- Direction Cone Field Beam -->
-              <path d="M28 2 L42 30 L28 23 L14 30 Z" fill="url(#blueConeGrad)" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" opacity="0.95" />
+        <div style="position:relative;width:44px;height:44px;display:flex;align-items:center;justify-content:center;">
+          <!-- Stabilized Directional Arrow Cone (44px, Smooth Low-Pass Filtered) -->
+          <div style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);pointer-events:none;display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 44 44" style="width:44px;height:44px;filter:drop-shadow(0 2px 5px rgba(0,0,0,0.3));">
+              <path d="M22 2 L33 24 L22 18 L11 24 Z" fill="url(#blueConeGrad)" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" opacity="0.95" />
               <defs>
                 <linearGradient id="blueConeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
                   <stop offset="0%" stop-color="#3B82F6" />
@@ -246,14 +260,14 @@ export default class MapManager {
           </div>
 
           <!-- Pulsing Radar Outer Ring -->
-          <div style="position:absolute;inset:12px;background-color:#3B82F6;border-radius:9999px;opacity:0.35;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
+          <div style="position:absolute;inset:9px;background-color:#3B82F6;border-radius:9999px;opacity:0.35;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
 
-          <!-- Bold Center Blue GPS Dot -->
-          <div style="position:relative;width:22px;height:22px;background-color:#1D4ED8;border:3.5px solid #FFFFFF;border-radius:9999px;box-shadow:0 3px 10px rgba(0,0,0,0.5);margin:auto;z-index:2;"></div>
+          <!-- Center Blue GPS Dot -->
+          <div style="position:relative;width:18px;height:18px;background-color:#1D4ED8;border:3px solid #FFFFFF;border-radius:9999px;box-shadow:0 2px 8px rgba(0,0,0,0.4);margin:auto;z-index:2;"></div>
         </div>
       `,
-      iconSize: [56, 56],
-      iconAnchor: [28, 28]
+      iconSize: [44, 44],
+      iconAnchor: [22, 22]
     });
 
     const targetLatLng = L.latLng(lat, lng);

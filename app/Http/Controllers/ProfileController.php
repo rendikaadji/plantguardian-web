@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Planting;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
@@ -100,5 +103,32 @@ class ProfileController extends Controller
             'vitalityPercent',
             'allianceCode'
         ));
+    }
+
+    /**
+     * Update the user's password.
+     */
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required', 'string'],
+            'password' => ['required', 'string', 'confirmed', Password::defaults()],
+        ], [
+            'current_password.required' => __('profile.current_password_error'),
+            'password.required' => __('auth.password_required'),
+            'password.confirmed' => __('auth.password_confirmed'),
+        ]);
+
+        if (! Hash::check($request->current_password, Auth::user()->password)) {
+            return back()->withErrors([
+                'current_password' => __('profile.current_password_error'),
+            ]);
+        }
+
+        Auth::user()->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return back()->with('status', __('profile.password_updated_success'));
     }
 }

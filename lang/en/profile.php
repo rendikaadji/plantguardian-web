@@ -12,6 +12,17 @@ return [
     'select_language' => 'Select System Language',
     'en' => 'English',
     'id' => 'Indonesian',
-    'account_settings' => 'Account Settings',
+    'account_settings' => 'Account & Role Settings',
     'logout' => 'Log Out Account',
+
+    'change_password_title' => '🔒 Change Password',
+    'current_password_label' => 'Current Password',
+    'current_password_placeholder' => 'Enter your current password...',
+    'new_password_label' => 'New Password',
+    'new_password_placeholder' => 'Enter your new password...',
+    'confirm_new_password_label' => 'Confirm New Password',
+    'confirm_new_password_placeholder' => 'Re-enter your new password...',
+    'update_password_button' => 'Save New Password',
+    'password_updated_success' => 'Password updated successfully!',
+    'current_password_error' => 'The provided password does not match your current password.',
 ];

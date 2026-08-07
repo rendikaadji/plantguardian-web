@@ -39,6 +39,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/onboarding/pilih-role', [OnboardingController::class, 'storeRole'])->name('onboarding.store-role');
     Route::get('/onboarding/tutorial-viewer', [OnboardingController::class, 'showTutorialViewer'])->name('onboarding.tutorial-viewer');
     Route::get('/onboarding/ranger-placeholder', [OnboardingController::class, 'showRangerPlaceholder'])->name('onboarding.ranger-placeholder');
+
+    // Profile Password Update Route
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password.update');
 });
 
 // Admin Control Routes (Protected by 'admin' middleware)

@@ -48,6 +48,73 @@
                 </a>
             </div>
         </div>
+
+        <!-- Account Settings & Change Password Card for Ranger -->
+        <div class="card-gg p-5 space-y-4 bg-[#FBFAF0]">
+            <h3 class="font-baloo font-bold text-base text-[#1F3D20] flex items-center gap-2">
+                <span>⚙️</span> {{ __('profile.account_settings') }}
+            </h3>
+            
+            <div class="text-xs text-[#6B6B55] space-y-1 font-nunito border-t border-[#1F3D20]/10 pt-2">
+                <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
+                <p><strong>Peran Utama:</strong> <span class="uppercase font-bold text-[#1F3D20]">{{ auth()->user()->role }}</span></p>
+            </div>
+
+            <!-- Change Password Form Section -->
+            <div class="border-t border-[#1F3D20]/10 pt-3 space-y-3">
+                <h4 class="font-baloo font-bold text-sm text-[#1F3D20] flex items-center gap-1.5">
+                    <span>{{ __('profile.change_password_title') }}</span>
+                </h4>
+
+                @if (session('status'))
+                    <div class="p-3 rounded-xl bg-emerald-100 border border-emerald-400 text-emerald-800 text-xs font-nunito font-bold">
+                        ✓ {{ session('status') }}
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('profile.password.update') }}" class="space-y-2.5">
+                    @csrf
+                    <div>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.current_password_label') }}</label>
+                        <input type="password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full p-2 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                        @error('current_password')
+                            <span class="text-[10px] text-red-600 font-nunito font-bold block mt-0.5">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.new_password_label') }}</label>
+                        <input type="password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full p-2 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                        @error('password')
+                            <span class="text-[10px] text-red-600 font-nunito font-bold block mt-0.5">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.confirm_new_password_label') }}</label>
+                        <input type="password" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full p-2 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                    </div>
+
+                    <div class="pt-1">
+                        <button type="submit" class="w-full py-2 rounded-xl bg-[#1F3D20] hover:bg-[#142815] text-[#F5F4DA] font-baloo font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+                            <span>🔑 {{ __('profile.update_password_button') }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="pt-2 border-t border-[#1F3D20]/10">
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="w-full py-2.5 rounded-xl bg-[#C0392B] hover:bg-[#A93226] text-white font-baloo font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        <span>{{ __('profile.logout') }}</span>
+                    </button>
+                </form>
+            </div>
+        </div>
     @else
         <!-- VIEWER PROFILE -->
         <!-- 1. Profile Avatar & User Header -->
@@ -165,22 +232,67 @@
         </div>
 
         <!-- 6. Account & Settings Options Card -->
-        <div class="card-gg p-5 space-y-3 bg-[#FBFAF0]">
+        <div class="card-gg p-5 space-y-4 bg-[#FBFAF0]">
             <h3 class="font-baloo font-bold text-base text-[#1F3D20] flex items-center gap-2">
-                <span>⚙️</span> Pengaturan Akun & Peran
+                <span>⚙️</span> {{ __('profile.account_settings') }}
             </h3>
+            
             <div class="text-xs text-[#6B6B55] space-y-1 font-nunito border-t border-[#1F3D20]/10 pt-2">
                 <p><strong>Email:</strong> {{ $user->email }}</p>
                 <p><strong>Peran Utama:</strong> <span class="uppercase font-bold text-[#1F3D20]">{{ $user->role }}</span></p>
             </div>
-            <div class="pt-2">
+
+            <!-- Change Password Form Section -->
+            <div class="border-t border-[#1F3D20]/10 pt-3 space-y-3">
+                <h4 class="font-baloo font-bold text-sm text-[#1F3D20] flex items-center gap-1.5">
+                    <span>{{ __('profile.change_password_title') }}</span>
+                </h4>
+
+                @if (session('status'))
+                    <div class="p-3 rounded-xl bg-emerald-100 border border-emerald-400 text-emerald-800 text-xs font-nunito font-bold">
+                        ✓ {{ session('status') }}
+                    </div>
+                @endif
+
+                <form method="POST" action="{{ route('profile.password.update') }}" class="space-y-2.5">
+                    @csrf
+                    <div>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.current_password_label') }}</label>
+                        <input type="password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full p-2 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                        @error('current_password')
+                            <span class="text-[10px] text-red-600 font-nunito font-bold block mt-0.5">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.new_password_label') }}</label>
+                        <input type="password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full p-2 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                        @error('password')
+                            <span class="text-[10px] text-red-600 font-nunito font-bold block mt-0.5">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.confirm_new_password_label') }}</label>
+                        <input type="password" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full p-2 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                    </div>
+
+                    <div class="pt-1">
+                        <button type="submit" class="w-full py-2 rounded-xl bg-[#1F3D20] hover:bg-[#142815] text-[#F5F4DA] font-baloo font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+                            <span>🔑 {{ __('profile.update_password_button') }}</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="pt-2 border-t border-[#1F3D20]/10">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="w-full py-2.5 rounded-xl bg-[#C0392B] hover:bg-[#A93226] text-white font-baloo font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-2">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>
-                        <span>Keluar dari Akun</span>
+                        <span>{{ __('profile.logout') }}</span>
                     </button>
                 </form>
             </div>

@@ -66,6 +66,8 @@ class ShopController extends Controller
                 'time_reduction_minutes' => 10,
                 'usage_label' => $isEn ? 'Speedup Growth 10m' : 'Potong Waktu Tumbuh 10m',
             ],
+        ];
+
         $avatarItems = [
             [
                 'item_code' => 'avatar_profile1',

@@ -82,9 +82,9 @@
                     🌱
                 </div>
                 <div>
-                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">Penjelajah Flora</h4>
-                    <p class="text-[11px] text-[#6B6B55]">Temukan spesies tumbuhan pertama di Peta.</p>
-                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20]">Terselesaikan ✨</span>
+                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">{{ __('achievement.cards.flora_explorer.title') }}</h4>
+                    <p class="text-[11px] text-[#6B6B55]">{{ __('achievement.cards.flora_explorer.desc') }}</p>
+                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20]">{{ __('achievement.status.completed') }}</span>
                 </div>
             </div>
 
@@ -94,9 +94,9 @@
                     ♻️
                 </div>
                 <div>
-                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">Pahlawan Kompos</h4>
-                    <p class="text-[11px] text-[#6B6B55]">Selesaikan proses pembuatan kompos organik.</p>
-                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20]">Terselesaikan ✨</span>
+                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">{{ __('achievement.cards.digital_farmer.title') }}</h4>
+                    <p class="text-[11px] text-[#6B6B55]">{{ __('achievement.cards.digital_farmer.desc') }}</p>
+                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20]">{{ __('achievement.status.completed') }}</span>
                 </div>
             </div>
 
@@ -106,9 +106,9 @@
                     🌳
                 </div>
                 <div>
-                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">Penanam Sejati</h4>
-                    <p class="text-[11px] text-[#6B6B55]">Kirim bukti penanaman pohon nyata di lapangan.</p>
-                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20]">Terselesaikan ✨</span>
+                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">{{ __('achievement.cards.region_mapper.title') }}</h4>
+                    <p class="text-[11px] text-[#6B6B55]">{{ __('achievement.cards.region_mapper.desc') }}</p>
+                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20]">{{ __('achievement.status.completed') }}</span>
                 </div>
             </div>
 
@@ -118,16 +118,16 @@
                     📚
                 </div>
                 <div>
-                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">Pakar Seedex</h4>
-                    <p class="text-[11px] text-[#6B6B55]">Kumpulkan 5+ spesies tumbuhan di album Seedex.</p>
-                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E7E6BE] text-[#6B6B55]">Sedang Berjalan</span>
+                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">{{ __('achievement.cards.seedex_expert.title') }}</h4>
+                    <p class="text-[11px] text-[#6B6B55]">{{ __('achievement.cards.seedex_expert.desc') }}</p>
+                    <span class="inline-block mt-1 text-[9px] font-bold px-2 py-0.5 rounded-full bg-[#E7E6BE] text-[#6B6B55]">{{ __('achievement.status.in_progress') }}</span>
                 </div>
             </div>
         </div>
 
         <div class="pt-2 text-center">
             <button id="achievement-modal-done-btn" class="w-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold py-2.5 rounded-full text-xs hover:bg-[#2D4A2E] transition-colors cursor-pointer">
-                Tutup Achievement
+                {{ __('gallery.close_modal') }}
             </button>
         </div>
     </div>
@@ -138,8 +138,8 @@
     <div class="card-gg max-w-md w-full p-6 shadow-2xl space-y-4 bg-[#FBFAF0] max-h-[90vh] overflow-y-auto">
         <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
             <div>
-                <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">DETAIL SEEDEX</span>
-                <h3 id="modal-title" class="font-baloo font-extrabold text-2xl text-[#1F3D20] mt-1">Detail Spesies</h3>
+                <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">{{ __('gallery.modal_detail') }}</span>
+                <h3 id="modal-title" class="font-baloo font-extrabold text-2xl text-[#1F3D20] mt-1">{{ __('gallery.modal_detail') }}</h3>
                 <p id="modal-scientific" class="font-nunito text-xs text-[#6B6B55] italic"></p>
             </div>
             <button id="modal-close-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>
@@ -158,24 +158,24 @@
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-2">
                     <div class="w-7 h-7 rounded-full bg-[#1F3D20] text-[#F5F4DA] flex items-center justify-center font-bold text-xs">🌱</div>
-                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">Cara Merawat Pohon</h4>
+                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">{{ __('gallery.care_instructions') }}</h4>
                 </div>
                 <button id="toggle-care-edit-btn" class="hidden text-xs font-baloo font-bold text-[#8B6A4C] hover:underline cursor-pointer">
-                    ✏️ Edit Petunjuk
+                    ✏️ {{ __('gallery.edit_instructions') }}
                 </button>
             </div>
 
             <p id="modal-care-text" class="text-xs font-nunito text-[#2A2A22] leading-relaxed italic bg-[#E2E1C4]/40 p-3 rounded-xl border border-[#1F3D20]/5">
-                Belum ada petunjuk perawatan dari Ranger.
+                {{ __('gallery.no_care_instructions') }}
             </p>
 
             <!-- Form Edit Petunjuk Perawatan oleh Ranger -->
             <div id="care-edit-form" class="hidden space-y-2.5 pt-2 border-t border-[#1F3D20]/10">
-                <label class="block text-xs font-baloo font-bold text-[#1F3D20]">Petunjuk Perawatan Ranger:</label>
-                <textarea id="care-instructions-input" rows="3" class="w-full text-xs font-nunito p-3 rounded-xl border border-[#1F3D20]/20 bg-white focus:outline-none focus:border-[#1F3D20]" placeholder="Contoh: Siram 2x sehari pada pagi dan sore. Beri pupuk kompos setiap 2 minggu sekali dan tempatkan di lokasi dengan sinar matahari cukup."></textarea>
+                <label class="block text-xs font-baloo font-bold text-[#1F3D20]">{{ __('gallery.care_instructions') }}:</label>
+                <textarea id="care-instructions-input" rows="3" class="w-full text-xs font-nunito p-3 rounded-xl border border-[#1F3D20]/20 bg-white focus:outline-none focus:border-[#1F3D20]" placeholder="..."></textarea>
                 <div class="flex gap-2 justify-end">
-                    <button id="cancel-care-edit-btn" type="button" class="px-3 py-1.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs cursor-pointer">Batal</button>
-                    <button id="save-care-edit-btn" type="button" class="px-4 py-1.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs cursor-pointer">Simpan Petunjuk</button>
+                    <button id="cancel-care-edit-btn" type="button" class="px-3 py-1.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs cursor-pointer">{{ __('gallery.cancel') }}</button>
+                    <button id="save-care-edit-btn" type="button" class="px-4 py-1.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs cursor-pointer">{{ __('gallery.save_instructions') }}</button>
                 </div>
             </div>
         </div>

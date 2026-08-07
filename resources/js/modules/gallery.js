@@ -72,7 +72,8 @@ export class GalleryModule {
         : (window.translations?.empty_gallery || 'Seedex Masih Kosong');
       const emptySubtitle = isRangerOrAdmin
         ? (window.translations?.ranger_empty_subtitle || 'Gunakan Peta Digital atau Kamera AR untuk mulai mendokumentasikan tumbuhan di lapangan!')
-        : 'Jelajahi peta dan temukan marker spesies tumbuhan untuk mengumpulkan entri ke Seedex!';
+        : (window.translations?.empty_gallery_subtitle || 'Jelajahi peta dan temukan marker spesies tumbuhan untuk mengumpulkan entri ke Seedex!');
+      const openMapBtnText = window.translations?.open_map_btn || 'Buka Peta Temuan';
 
       this.containerElement.innerHTML = `
         <div class="card-gg p-12 text-center space-y-4 max-w-md mx-auto">
@@ -81,7 +82,7 @@ export class GalleryModule {
           </div>
           <h3 class="font-baloo font-extrabold text-xl text-[#1F3D20]">${emptyTitle}</h3>
           <p class="text-xs text-[#6B6B55] font-nunito leading-relaxed">${emptySubtitle}</p>
-          <a href="/peta" class="btn-gg-primary inline-flex items-center gap-2 text-xs">Buka Peta Temuan</a>
+          <a href="/peta" class="btn-gg-primary inline-flex items-center gap-2 text-xs">${openMapBtnText}</a>
         </div>
       `;
       return;

@@ -27,5 +27,10 @@ return [
     'edit_instructions' => 'Edit Care Instructions',
     'save_instructions' => 'Save Instructions',
     'instructions_updated' => 'Care instructions updated successfully!',
-    'empty_gallery' => 'No discovered flora species in your collection yet.',
+    'empty_gallery' => 'No discovered Flora species in your collection yet.',
+    'empty_gallery_subtitle' => 'Explore the map and discover plant species markers to collect entries into your Seedex!',
+    'open_map_btn' => 'Open Sightings Map',
+    'close_modal' => 'Close Achievement',
+    'cancel' => 'Cancel',
+    'no_care_instructions' => 'No care instructions provided by Ranger yet.',
 ];

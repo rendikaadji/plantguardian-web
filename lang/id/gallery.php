@@ -28,4 +28,9 @@ return [
     'save_instructions' => 'Simpan Petunjuk',
     'instructions_updated' => 'Petunjuk perawatan pohon berhasil diperbarui!',
     'empty_gallery' => 'Belum ada spesies tumbuhan yang ditemukan dalam koleksimu.',
+    'empty_gallery_subtitle' => 'Jelajahi peta dan temukan marker spesies tumbuhan untuk mengumpulkan entri ke Seedex!',
+    'open_map_btn' => 'Buka Peta Temuan',
+    'close_modal' => 'Tutup Achievement',
+    'cancel' => 'Batal',
+    'no_care_instructions' => 'Belum ada petunjuk perawatan dari Ranger.',
 ];

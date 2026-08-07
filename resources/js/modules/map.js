@@ -49,21 +49,16 @@ export default class MapManager {
       this.setAutoFollow(false);
     });
 
-    // Native Leaflet Zoom & Viewport Synchronization (Locked to Ground-Truth GPS)
-    const syncUserZonePosition = () => {
-      if (this.userLat !== null && this.userLng !== null) {
+    // Native Leaflet Viewport Synchronization (Clean GPU acceleration during pinch/drag)
+    this.map.on('zoomend viewreset resize', () => {
+      if (this.userLat !== null && this.userLng !== null && this.userLocationCircle) {
         const pos = L.latLng(this.userLat, this.userLng);
-        if (this.userLocationMarker) {
-          this.userLocationMarker.setLatLng(pos);
-        }
-        if (this.userLocationCircle) {
-          this.userLocationCircle.setLatLng(pos);
-          this.userLocationCircle.setRadius(50);
+        this.userLocationCircle.setLatLng(pos);
+        if (typeof this.userLocationCircle.redraw === 'function') {
+          this.userLocationCircle.redraw();
         }
       }
-    };
-
-    this.map.on('zoomstart zoom zoomanim zoomend viewreset move moveend resize', syncUserZonePosition);
+    });
 
     // Setup Recenter & Auto-Follow Button Listener
     const recenterBtn = document.getElementById('recenter-gps-btn');
@@ -291,10 +286,6 @@ export default class MapManager {
     // 1. Update/Create 50-meter Claim Radar Circle (Always centered at exact targetLatLng)
     if (this.userLocationCircle) {
       this.userLocationCircle.setLatLng(targetLatLng);
-      this.userLocationCircle.setRadius(50);
-      if (typeof this.userLocationCircle.redraw === 'function') {
-        this.userLocationCircle.redraw();
-      }
     } else {
       this.userLocationCircle = L.circle(targetLatLng, {
         radius: 50, // 50 meters claim radius

@@ -24,8 +24,9 @@ export default class MapManager {
     const defaultLat = -6.1754;
     const defaultLng = 106.8272;
 
-    // 60FPS Hardware Accelerated Leaflet Map Config
+    // 60FPS Hardware Accelerated Leaflet Map Config with Canvas & Atomic Layer Grouping
     this.map = L.map(this.mapContainerId, {
+      preferCanvas: true,
       zoomControl: true,
       attributionControl: true,
       zoomAnimation: true,
@@ -43,6 +44,7 @@ export default class MapManager {
     }).addTo(this.map);
 
     this.markersGroup = L.layerGroup().addTo(this.map);
+    this.userLocationGroup = L.featureGroup().addTo(this.map);
 
     // Disable auto-follow when user manually drags the map
     this.map.on('dragstart', () => {
@@ -283,6 +285,10 @@ export default class MapManager {
       iconAnchor: [20, 20]
     });
 
+    if (!this.userLocationGroup) {
+      this.userLocationGroup = L.featureGroup().addTo(this.map);
+    }
+
     // 1. Update/Create 50-meter Claim Radar Circle (Always centered at exact targetLatLng)
     if (this.userLocationCircle) {
       this.userLocationCircle.setLatLng(targetLatLng);
@@ -294,7 +300,9 @@ export default class MapManager {
         fillOpacity: 0.25, // Distinct overlay above map tiles
         weight: 3,
         dashArray: '5, 5'
-      }).addTo(this.map).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:12px;color:#065F46;">🎯 Zona Jangkauan Klaim Spesies (50 Meter)</b>');
+      }).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:12px;color:#065F46;">🎯 Zona Jangkauan Klaim Spesies (50 Meter)</b>');
+
+      this.userLocationGroup.addLayer(this.userLocationCircle);
     }
 
     // 2. Update/Create User GPS Marker (Centered at exact same LatLng)
@@ -308,12 +316,9 @@ export default class MapManager {
       }
     } else {
       this.userLocationMarker = L.marker(targetLatLng, { icon: userIcon, zIndexOffset: 1000 })
-        .addTo(this.map)
         .bindPopup(`<b style="font-family:Baloo 2,sans-serif;">📍 ${gpsText}</b>`);
 
-      if (this.userLocationMarker.bringToFront) {
-        this.userLocationMarker.bringToFront();
-      }
+      this.userLocationGroup.addLayer(this.userLocationMarker);
     }
 
     // Camera Auto-Follow as User Walks (Use animate: false to prevent Leaflet SVG path freeze on circles)

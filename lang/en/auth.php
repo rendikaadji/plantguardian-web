@@ -17,6 +17,7 @@ return [
     'email_required' => 'Email address is required.',
     'email_invalid' => 'Please enter a valid email address.',
     'password_required' => 'Password is required.',
+    'password_min' => 'The password must be at least 8 characters.',
 
     // Register
     'register_title' => 'Register — Plant Guardian',

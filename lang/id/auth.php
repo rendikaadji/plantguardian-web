@@ -17,6 +17,7 @@ return [
     'email_required' => 'Email wajib diisi.',
     'email_invalid' => 'Format email tidak valid.',
     'password_required' => 'Kata sandi wajib diisi.',
+    'password_min' => 'Kata sandi minimal harus 8 karakter.',
 
     // Register
     'register_title' => 'Daftar Akun — Plant Guardian',

@@ -76,9 +76,9 @@
                     @csrf
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.current_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="ranger_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full p-2 pr-9 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('ranger_current_password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none" title="Tampilkan/Sembunyikan Kata Sandi">
+                        <div class="relative flex items-center">
+                            <input type="password" id="ranger_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                            <button type="button" onclick="togglePasswordVisibility('ranger_current_password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -95,9 +95,9 @@
 
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.new_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="ranger_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full p-2 pr-9 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('ranger_password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none" title="Tampilkan/Sembunyikan Kata Sandi">
+                        <div class="relative flex items-center">
+                            <input type="password" id="ranger_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                            <button type="button" onclick="togglePasswordVisibility('ranger_password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -114,9 +114,9 @@
 
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.confirm_new_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="ranger_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full p-2 pr-9 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('ranger_password_confirmation', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none" title="Tampilkan/Sembunyikan Kata Sandi">
+                        <div class="relative flex items-center">
+                            <input type="password" id="ranger_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                            <button type="button" onclick="togglePasswordVisibility('ranger_password_confirmation', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -291,9 +291,9 @@
                     @csrf
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.current_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="viewer_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full p-2 pr-9 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('viewer_current_password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none" title="Tampilkan/Sembunyikan Kata Sandi">
+                        <div class="relative flex items-center">
+                            <input type="password" id="viewer_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                            <button type="button" onclick="togglePasswordVisibility('viewer_current_password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -310,9 +310,9 @@
 
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.new_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="viewer_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full p-2 pr-9 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('viewer_password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none" title="Tampilkan/Sembunyikan Kata Sandi">
+                        <div class="relative flex items-center">
+                            <input type="password" id="viewer_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                            <button type="button" onclick="togglePasswordVisibility('viewer_password', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -329,9 +329,9 @@
 
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.confirm_new_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="viewer_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full p-2 pr-9 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('viewer_password_confirmation', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none" title="Tampilkan/Sembunyikan Kata Sandi">
+                        <div class="relative flex items-center">
+                            <input type="password" id="viewer_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
+                            <button type="button" onclick="togglePasswordVisibility('viewer_password_confirmation', this)" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>

@@ -116,6 +116,7 @@ class ProfileController extends Controller
         ], [
             'current_password.required' => __('profile.current_password_error'),
             'password.required' => __('auth.password_required'),
+            'password.min' => __('auth.password_min'),
             'password.confirmed' => __('auth.password_confirmed'),
         ]);
 

@@ -50,35 +50,61 @@
         </div>
 
         <!-- Account Settings & Change Password Card for Ranger -->
-        <div class="card-gg p-5 space-y-4 bg-[#FBFAF0]">
-            <h3 class="font-baloo font-bold text-base text-[#1F3D20] flex items-center gap-2">
-                <span>⚙️</span> {{ __('profile.account_settings') }}
-            </h3>
+        <div class="card-gg p-6 space-y-5 bg-[#FBFAF0] rounded-2xl border border-[#1F3D20]/15 shadow-sm">
+            <!-- Header with Icon & Title -->
+            <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3.5">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-[#1F3D20]/10 flex items-center justify-center text-[#1F3D20] text-sm">
+                        ⚙️
+                    </div>
+                    <div>
+                        <h3 class="font-baloo font-bold text-base text-[#1F3D20] leading-tight">
+                            {{ __('profile.account_settings') }}
+                        </h3>
+                        <p class="text-[11px] font-nunito text-[#6B6B55]">Kelola informasi akun & kata sandi Anda</p>
+                    </div>
+                </div>
+            </div>
             
-            <div class="text-xs text-[#6B6B55] space-y-1 font-nunito border-t border-[#1F3D20]/10 pt-2">
-                <p><strong>Email:</strong> {{ auth()->user()->email }}</p>
-                <p><strong>Peran Utama:</strong> <span class="uppercase font-bold text-[#1F3D20]">{{ auth()->user()->role }}</span></p>
+            <!-- User Information Box -->
+            <div class="bg-white p-3.5 rounded-xl border border-[#1F3D20]/10 space-y-2">
+                <div class="flex items-center justify-between text-xs font-nunito">
+                    <span class="text-[#6B6B55] font-semibold">Email:</span>
+                    <span class="font-bold text-[#1F3D20]">{{ auth()->user()->email }}</span>
+                </div>
+                <div class="flex items-center justify-between text-xs font-nunito pt-1.5 border-t border-[#1F3D20]/5">
+                    <span class="text-[#6B6B55] font-semibold">Peran Utama:</span>
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-baloo font-extrabold bg-[#1F3D20]/10 text-[#1F3D20] uppercase tracking-wide">
+                        {{ auth()->user()->role }}
+                    </span>
+                </div>
             </div>
 
             <!-- Change Password Form Section -->
-            <div class="border-t border-[#1F3D20]/10 pt-3 space-y-3">
-                <h4 class="font-baloo font-bold text-sm text-[#1F3D20] flex items-center gap-1.5">
-                    <span>{{ __('profile.change_password_title') }}</span>
-                </h4>
+            <div class="space-y-3.5 pt-1">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm">🔒</span>
+                    <h4 class="font-baloo font-bold text-xs uppercase tracking-wider text-[#1F3D20]">
+                        {{ __('profile.change_password_title') }}
+                    </h4>
+                </div>
 
                 @if (session('status'))
-                    <div class="p-3 rounded-xl bg-emerald-100 border border-emerald-400 text-emerald-800 text-xs font-nunito font-bold">
-                        ✓ {{ session('status') }}
+                    <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-nunito font-bold flex items-center gap-2">
+                        <svg class="w-4 h-4 shrink-0 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>{{ session('status') }}</span>
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('profile.password.update') }}" class="space-y-2.5">
+                <form method="POST" action="{{ route('profile.password.update') }}" class="space-y-3">
                     @csrf
                     <div>
-                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.current_password_label') }}</label>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.current_password_label') }}</label>
                         <div class="relative">
-                            <input type="password" id="ranger_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('ranger_current_password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
+                            <input type="password" id="ranger_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
+                            <button type="button" onclick="togglePasswordVisibility('ranger_current_password', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -89,15 +115,15 @@
                             </button>
                         </div>
                         @error('current_password')
-                            <span class="text-[10px] text-red-600 font-nunito font-bold block mt-0.5">{{ $message }}</span>
+                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">⚠️ {{ $message }}</span>
                         @enderror
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.new_password_label') }}</label>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.new_password_label') }}</label>
                         <div class="relative">
-                            <input type="password" id="ranger_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('ranger_password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
+                            <input type="password" id="ranger_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
+                            <button type="button" onclick="togglePasswordVisibility('ranger_password', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -108,15 +134,15 @@
                             </button>
                         </div>
                         @error('password')
-                            <span class="text-[10px] text-red-600 font-nunito font-bold block mt-0.5">{{ $message }}</span>
+                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">⚠️ {{ $message }}</span>
                         @enderror
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.confirm_new_password_label') }}</label>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.confirm_new_password_label') }}</label>
                         <div class="relative">
-                            <input type="password" id="ranger_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('ranger_password_confirmation', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
+                            <input type="password" id="ranger_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
+                            <button type="button" onclick="togglePasswordVisibility('ranger_password_confirmation', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -128,18 +154,19 @@
                         </div>
                     </div>
 
-                    <div class="pt-1">
-                        <button type="submit" class="w-full py-2 rounded-xl bg-[#1F3D20] hover:bg-[#142815] text-[#F5F4DA] font-baloo font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-2.5 rounded-xl bg-[#1F3D20] hover:bg-[#142815] text-[#F5F4DA] font-baloo font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm active:scale-[0.99]">
                             <span>🔑 {{ __('profile.update_password_button') }}</span>
                         </button>
                     </div>
                 </form>
             </div>
 
-            <div class="pt-2 border-t border-[#1F3D20]/10">
+            <!-- Logout Section -->
+            <div class="pt-3 border-t border-[#1F3D20]/10">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="w-full py-2.5 rounded-xl bg-[#C0392B] hover:bg-[#A93226] text-white font-baloo font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-2">
+                    <button type="submit" class="w-full py-2.5 rounded-xl bg-white border border-[#C0392B]/30 hover:bg-[#C0392B] text-[#C0392B] hover:text-white font-baloo font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-xs active:scale-[0.99]">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>
@@ -264,36 +291,62 @@
             </button>
         </div>
 
-        <!-- 6. Account & Settings Options Card -->
-        <div class="card-gg p-5 space-y-4 bg-[#FBFAF0]">
-            <h3 class="font-baloo font-bold text-base text-[#1F3D20] flex items-center gap-2">
-                <span>⚙️</span> {{ __('profile.account_settings') }}
-            </h3>
+        <!-- 6. Account & Settings Options Card for Viewer -->
+        <div class="card-gg p-6 space-y-5 bg-[#FBFAF0] rounded-2xl border border-[#1F3D20]/15 shadow-sm">
+            <!-- Header with Icon & Title -->
+            <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3.5">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-8 h-8 rounded-xl bg-[#1F3D20]/10 flex items-center justify-center text-[#1F3D20] text-sm">
+                        ⚙️
+                    </div>
+                    <div>
+                        <h3 class="font-baloo font-bold text-base text-[#1F3D20] leading-tight">
+                            {{ __('profile.account_settings') }}
+                        </h3>
+                        <p class="text-[11px] font-nunito text-[#6B6B55]">Kelola informasi akun & kata sandi Anda</p>
+                    </div>
+                </div>
+            </div>
             
-            <div class="text-xs text-[#6B6B55] space-y-1 font-nunito border-t border-[#1F3D20]/10 pt-2">
-                <p><strong>Email:</strong> {{ $user->email }}</p>
-                <p><strong>Peran Utama:</strong> <span class="uppercase font-bold text-[#1F3D20]">{{ $user->role }}</span></p>
+            <!-- User Information Box -->
+            <div class="bg-white p-3.5 rounded-xl border border-[#1F3D20]/10 space-y-2">
+                <div class="flex items-center justify-between text-xs font-nunito">
+                    <span class="text-[#6B6B55] font-semibold">Email:</span>
+                    <span class="font-bold text-[#1F3D20]">{{ $user->email }}</span>
+                </div>
+                <div class="flex items-center justify-between text-xs font-nunito pt-1.5 border-t border-[#1F3D20]/5">
+                    <span class="text-[#6B6B55] font-semibold">Peran Utama:</span>
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-baloo font-extrabold bg-[#1F3D20]/10 text-[#1F3D20] uppercase tracking-wide">
+                        {{ $user->role }}
+                    </span>
+                </div>
             </div>
 
             <!-- Change Password Form Section -->
-            <div class="border-t border-[#1F3D20]/10 pt-3 space-y-3">
-                <h4 class="font-baloo font-bold text-sm text-[#1F3D20] flex items-center gap-1.5">
-                    <span>{{ __('profile.change_password_title') }}</span>
-                </h4>
+            <div class="space-y-3.5 pt-1">
+                <div class="flex items-center gap-2">
+                    <span class="text-sm">🔒</span>
+                    <h4 class="font-baloo font-bold text-xs uppercase tracking-wider text-[#1F3D20]">
+                        {{ __('profile.change_password_title') }}
+                    </h4>
+                </div>
 
                 @if (session('status'))
-                    <div class="p-3 rounded-xl bg-emerald-100 border border-emerald-400 text-emerald-800 text-xs font-nunito font-bold">
-                        ✓ {{ session('status') }}
+                    <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-nunito font-bold flex items-center gap-2">
+                        <svg class="w-4 h-4 shrink-0 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                        </svg>
+                        <span>{{ session('status') }}</span>
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('profile.password.update') }}" class="space-y-2.5">
+                <form method="POST" action="{{ route('profile.password.update') }}" class="space-y-3">
                     @csrf
                     <div>
-                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.current_password_label') }}</label>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.current_password_label') }}</label>
                         <div class="relative">
-                            <input type="password" id="viewer_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('viewer_current_password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
+                            <input type="password" id="viewer_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
+                            <button type="button" onclick="togglePasswordVisibility('viewer_current_password', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -304,15 +357,15 @@
                             </button>
                         </div>
                         @error('current_password')
-                            <span class="text-[10px] text-red-600 font-nunito font-bold block mt-0.5">{{ $message }}</span>
+                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">⚠️ {{ $message }}</span>
                         @enderror
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.new_password_label') }}</label>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.new_password_label') }}</label>
                         <div class="relative">
-                            <input type="password" id="viewer_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('viewer_password', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
+                            <input type="password" id="viewer_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
+                            <button type="button" onclick="togglePasswordVisibility('viewer_password', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -323,15 +376,15 @@
                             </button>
                         </div>
                         @error('password')
-                            <span class="text-[10px] text-red-600 font-nunito font-bold block mt-0.5">{{ $message }}</span>
+                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">⚠️ {{ $message }}</span>
                         @enderror
                     </div>
 
                     <div>
-                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-0.5">{{ __('profile.confirm_new_password_label') }}</label>
+                        <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.confirm_new_password_label') }}</label>
                         <div class="relative">
-                            <input type="password" id="viewer_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full py-2.5 pl-3 pr-10 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white focus:outline-none focus:border-[#1F3D20]" />
-                            <button type="button" onclick="togglePasswordVisibility('viewer_password_confirmation', this)" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#1F3D20] transition-colors p-1 cursor-pointer focus:outline-none flex items-center justify-center" title="Tampilkan/Sembunyikan Kata Sandi">
+                            <input type="password" id="viewer_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
+                            <button type="button" onclick="togglePasswordVisibility('viewer_password_confirmation', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
                                 <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
@@ -343,18 +396,19 @@
                         </div>
                     </div>
 
-                    <div class="pt-1">
-                        <button type="submit" class="w-full py-2 rounded-xl bg-[#1F3D20] hover:bg-[#142815] text-[#F5F4DA] font-baloo font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-xs">
+                    <div class="pt-2">
+                        <button type="submit" class="w-full py-2.5 rounded-xl bg-[#1F3D20] hover:bg-[#142815] text-[#F5F4DA] font-baloo font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm active:scale-[0.99]">
                             <span>🔑 {{ __('profile.update_password_button') }}</span>
                         </button>
                     </div>
                 </form>
             </div>
 
-            <div class="pt-2 border-t border-[#1F3D20]/10">
+            <!-- Logout Section -->
+            <div class="pt-3 border-t border-[#1F3D20]/10">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="w-full py-2.5 rounded-xl bg-[#C0392B] hover:bg-[#A93226] text-white font-baloo font-bold text-xs transition-colors cursor-pointer flex items-center justify-center gap-2">
+                    <button type="submit" class="w-full py-2.5 rounded-xl bg-white border border-[#C0392B]/30 hover:bg-[#C0392B] text-[#C0392B] hover:text-white font-baloo font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-xs active:scale-[0.99]">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                         </svg>

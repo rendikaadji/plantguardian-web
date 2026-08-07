@@ -42,6 +42,7 @@ Route::middleware(['auth:sanctum,web', 'viewer'])->group(function () {
     // Shop Routes
     Route::get('/shop', [ShopController::class, 'index']);
     Route::post('/shop/buy', [ShopController::class, 'buy']);
+    Route::post('/shop/equip-avatar', [ShopController::class, 'equipAvatar']);
 
     // Wallet Routes
     Route::get('/wallet/balance', [WalletController::class, 'balance']);

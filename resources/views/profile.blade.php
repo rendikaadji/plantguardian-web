@@ -14,10 +14,13 @@
     @if(auth()->check() && auth()->user()->role === 'ranger')
         <!-- RANGER DEDICATED PROFILE CARD -->
         <div class="flex flex-col items-center text-center space-y-4 pt-2">
-            <div class="relative">
+            <div class="relative group">
                 <div class="w-32 h-32 rounded-full border-4 border-[#8B6A4C] p-1 bg-[#FBFAF0] shadow-md overflow-hidden">
-                    <img src="{{ asset('images/guardian_avatar.png') }}" alt="Avatar" class="w-full h-full object-cover rounded-full" />
+                    <img id="ranger-profile-avatar-img" src="{{ auth()->user()->avatar_url }}" alt="Avatar" class="w-full h-full object-cover rounded-full" />
                 </div>
+                <button type="button" onclick="openAvatarModal()" class="absolute bottom-0 right-0 p-2 rounded-full bg-[#1F3D20] text-[#F5F4DA] border-2 border-[#F5F4DA] shadow-md hover:bg-[#8B6A4C] transition-all cursor-pointer" title="Ubah Foto Profil">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </button>
             </div>
 
             <div class="space-y-1">
@@ -155,11 +158,14 @@
         <!-- VIEWER PROFILE -->
         <!-- 1. Profile Avatar & User Header -->
         <div class="flex flex-col items-center text-center space-y-3 pt-2">
-            <div class="relative">
+            <div class="relative group">
                 <div class="w-32 h-32 rounded-full border-4 border-[#1F3D20] p-1 bg-[#FBFAF0] shadow-md overflow-hidden">
-                    <img src="{{ asset('images/guardian_avatar.png') }}" alt="Avatar" class="w-full h-full object-cover rounded-full" />
+                    <img id="viewer-profile-avatar-img" src="{{ auth()->user()->avatar_url }}" alt="Avatar" class="w-full h-full object-cover rounded-full" />
                 </div>
-                <span class="absolute bottom-1 right-2 bg-[#1F3D20] text-[#F5F4DA] text-xs font-baloo font-extrabold px-2.5 py-0.5 rounded-full border-2 border-[#F5F4DA] shadow-xs">
+                <button type="button" onclick="openAvatarModal()" class="absolute bottom-0 right-0 p-2 rounded-full bg-[#1F3D20] text-[#F5F4DA] border-2 border-[#F5F4DA] shadow-md hover:bg-[#8B6A4C] transition-all cursor-pointer" title="Ubah Foto Profil">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </button>
+                <span class="absolute top-0 right-0 bg-[#1F3D20] text-[#F5F4DA] text-xs font-baloo font-extrabold px-2.5 py-0.5 rounded-full border-2 border-[#F5F4DA] shadow-xs">
                     LVL {{ $currentLevel }}
                 </span>
             </div>
@@ -484,10 +490,90 @@
         </form>
     </div>
 </div>
+
+<!-- Avatar Selection Modal -->
+<div id="avatar-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 hidden">
+    <div class="card-gg bg-[#FBFAF0] w-full max-w-md p-6 space-y-4 rounded-3xl relative shadow-2xl border-2 border-[#1F3D20]/20">
+        <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3">
+            <h3 class="font-baloo font-extrabold text-lg text-[#1F3D20] flex items-center gap-2">
+                <span>🖼️</span> Pilih Foto Profil
+            </h3>
+            <button type="button" onclick="closeAvatarModal()" class="w-8 h-8 rounded-full bg-[#E2E1C4] hover:bg-[#C0392B] hover:text-white flex items-center justify-center transition-colors text-sm font-bold cursor-pointer">
+                ✕
+            </button>
+        </div>
+
+        <p class="text-xs font-nunito text-[#6B6B55]">
+            Ganti foto profil yang telah kamu miliki atau dapatkan varian foto profil eksklusif lainnya di Toko!
+        </p>
+
+        <div class="grid grid-cols-2 gap-3 max-h-80 overflow-y-auto p-1">
+            @php
+                $availableAvatars = [
+                    ['key' => 'default', 'name' => 'Default Guardian', 'url' => asset('images/avatars/guardian_avatar.png'), 'owned' => true],
+                    ['key' => 'profile1', 'name' => 'Foto Profil #1', 'url' => asset('images/avatars/profile1.png'), 'owned' => in_array('profile1', $ownedAvatarCodes ?? [])],
+                    ['key' => 'profile2', 'name' => 'Foto Profil #2', 'url' => asset('images/avatars/profile2.png'), 'owned' => in_array('profile2', $ownedAvatarCodes ?? [])],
+                    ['key' => 'profile3', 'name' => 'Foto Profil #3', 'url' => asset('images/avatars/profile3.png'), 'owned' => in_array('profile3', $ownedAvatarCodes ?? [])],
+                ];
+                $currentAvatarKey = auth()->user()->avatar ?? 'default';
+            @endphp
+
+            @foreach($availableAvatars as $av)
+                <div class="border border-[#1F3D20]/15 rounded-2xl p-3 flex flex-col items-center text-center bg-white shadow-xs space-y-2">
+                    <div class="w-16 h-16 rounded-full border-2 border-[#1F3D20] p-0.5 overflow-hidden">
+                        <img src="{{ $av['url'] }}" alt="{{ $av['name'] }}" class="w-full h-full object-cover rounded-full" />
+                    </div>
+                    <span class="font-baloo font-bold text-xs text-[#1F3D20] line-clamp-1">{{ $av['name'] }}</span>
+
+                    @if($av['key'] === $currentAvatarKey)
+                        <span class="w-full py-1 rounded-full bg-emerald-700 text-[#F5F4DA] text-[10px] font-baloo font-extrabold text-center block">
+                            ✓ Dipakai
+                        </span>
+                    @elseif($av['owned'])
+                        <button type="button" onclick="equipAvatarFromModal('{{ $av['key'] }}')" class="w-full py-1 rounded-full bg-[#1F3D20] text-[#F5F4DA] text-xs font-baloo font-bold hover:bg-[#8B6A4C] transition-colors cursor-pointer">
+                            Gunakan
+                        </button>
+                    @else
+                        <a href="{{ route('shop') }}" class="w-full py-1 rounded-full bg-[#FEF0C7] text-[#8B5A2B] border border-[#8B5A2B]/20 text-[11px] font-baloo font-bold hover:bg-[#8B6A4C] hover:text-white transition-colors text-center inline-block">
+                            🛒 Beli 3100 NC
+                        </a>
+                    @endif
+                </div>
+            @endforeach
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
 <script>
+    function openAvatarModal() {
+        document.getElementById('avatar-modal')?.classList.remove('hidden');
+    }
+
+    function closeAvatarModal() {
+        document.getElementById('avatar-modal')?.classList.add('hidden');
+    }
+
+    async function equipAvatarFromModal(avatarKey) {
+        try {
+            const response = await window.apiClient.post('/shop/equip-avatar', { avatar_code: avatarKey });
+            if (window.showToast) {
+                window.showToast(response.message, 'success');
+            } else {
+                alert(response.message);
+            }
+            window.location.reload();
+        } catch (err) {
+            const msg = err.response?.data?.message || err.message || 'Gagal mengganti foto profil.';
+            if (window.showToast) {
+                window.showToast(msg, 'error');
+            } else {
+                alert(msg);
+            }
+        }
+    }
+
     function togglePasswordVisibility(inputId, btn) {
         const input = document.getElementById(inputId);
         if (!input) return;

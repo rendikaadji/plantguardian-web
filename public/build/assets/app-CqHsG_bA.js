@@ -454,25 +454,36 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
             ${r}
           </button>
         </div>
-      `}L.marker([e.latitude,e.longitude],{icon:d}).addTo(this.markersGroup).bindPopup(f)}},c=class{constructor(e={}){this.containerElement=e.containerElement||document.querySelector(`#shop-container`),this.catalog=[],this.inventory=[],this.userCoin=0,this.activeCategory=`all`}async init(){await this.loadShopData(),this.bindEvents()}async loadShopData(){try{let t=await e.get(`/shop`);this.catalog=t.catalog||[],this.inventory=t.inventory||[],this.userCoin=t.user_coin||0,typeof window.updateUserCoin==`function`&&window.updateUserCoin(this.userCoin),this.render()}catch(e){console.error(`Gagal memuat data Shop:`,e),this.containerElement&&(this.containerElement.innerHTML=`
+      `}L.marker([e.latitude,e.longitude],{icon:d}).addTo(this.markersGroup).bindPopup(f)}},c=class{constructor(e={}){this.containerElement=e.containerElement||document.querySelector(`#shop-container`),this.catalog=[],this.inventory=[],this.userCoin=0,this.activeCategory=`all`,this.currentAvatar=`default`}async init(){await this.loadShopData(),this.bindEvents()}async loadShopData(){try{let t=await e.get(`/shop`);this.catalog=t.catalog||[],this.inventory=t.inventory||[],this.userCoin=t.user_coin||0,this.currentAvatar=t.current_avatar||`default`,typeof window.updateUserCoin==`function`&&window.updateUserCoin(this.userCoin),this.render()}catch(e){console.error(`Gagal memuat data Shop:`,e),this.containerElement&&(this.containerElement.innerHTML=`
           <div class="text-center py-12 text-[#6B6B55]">
             <p>Gagal memuat katalog toko. Silakan coba lagi nanti.</p>
           </div>
-        `)}}bindEvents(){this.containerElement&&this.containerElement.addEventListener(`click`,async e=>{let t=e.target.closest(`[data-category]`);if(t){this.activeCategory=t.dataset.category,this.renderCategoryFilters(),this.renderItems();return}let n=e.target.closest(`.buy-btn`);if(n){let e=n.dataset.itemCode;await this.buyItem(e,n)}})}async buyItem(t,n){if(!t||n.disabled)return;let r=n.innerHTML;n.disabled=!0,n.innerHTML=`<span class="animate-spin inline-block mr-1">⏳</span> Membeli...`;try{let n=await e.post(`/shop/buy`,{item_code:t});this.userCoin=n.user_coin,typeof window.updateUserCoin==`function`&&window.updateUserCoin(this.userCoin);let r=n.inventory_item,i=this.inventory.findIndex(e=>e.item_code===t);i>=0?this.inventory[i]=r:this.inventory.push(r),this.showToast(n.message||`Pembelian berhasil!`,`success`),this.render()}catch(e){let t=e.response?.data?.message||e.message||`Gagal membeli item.`;this.showToast(t,`error`),n.disabled=!1,n.innerHTML=r}}showToast(e,t=`success`){typeof window.showToast==`function`?window.showToast(e,t):alert(e)}renderCategoryFilters(){}renderItems(){let e=document.querySelector(`#shop-items-grid`);if(!e)return;let t=this.catalog;if(t.length===0){e.innerHTML=`
+        `)}}bindEvents(){this.containerElement&&this.containerElement.addEventListener(`click`,async e=>{let t=e.target.closest(`[data-category]`);if(t){this.activeCategory=t.dataset.category,this.renderCategoryFilters(),this.renderItems();return}let n=e.target.closest(`.buy-btn`);if(n){let e=n.dataset.itemCode;await this.buyItem(e,n);return}let r=e.target.closest(`.equip-avatar-btn`);if(r){let e=r.dataset.avatarKey;await this.equipAvatar(e,r)}})}async buyItem(t,n){if(!t||n.disabled)return;let r=n.innerHTML;n.disabled=!0,n.innerHTML=`<span class="animate-spin inline-block mr-1">⏳</span> Membeli...`;try{let n=await e.post(`/shop/buy`,{item_code:t});this.userCoin=n.user_coin,typeof window.updateUserCoin==`function`&&window.updateUserCoin(this.userCoin);let r=n.inventory_item,i=this.inventory.findIndex(e=>e.item_code===t);i>=0?this.inventory[i]=r:this.inventory.push(r),this.showToast(n.message||`Pembelian berhasil!`,`success`),this.render()}catch(e){let t=e.response?.data?.message||e.message||`Gagal membeli item.`;this.showToast(t,`error`),n.disabled=!1,n.innerHTML=r}}async equipAvatar(t,n){if(!t||n.disabled)return;let r=n.innerHTML;n.disabled=!0,n.innerHTML=`<span class="animate-spin inline-block mr-1">⏳</span>...`;try{let n=await e.post(`/shop/equip-avatar`,{avatar_code:t});this.currentAvatar=n.current_avatar,this.showToast(n.message||`Foto profil diperbarui!`,`success`),this.render()}catch(e){let t=e.response?.data?.message||e.message||`Gagal memperbarui foto profil.`;this.showToast(t,`error`),n.disabled=!1,n.innerHTML=r}}showToast(e,t=`success`){typeof window.showToast==`function`?window.showToast(e,t):alert(e)}renderCategoryFilters(){}renderItems(){let e=document.querySelector(`#shop-items-grid`);if(!e)return;let t=this.catalog;if(t.length===0){e.innerHTML=`
         <div class="col-span-full text-center py-12 text-[#6B6B55]">
           <p class="font-baloo font-bold text-base">${(window.translations||{}).out_of_stock||`Stok Habis`}</p>
         </div>
-      `;return}e.innerHTML=t.map(e=>{let t=this.inventory.find(t=>t.item_code===e.item_code),n=t?t.quantity:0,r=this.userCoin>=e.price;return`
+      `;return}e.innerHTML=t.map(e=>{let t=this.inventory.find(t=>t.item_code===e.item_code||t.item_code===e.avatar_key),n=t?t.quantity:0,r=this.userCoin>=e.price,i=e.item_type===`avatar`&&this.currentAvatar===e.avatar_key;return`
         <div class="card-gg card-gg-hover p-5 flex flex-col justify-between relative group">
           <!-- Top Badge & Owned Counter -->
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-3xl p-2 rounded-2xl bg-[#E7E6BE]/60 border border-[#1F3D20]/10 shadow-xs inline-block">
-                ${e.icon}
-              </span>
-              ${n>0?`
+              ${e.item_type===`avatar`&&e.image?`
+                <div class="w-14 h-14 rounded-full border-2 border-[#1F3D20] p-0.5 bg-[#FBFAF0] shadow-xs overflow-hidden shrink-0">
+                  <img src="${e.image}" alt="${e.name}" class="w-full h-full object-cover rounded-full" />
+                </div>
+              `:`
+                <span class="text-3xl p-2 rounded-2xl bg-[#E7E6BE]/60 border border-[#1F3D20]/10 shadow-xs inline-block">
+                  ${e.icon}
+                </span>
+              `}
+
+              ${i?`
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-700 text-[#F5F4DA] text-[10px] font-baloo font-extrabold shadow-xs">
+                  ✓ Dipakai
+                </span>
+              `:n>0?`
                 <span class="px-2.5 py-0.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] text-[10px] font-baloo font-extrabold shadow-xs">
-                  Dimiliki: x${n}
+                  Dimiliki
                 </span>
               `:`
                 <span class="px-2.5 py-0.5 rounded-full bg-[#E2E1C4] text-[#6B6B55] text-[10px] font-baloo font-extrabold">
@@ -490,6 +501,12 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
             </p>
 
             <div class="flex flex-wrap gap-1.5 mb-4">
+              ${e.item_type===`avatar`?`
+                <span class="px-2 py-0.5 rounded-md bg-[#D4E6C4] text-[#1F3D20] text-[10px] font-baloo font-bold">
+                  🖼️ Foto Profil Eksklusif
+                </span>
+              `:``}
+
               ${e.item_type===`seed`&&e.growth_duration_minutes?`
                 <span class="px-2 py-0.5 rounded-md bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-bold">
                   ⏱️ ${e.growth_duration_minutes}m Tumbuh
@@ -539,13 +556,28 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
               <span class="text-[10px] text-[#6B6B55]">NC</span>
             </div>
 
-            <button 
-              data-item-code="${e.item_code}"
-              class="buy-btn btn-gg-primary text-xs py-1.5 px-4 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${r?``:`bg-[#8B6A4C] opacity-60`}"
-              ${r?``:`title="Coin tidak cukup"`}
-            >
-              ${r?`Beli Item`:`Coin Kurang`}
-            </button>
+            ${e.item_type===`avatar`&&n>0?`
+              ${i?`
+                <button disabled class="btn-gg-secondary opacity-80 text-xs py-1.5 px-4 cursor-default">
+                  ✓ Dipakai
+                </button>
+              `:`
+                <button 
+                  data-avatar-key="${e.avatar_key}"
+                  class="equip-avatar-btn btn-gg-secondary text-xs py-1.5 px-4 cursor-pointer"
+                >
+                  Gunakan
+                </button>
+              `}
+            `:`
+              <button 
+                data-item-code="${e.item_code}"
+                class="buy-btn btn-gg-primary text-xs py-1.5 px-4 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${r?``:`bg-[#8B6A4C] opacity-60`}"
+                ${r?``:`title="Coin tidak cukup"`}
+              >
+                ${r?`Beli Item`:`Coin Kurang`}
+              </button>
+            `}
           </div>
         </div>
       `}).join(``)}render(){this.renderCategoryFilters(),this.renderItems()}},l=class{constructor(){this.friends=[],this.incomingRequests=[],this.itemRequests=[],this.inventory=[]}async init(){await this.loadData(),this.bindEvents()}async loadData(){try{let t=await e.get(`/friends`);(t.success||t.friends)&&(this.friends=t.friends||[],this.incomingRequests=t.incoming_requests||[],this.itemRequests=t.item_requests||[],this.inventory=t.inventory||[],this.renderFriendsList(),this.renderIncomingRequests(),this.renderItemRequests())}catch(e){console.warn(`[FriendsModule] Gagal memuat data aliansi teman:`,e)}}bindEvents(){let e=document.querySelector(`#friend-search-input`);if(e){let t=null;e.addEventListener(`input`,e=>{clearTimeout(t),t=setTimeout(()=>this.searchUsers(e.target.value),350)})}}renderFriendsList(){let e=document.querySelector(`#friends-list-container`);if(e){if(this.friends.length===0){e.innerHTML=`

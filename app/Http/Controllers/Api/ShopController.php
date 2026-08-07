@@ -66,9 +66,40 @@ class ShopController extends Controller
                 'time_reduction_minutes' => 10,
                 'usage_label' => $isEn ? 'Speedup Growth 10m' : 'Potong Waktu Tumbuh 10m',
             ],
+        $avatarItems = [
+            [
+                'item_code' => 'avatar_profile1',
+                'name' => $isEn ? 'Profile Avatar #1' : 'Foto Profil #1',
+                'item_type' => 'avatar',
+                'price' => 3100,
+                'icon' => '🖼️',
+                'image' => asset('images/avatars/profile1.png'),
+                'avatar_key' => 'profile1',
+                'description' => $isEn ? 'Exclusive profile picture edition #1.' : 'Foto profil edisi eksklusif #1.',
+            ],
+            [
+                'item_code' => 'avatar_profile2',
+                'name' => $isEn ? 'Profile Avatar #2' : 'Foto Profil #2',
+                'item_type' => 'avatar',
+                'price' => 3100,
+                'icon' => '🖼️',
+                'image' => asset('images/avatars/profile2.png'),
+                'avatar_key' => 'profile2',
+                'description' => $isEn ? 'Exclusive profile picture edition #2.' : 'Foto profil edisi eksklusif #2.',
+            ],
+            [
+                'item_code' => 'avatar_profile3',
+                'name' => $isEn ? 'Profile Avatar #3' : 'Foto Profil #3',
+                'item_type' => 'avatar',
+                'price' => 3100,
+                'icon' => '🖼️',
+                'image' => asset('images/avatars/profile3.png'),
+                'avatar_key' => 'profile3',
+                'description' => $isEn ? 'Exclusive profile picture edition #3.' : 'Foto profil edisi eksklusif #3.',
+            ],
         ];
 
-        return array_merge($catalog, $otherItems);
+        return array_merge($catalog, $otherItems, $avatarItems);
     }
 
     /**
@@ -85,6 +116,8 @@ class ShopController extends Controller
             'inventory' => $userInventory,
             'user_coin' => $user->coin,
             'user_exp' => $user->exp,
+            'current_avatar' => $user->avatar ?? 'default',
+            'avatar_url' => $user->avatar_url,
         ]);
     }
 
@@ -135,5 +168,52 @@ class ShopController extends Controller
         } catch (Exception $e) {
             return response()->json(['message' => $e->getMessage()], 400);
         }
+    }
+
+    /**
+     * Equip or change profile avatar.
+     */
+    public function equipAvatar(Request $request): JsonResponse
+    {
+        $request->validate([
+            'avatar_code' => 'required|string',
+        ]);
+
+        $user = $request->user();
+        $avatarCode = $request->input('avatar_code');
+
+        if ($avatarCode === 'default' || $avatarCode === 'guardian_avatar') {
+            $user->update(['avatar' => null]);
+            return response()->json([
+                'message' => 'Foto profil diubah ke default.',
+                'avatar_url' => $user->fresh()->avatar_url,
+                'current_avatar' => 'default',
+            ]);
+        }
+
+        // Clean up code format if item_code is avatar_profile1 or profile1
+        $cleanKey = str_replace('avatar_', '', $avatarCode);
+        $itemCode = str_starts_with($avatarCode, 'avatar_') ? $avatarCode : 'avatar_' . $avatarCode;
+
+        // Check if user owns the avatar item in inventory
+        $hasItem = InventoryItem::where('user_id', $user->id)
+            ->where(function ($q) use ($itemCode, $cleanKey) {
+                $q->where('item_code', $itemCode)
+                  ->orWhere('item_code', $cleanKey);
+            })
+            ->where('quantity', '>', 0)
+            ->exists();
+
+        if (!$hasItem) {
+            return response()->json(['message' => 'Anda belum memiliki foto profil ini. Silakan beli di Toko.'], 403);
+        }
+
+        $user->update(['avatar' => $cleanKey]);
+
+        return response()->json([
+            'message' => 'Foto profil berhasil diperbarui!',
+            'avatar_url' => $user->fresh()->avatar_url,
+            'current_avatar' => $cleanKey,
+        ]);
     }
 }

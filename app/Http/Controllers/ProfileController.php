@@ -88,6 +88,20 @@ class ProfileController extends Controller
         // Alliance Invitation Code
         $allianceCode = sprintf('PG-%05d', $user->id);
 
+        // User owned avatars
+        $ownedAvatarCodes = \App\Models\InventoryItem::where('user_id', $user->id)
+            ->where('quantity', '>', 0)
+            ->where(function ($q) {
+                $q->where('item_type', 'avatar')
+                  ->orWhere('item_code', 'like', 'avatar_%')
+                  ->orWhereIn('item_code', ['profile1', 'profile2', 'profile3']);
+            })
+            ->pluck('item_code')
+            ->map(fn ($code) => str_replace('avatar_', '', $code))
+            ->unique()
+            ->values()
+            ->toArray();
+
         return view('profile', compact(
             'user',
             'currentLevel',
@@ -101,7 +115,8 @@ class ProfileController extends Controller
             'badges',
             'hydrationPercent',
             'vitalityPercent',
-            'allianceCode'
+            'allianceCode',
+            'ownedAvatarCodes'
         ));
     }
 

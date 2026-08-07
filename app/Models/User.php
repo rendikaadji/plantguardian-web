@@ -23,7 +23,26 @@ class User extends Authenticatable
         'exp',
         'coin',
         'locale',
+        'avatar',
     ];
+
+    /**
+     * Get user avatar URL.
+     */
+    public function getAvatarUrlAttribute(): string
+    {
+        if (!empty($this->avatar)) {
+            $filename = str_ends_with($this->avatar, '.png') || str_ends_with($this->avatar, '.jpeg') || str_ends_with($this->avatar, '.jpg')
+                ? $this->avatar
+                : $this->avatar . '.png';
+
+            if (file_exists(public_path("images/avatars/{$filename}"))) {
+                return asset("images/avatars/{$filename}");
+            }
+        }
+
+        return asset('images/avatars/guardian_avatar.png');
+    }
 
     protected $hidden = [
         'password',

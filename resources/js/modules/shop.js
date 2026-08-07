@@ -12,6 +12,7 @@ export class ShopModule {
     this.inventory = [];
     this.userCoin = 0;
     this.activeCategory = 'all';
+    this.currentAvatar = 'default';
   }
 
   async init() {
@@ -25,6 +26,7 @@ export class ShopModule {
       this.catalog = response.catalog || [];
       this.inventory = response.inventory || [];
       this.userCoin = response.user_coin || 0;
+      this.currentAvatar = response.current_avatar || 'default';
 
       // Synchronize all coin displays on page
       if (typeof window.updateUserCoin === 'function') {
@@ -62,6 +64,14 @@ export class ShopModule {
       if (buyBtn) {
         const itemCode = buyBtn.dataset.itemCode;
         await this.buyItem(itemCode, buyBtn);
+        return;
+      }
+
+      // Equip Avatar Button
+      const equipBtn = e.target.closest('.equip-avatar-btn');
+      if (equipBtn) {
+        const avatarKey = equipBtn.dataset.avatarKey;
+        await this.equipAvatar(avatarKey, equipBtn);
       }
     });
   }
@@ -102,6 +112,26 @@ export class ShopModule {
     }
   }
 
+  async equipAvatar(avatarKey, buttonElement) {
+    if (!avatarKey || buttonElement.disabled) return;
+
+    const originalText = buttonElement.innerHTML;
+    buttonElement.disabled = true;
+    buttonElement.innerHTML = `<span class="animate-spin inline-block mr-1">⏳</span>...`;
+
+    try {
+      const response = await apiClient.post('/shop/equip-avatar', { avatar_code: avatarKey });
+      this.currentAvatar = response.current_avatar;
+      this.showToast(response.message || 'Foto profil diperbarui!', 'success');
+      this.render();
+    } catch (error) {
+      const errorMsg = error.response?.data?.message || error.message || 'Gagal memperbarui foto profil.';
+      this.showToast(errorMsg, 'error');
+      buttonElement.disabled = false;
+      buttonElement.innerHTML = originalText;
+    }
+  }
+
   showToast(message, type = 'success') {
     if (typeof window.showToast === 'function') {
       window.showToast(message, type);
@@ -131,21 +161,33 @@ export class ShopModule {
     }
 
     itemsGrid.innerHTML = filteredItems.map(item => {
-      const invItem = this.inventory.find(i => i.item_code === item.item_code);
+      const invItem = this.inventory.find(i => i.item_code === item.item_code || i.item_code === item.avatar_key);
       const ownedQty = invItem ? invItem.quantity : 0;
       const canAfford = this.userCoin >= item.price;
+      const isEquipped = item.item_type === 'avatar' && this.currentAvatar === item.avatar_key;
 
       return `
         <div class="card-gg card-gg-hover p-5 flex flex-col justify-between relative group">
           <!-- Top Badge & Owned Counter -->
           <div>
             <div class="flex items-center justify-between mb-3">
-              <span class="text-3xl p-2 rounded-2xl bg-[#E7E6BE]/60 border border-[#1F3D20]/10 shadow-xs inline-block">
-                ${item.icon}
-              </span>
-              ${ownedQty > 0 ? `
+              ${item.item_type === 'avatar' && item.image ? `
+                <div class="w-14 h-14 rounded-full border-2 border-[#1F3D20] p-0.5 bg-[#FBFAF0] shadow-xs overflow-hidden shrink-0">
+                  <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover rounded-full" />
+                </div>
+              ` : `
+                <span class="text-3xl p-2 rounded-2xl bg-[#E7E6BE]/60 border border-[#1F3D20]/10 shadow-xs inline-block">
+                  ${item.icon}
+                </span>
+              `}
+
+              ${isEquipped ? `
+                <span class="px-2.5 py-0.5 rounded-full bg-emerald-700 text-[#F5F4DA] text-[10px] font-baloo font-extrabold shadow-xs">
+                  ✓ Dipakai
+                </span>
+              ` : ownedQty > 0 ? `
                 <span class="px-2.5 py-0.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] text-[10px] font-baloo font-extrabold shadow-xs">
-                  Dimiliki: x${ownedQty}
+                  Dimiliki
                 </span>
               ` : `
                 <span class="px-2.5 py-0.5 rounded-full bg-[#E2E1C4] text-[#6B6B55] text-[10px] font-baloo font-extrabold">
@@ -163,6 +205,12 @@ export class ShopModule {
             </p>
 
             <div class="flex flex-wrap gap-1.5 mb-4">
+              ${item.item_type === 'avatar' ? `
+                <span class="px-2 py-0.5 rounded-md bg-[#D4E6C4] text-[#1F3D20] text-[10px] font-baloo font-bold">
+                  🖼️ Foto Profil Eksklusif
+                </span>
+              ` : ''}
+
               ${item.item_type === 'seed' && item.growth_duration_minutes ? `
                 <span class="px-2 py-0.5 rounded-md bg-[#E2E1C4] text-[#1F3D20] text-[10px] font-baloo font-bold">
                   ⏱️ ${item.growth_duration_minutes}m Tumbuh
@@ -212,13 +260,28 @@ export class ShopModule {
               <span class="text-[10px] text-[#6B6B55]">NC</span>
             </div>
 
-            <button 
-              data-item-code="${item.item_code}"
-              class="buy-btn btn-gg-primary text-xs py-1.5 px-4 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${!canAfford ? 'bg-[#8B6A4C] opacity-60' : ''}"
-              ${!canAfford ? 'title="Coin tidak cukup"' : ''}
-            >
-              ${canAfford ? 'Beli Item' : 'Coin Kurang'}
-            </button>
+            ${item.item_type === 'avatar' && ownedQty > 0 ? `
+              ${isEquipped ? `
+                <button disabled class="btn-gg-secondary opacity-80 text-xs py-1.5 px-4 cursor-default">
+                  ✓ Dipakai
+                </button>
+              ` : `
+                <button 
+                  data-avatar-key="${item.avatar_key}"
+                  class="equip-avatar-btn btn-gg-secondary text-xs py-1.5 px-4 cursor-pointer"
+                >
+                  Gunakan
+                </button>
+              `}
+            ` : `
+              <button 
+                data-item-code="${item.item_code}"
+                class="buy-btn btn-gg-primary text-xs py-1.5 px-4 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${!canAfford ? 'bg-[#8B6A4C] opacity-60' : ''}"
+                ${!canAfford ? 'title="Coin tidak cukup"' : ''}
+              >
+                ${canAfford ? 'Beli Item' : 'Coin Kurang'}
+              </button>
+            `}
           </div>
         </div>
       `;

@@ -19,6 +19,16 @@ class AchievementControllerTest extends TestCase
             'coin' => 50,
         ]);
 
+        $sighting = \App\Models\PlantSighting::factory()->create([
+            'verification_status' => 'verified',
+        ]);
+
+        \App\Models\PlantDiscovery::create([
+            'user_id' => $user->id,
+            'plant_sighting_id' => $sighting->id,
+            'discovered_at' => now(),
+        ]);
+
         $response = $this->actingAs($user)->postJson('/api/achievements/claim', [
             'achievement_code' => 'flora_explorer',
         ]);

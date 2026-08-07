@@ -49,13 +49,21 @@ export default class MapManager {
       this.setAutoFollow(false);
     });
 
-    // Native Leaflet Zoom & Viewport Synchronization
-    this.map.on('zoomend viewreset resize', () => {
-      if (this.userLocationMarker && this.userLocationCircle) {
-        const pos = this.userLocationMarker.getLatLng();
-        this.userLocationCircle.setLatLng(pos);
+    // Native Leaflet Zoom & Viewport Synchronization (Locked to Ground-Truth GPS)
+    const syncUserZonePosition = () => {
+      if (this.userLat !== null && this.userLng !== null) {
+        const pos = L.latLng(this.userLat, this.userLng);
+        if (this.userLocationMarker) {
+          this.userLocationMarker.setLatLng(pos);
+        }
+        if (this.userLocationCircle) {
+          this.userLocationCircle.setLatLng(pos);
+          this.userLocationCircle.setRadius(50);
+        }
       }
-    });
+    };
+
+    this.map.on('zoomstart zoom zoomanim zoomend viewreset move moveend resize', syncUserZonePosition);
 
     // Setup Recenter & Auto-Follow Button Listener
     const recenterBtn = document.getElementById('recenter-gps-btn');
@@ -100,6 +108,12 @@ export default class MapManager {
 
     this.smoothedHeading = (this.smoothedHeading + diff * 0.2 + 360) % 360;
     this.heading = this.smoothedHeading;
+
+    // Directly update DOM transform of compass arrow without re-rendering Leaflet SVG layers
+    const arrowEl = document.querySelector('.user-gps-heading-arrow');
+    if (arrowEl) {
+      arrowEl.style.transform = `rotate(${Math.round(this.heading)}deg)`;
+    }
   }
 
   startCompassListener() {
@@ -113,9 +127,6 @@ export default class MapManager {
 
       if (compassHeading !== null && !isNaN(compassHeading)) {
         this.updateHeading(compassHeading);
-        if (this.userLat && this.userLng) {
-          this.addUserMarker(this.userLat, this.userLng);
-        }
       }
     };
 
@@ -244,6 +255,8 @@ export default class MapManager {
 
   addUserMarker(lat, lng) {
     if (!this.map || lat == null || lng == null) return;
+    const isFirstFix = (this.userLat === null || this.userLng === null);
+
     this.userLat = lat;
     this.userLng = lng;
 
@@ -260,8 +273,8 @@ export default class MapManager {
           <!-- Pulsing Radar Outer Ring -->
           <div style="position:absolute;inset:4px;background-color:#3B82F6;border-radius:9999px;opacity:0.3;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
 
-          <!-- Directional Cone Arrow Pointer (Geometrically Symmetric around center [20,20]) -->
-          <div style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.4s ease-out;pointer-events:none;display:flex;align-items:center;justify-content:center;">
+          <!-- Directional Cone Arrow Pointer -->
+          <div class="user-gps-heading-arrow" style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.2s ease-out;pointer-events:none;display:flex;align-items:center;justify-content:center;">
             <svg viewBox="0 0 40 40" style="width:40px;height:40px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
               <path d="M20 3 L30 22 L20 17 L10 22 Z" fill="#2563EB" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" />
             </svg>
@@ -275,16 +288,10 @@ export default class MapManager {
       iconAnchor: [20, 20]
     });
 
-    // Smooth Camera Auto-Follow as User Walks
-    if (this.isAutoFollow && this.map) {
-      if (this.lastLat === null || this.calculateDistanceMeters(this.lastLat, this.lastLng, lat, lng) > 1.5) {
-        this.map.panTo(targetLatLng, { animate: true, duration: 0.8, easeLinearity: 0.25 });
-      }
-    }
-
     // 1. Update/Create 50-meter Claim Radar Circle (Always centered at exact targetLatLng)
     if (this.userLocationCircle) {
       this.userLocationCircle.setLatLng(targetLatLng);
+      this.userLocationCircle.setRadius(50);
     } else {
       this.userLocationCircle = L.circle(targetLatLng, {
         radius: 50, // 50 meters claim radius
@@ -294,22 +301,40 @@ export default class MapManager {
         weight: 2,
         dashArray: '6, 6'
       }).addTo(this.map).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:11px;color:#1F3D20;">🎯 Area Jangkauan Klaim Spesies (50 Meter)</b>');
-    }
-    if (this.userLocationCircle.bringToBack) {
-      this.userLocationCircle.bringToBack();
+
+      if (this.userLocationCircle.bringToBack) {
+        this.userLocationCircle.bringToBack();
+      }
     }
 
     // 2. Update/Create User GPS Marker (Centered at exact same LatLng)
     if (this.userLocationMarker) {
       this.userLocationMarker.setLatLng(targetLatLng);
-      this.userLocationMarker.setIcon(userIcon);
+      const arrowEl = document.querySelector('.user-gps-heading-arrow');
+      if (arrowEl) {
+        arrowEl.style.transform = `rotate(${headingDeg}deg)`;
+      } else {
+        this.userLocationMarker.setIcon(userIcon);
+      }
     } else {
       this.userLocationMarker = L.marker(targetLatLng, { icon: userIcon, zIndexOffset: 1000 })
         .addTo(this.map)
         .bindPopup(`<b style="font-family:Baloo 2,sans-serif;">📍 ${gpsText}</b>`);
+
+      if (this.userLocationMarker.bringToFront) {
+        this.userLocationMarker.bringToFront();
+      }
     }
-    if (this.userLocationMarker.bringToFront) {
-      this.userLocationMarker.bringToFront();
+
+    // Smooth Camera Auto-Follow as User Walks
+    if (this.isAutoFollow && this.map) {
+      if (this.lastLat === null || this.calculateDistanceMeters(this.lastLat, this.lastLng, lat, lng) > 1.5) {
+        this.map.panTo(targetLatLng, { animate: true, duration: 0.8, easeLinearity: 0.25 });
+      }
+    }
+
+    if (isFirstFix) {
+      this.refreshMarkers();
     }
   }
 

@@ -44,9 +44,14 @@ class DiscoveryController extends Controller
     public function claimFromMap(Request $request, int $id): JsonResponse
     {
         try {
+            $payload = array_merge(
+                ['plant_sighting_id' => $id],
+                $request->only(['latitude', 'longitude'])
+            );
+
             $discovery = $this->discoveryService->discover(
                 $request->user(),
-                ['plant_sighting_id' => $id]
+                $payload
             );
 
             $reward = $discovery->reward_summary ?? ['exp_gained' => 100, 'coin_gained' => 50];

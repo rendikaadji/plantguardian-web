@@ -230,23 +230,30 @@ export default class MapManager {
     const userIcon = L.divIcon({
       className: 'user-gps-marker',
       html: `
-        <div style="position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
-          <!-- Directional Cone Pointer Arrow -->
-          <div style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.3s ease-out;pointer-events:none;">
-            <svg viewBox="0 0 36 36" style="width:100%;height:100%;">
-              <path d="M18 2 L26 18 L18 14 L10 18 Z" fill="#2563EB" opacity="0.85" />
+        <div style="position:relative;width:56px;height:56px;display:flex;align-items:center;justify-content:center;">
+          <!-- Prominent Large Directional Pointer Cone (Rotated by heading) -->
+          <div style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.3s ease-out;pointer-events:none;display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 56 56" style="width:56px;height:56px;filter:drop-shadow(0 3px 6px rgba(0,0,0,0.35));">
+              <!-- Direction Cone Field Beam -->
+              <path d="M28 2 L42 30 L28 23 L14 30 Z" fill="url(#blueConeGrad)" stroke="#FFFFFF" stroke-width="2" stroke-linejoin="round" opacity="0.95" />
+              <defs>
+                <linearGradient id="blueConeGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stop-color="#3B82F6" />
+                  <stop offset="100%" stop-color="#1D4ED8" />
+                </linearGradient>
+              </defs>
             </svg>
           </div>
 
-          <!-- Pulsing Radar Ring -->
-          <div style="position:absolute;inset:6px;background-color:#3B82F6;border-radius:9999px;opacity:0.35;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
+          <!-- Pulsing Radar Outer Ring -->
+          <div style="position:absolute;inset:12px;background-color:#3B82F6;border-radius:9999px;opacity:0.35;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
 
-          <!-- Blue GPS Center Dot -->
-          <div style="position:relative;width:18px;height:18px;background-color:#1D4ED8;border:3px solid #FFFFFF;border-radius:9999px;box-shadow:0 2px 10px rgba(0,0,0,0.4);margin:auto;"></div>
+          <!-- Bold Center Blue GPS Dot -->
+          <div style="position:relative;width:22px;height:22px;background-color:#1D4ED8;border:3.5px solid #FFFFFF;border-radius:9999px;box-shadow:0 3px 10px rgba(0,0,0,0.5);margin:auto;z-index:2;"></div>
         </div>
       `,
-      iconSize: [36, 36],
-      iconAnchor: [18, 18]
+      iconSize: [56, 56],
+      iconAnchor: [28, 28]
     });
 
     const targetLatLng = L.latLng(lat, lng);

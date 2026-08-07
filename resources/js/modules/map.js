@@ -12,6 +12,7 @@ export default class MapManager {
     this.lastLng = null;
     this.heading = 0;
     this.isAutoFollow = true;
+    this.isRotateMode = true; // Heading-Up Map Rotation enabled by default
     this.watchId = null;
   }
 
@@ -49,6 +50,14 @@ export default class MapManager {
       });
     }
 
+    // Setup Map Rotation Mode Toggle Button
+    const rotateBtn = document.getElementById('toggle-rotation-btn');
+    if (rotateBtn) {
+      rotateBtn.addEventListener('click', () => {
+        this.toggleRotateMode();
+      });
+    }
+
     // Continuous High Accuracy HTML5 GPS Geolocation tracking
     this.startGpsTracking();
 
@@ -71,6 +80,27 @@ export default class MapManager {
         alert('Gagal mengklaim temuan: ' + (err.response?.data?.message || err.message));
       }
     };
+  }
+
+  toggleRotateMode() {
+    this.isRotateMode = !this.isRotateMode;
+    const rotateLabel = document.getElementById('toggle-rotation-label');
+    const rotateBtn = document.getElementById('toggle-rotation-btn');
+
+    if (rotateLabel) {
+      rotateLabel.textContent = this.isRotateMode ? 'Mode: Arah Jalan 🧭' : 'Mode: Utara 🧭';
+    }
+    if (rotateBtn) {
+      if (this.isRotateMode) {
+        rotateBtn.classList.add('bg-[#1F3D20]', 'border-[#F5F4DA]/40');
+        rotateBtn.classList.remove('bg-gray-800/80', 'border-gray-500/40');
+      } else {
+        rotateBtn.classList.remove('bg-[#1F3D20]', 'border-[#F5F4DA]/40');
+        rotateBtn.classList.add('bg-gray-800/80', 'border-gray-500/40');
+      }
+    }
+
+    this.applyMapRotation(this.heading);
   }
 
   setAutoFollow(enabled) {
@@ -115,6 +145,32 @@ export default class MapManager {
     return (brng + 360) % 360;
   }
 
+  applyMapRotation(headingDeg) {
+    if (!this.map) return;
+    const mapPane = this.map.getPane('mapPane');
+    if (!mapPane) return;
+
+    if (this.isRotateMode && headingDeg != null && !isNaN(headingDeg)) {
+      mapPane.style.transformOrigin = '50% 50%';
+      mapPane.style.transition = 'transform 0.4s ease-out';
+      mapPane.style.transform = `rotate(-${headingDeg}deg)`;
+
+      // Counter-rotate markers and popups so text remains readable upright
+      const markers = document.querySelectorAll('.gg-map-marker, .leaflet-popup-content-wrapper');
+      markers.forEach(el => {
+        el.style.transformOrigin = 'center center';
+        el.style.transition = 'transform 0.4s ease-out';
+        el.style.transform = `rotate(${headingDeg}deg)`;
+      });
+    } else {
+      mapPane.style.transform = 'none';
+      const markers = document.querySelectorAll('.gg-map-marker, .leaflet-popup-content-wrapper');
+      markers.forEach(el => {
+        el.style.transform = 'none';
+      });
+    }
+  }
+
   startGpsTracking() {
     if (!navigator.geolocation) return;
 
@@ -136,7 +192,7 @@ export default class MapManager {
         this.heading = hwHeading;
       } else if (this.lastLat !== null && this.lastLng !== null) {
         const movedDist = this.calculateDistanceMeters(this.lastLat, this.lastLng, lat, lng);
-        if (movedDist && movedDist > 1.5) {
+        if (movedDist && movedDist > 1.2) {
           this.heading = this.calculateHeading(this.lastLat, this.lastLng, lat, lng);
         }
       }
@@ -150,6 +206,7 @@ export default class MapManager {
       }
 
       this.addUserMarker(lat, lng);
+      this.applyMapRotation(this.heading);
 
       // Refresh nearby sighting distances when walking
       if (this.lastLat !== null && this.lastLng !== null) {
@@ -195,7 +252,7 @@ export default class MapManager {
     const userIcon = L.divIcon({
       className: 'user-gps-marker',
       html: `
-        <div style="position:relative;width:36px;height:36px;display:flex;items-center;justify-content:center;">
+        <div style="position:relative;width:36px;height:36px;display:flex;align-items:center;justify-content:center;">
           <!-- Walking Heading Direction Cone -->
           <div style="position:absolute;width:36px;height:36px;transform:rotate(${headingDeg}deg);transition:transform 0.3s ease-out;pointer-events:none;">
             <svg viewBox="0 0 36 36" style="width:100%;height:100%;">
@@ -269,6 +326,8 @@ export default class MapManager {
       list.forEach((sighting) => {
         this.addSightingMarker(sighting);
       });
+
+      this.applyMapRotation(this.heading);
     } catch (err) {
       console.warn('Gagal memuat marker temuan:', err.message);
     }

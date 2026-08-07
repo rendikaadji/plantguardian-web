@@ -30,6 +30,12 @@
     <div class="relative w-full h-[64vh] sm:h-[74vh] lg:h-[78vh] min-h-[420px] max-h-[780px] rounded-3xl overflow-hidden shadow-lg card-gg p-1 border-2 border-[#1F3D20]/15">
         <div id="leaflet-map" class="w-full h-full rounded-2xl z-0"></div>
 
+        <!-- Floating Recenter / Auto-Follow GPS Button -->
+        <button id="recenter-gps-btn" class="absolute top-4 right-4 z-20 px-3.5 py-2 bg-[#1F3D20] text-[#F5F4DA] backdrop-blur-md rounded-full border border-[#F5F4DA]/30 shadow-xl font-baloo font-bold text-xs flex items-center gap-1.5 hover:bg-[#2D4A2E] active:scale-95 transition-all cursor-pointer">
+            <span class="animate-pulse text-sm">🎯</span>
+            <span id="recenter-gps-label">Auto-Follow On</span>
+        </button>
+
         <!-- Floating Action Controls - FOR RANGER & ADMIN ROLES -->
         @if(in_array(auth()->user()->role, ['ranger', 'admin']))
             <div class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 px-3 py-1.5 bg-[#1F3D20]/90 backdrop-blur-md rounded-full border border-[#F5F4DA]/20 shadow-2xl flex items-center gap-2 sm:gap-3 max-w-[95vw] sm:max-w-none">

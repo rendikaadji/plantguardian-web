@@ -8,6 +8,10 @@ export default class MapManager {
     this.userLocationCircle = null;
     this.userLat = null;
     this.userLng = null;
+    this.lastLat = null;
+    this.lastLng = null;
+    this.heading = 0;
+    this.isAutoFollow = true;
     this.watchId = null;
   }
 
@@ -31,6 +35,19 @@ export default class MapManager {
     }).addTo(this.map);
 
     this.markersGroup = L.layerGroup().addTo(this.map);
+
+    // Disable auto-follow when user manually drags the map
+    this.map.on('dragstart', () => {
+      this.setAutoFollow(false);
+    });
+
+    // Setup Recenter & Auto-Follow Button Listener
+    const recenterBtn = document.getElementById('recenter-gps-btn');
+    if (recenterBtn) {
+      recenterBtn.addEventListener('click', () => {
+        this.recenterUser();
+      });
+    }
 
     // Continuous High Accuracy HTML5 GPS Geolocation tracking
     this.startGpsTracking();
@@ -56,6 +73,48 @@ export default class MapManager {
     };
   }
 
+  setAutoFollow(enabled) {
+    this.isAutoFollow = enabled;
+    const labelEl = document.getElementById('recenter-gps-label');
+    const btnEl = document.getElementById('recenter-gps-btn');
+
+    if (labelEl) {
+      labelEl.textContent = enabled ? 'Auto-Follow On' : 'Ikuti Saya';
+    }
+    if (btnEl) {
+      if (enabled) {
+        btnEl.classList.add('bg-[#1F3D20]', 'border-[#F5F4DA]/40');
+        btnEl.classList.remove('bg-gray-800/80', 'border-gray-500/40');
+      } else {
+        btnEl.classList.remove('bg-[#1F3D20]', 'border-[#F5F4DA]/40');
+        btnEl.classList.add('bg-gray-800/80', 'border-gray-500/40');
+      }
+    }
+  }
+
+  recenterUser() {
+    this.setAutoFollow(true);
+    if (this.userLat != null && this.userLng != null && this.map) {
+      this.map.flyTo([this.userLat, this.userLng], 17, {
+        animate: true,
+        duration: 0.8
+      });
+    }
+  }
+
+  calculateHeading(lat1, lon1, lat2, lon2) {
+    if (lat1 == null || lon1 == null || lat2 == null || lon2 == null) return 0;
+    const dLon = (lon2 - lon1) * Math.PI / 180;
+    const lat1Rad = lat1 * Math.PI / 180;
+    const lat2Rad = lat2 * Math.PI / 180;
+
+    const y = Math.sin(dLon) * Math.cos(lat2Rad);
+    const x = Math.cos(lat1Rad) * Math.sin(lat2Rad) - Math.sin(lat1Rad) * Math.cos(lat2Rad) * Math.cos(dLon);
+
+    let brng = Math.atan2(y, x) * 180 / Math.PI;
+    return (brng + 360) % 360;
+  }
+
   startGpsTracking() {
     if (!navigator.geolocation) return;
 
@@ -67,17 +126,46 @@ export default class MapManager {
 
     let hasCentered = false;
 
+    const handleGpsUpdate = (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+      const hwHeading = position.coords.heading;
+
+      // Calculate heading direction if user is walking
+      if (hwHeading !== null && !isNaN(hwHeading)) {
+        this.heading = hwHeading;
+      } else if (this.lastLat !== null && this.lastLng !== null) {
+        const movedDist = this.calculateDistanceMeters(this.lastLat, this.lastLng, lat, lng);
+        if (movedDist && movedDist > 1.5) {
+          this.heading = this.calculateHeading(this.lastLat, this.lastLng, lat, lng);
+        }
+      }
+
+      this.userLat = lat;
+      this.userLng = lng;
+
+      if (!hasCentered && this.map) {
+        this.map.setView([lat, lng], 17);
+        hasCentered = true;
+      }
+
+      this.addUserMarker(lat, lng);
+
+      // Refresh nearby sighting distances when walking
+      if (this.lastLat !== null && this.lastLng !== null) {
+        const movedMeters = this.calculateDistanceMeters(this.lastLat, this.lastLng, lat, lng);
+        if (movedMeters && movedMeters > 3) {
+          this.refreshMarkers();
+        }
+      }
+
+      this.lastLat = lat;
+      this.lastLng = lng;
+    };
+
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        this.userLat = lat;
-        this.userLng = lng;
-        if (!hasCentered && this.map) {
-          this.map.setView([lat, lng], 17);
-          hasCentered = true;
-        }
-        this.addUserMarker(lat, lng);
+        handleGpsUpdate(position);
         this.refreshMarkers();
       },
       (err) => console.warn('Akses lokasi GPS ditolak/tidak tersedia:', err.message),
@@ -86,15 +174,7 @@ export default class MapManager {
 
     this.watchId = navigator.geolocation.watchPosition(
       (position) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        this.userLat = lat;
-        this.userLng = lng;
-        if (!hasCentered && this.map) {
-          this.map.setView([lat, lng], 17);
-          hasCentered = true;
-        }
-        this.addUserMarker(lat, lng);
+        handleGpsUpdate(position);
       },
       (err) => console.warn('GPS Watch Error:', err.message),
       options
@@ -109,19 +189,37 @@ export default class MapManager {
     const t = window.translations || {};
     const gpsText = t.gps_active || 'GPS Presisi Aktif';
 
+    // Heading directional cone SVG rotated according to heading direction
+    const headingDeg = Math.round(this.heading || 0);
+
     const userIcon = L.divIcon({
       className: 'user-gps-marker',
       html: `
-        <div style="position:relative;width:24px;height:24px;">
-          <div style="position:absolute;inset:0;background-color:#3B82F6;border-radius:9999px;opacity:0.4;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
-          <div style="position:relative;width:24px;height:24px;background-color:#2563EB;border:3px solid #FFFFFF;border-radius:9999px;box-shadow:0 2px 8px rgba(0,0,0,0.3);"></div>
+        <div style="position:relative;width:36px;height:36px;display:flex;items-center;justify-content:center;">
+          <!-- Walking Heading Direction Cone -->
+          <div style="position:absolute;width:36px;height:36px;transform:rotate(${headingDeg}deg);transition:transform 0.3s ease-out;pointer-events:none;">
+            <svg viewBox="0 0 36 36" style="width:100%;height:100%;">
+              <path d="M18 2 L26 18 L18 14 L10 18 Z" fill="#3B82F6" opacity="0.85" />
+            </svg>
+          </div>
+
+          <!-- Pulsing Radar Ring -->
+          <div style="position:absolute;inset:6px;background-color:#3B82F6;border-radius:9999px;opacity:0.35;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
+
+          <!-- Blue GPS Center Dot -->
+          <div style="position:relative;width:18px;height:18px;background-color:#2563EB;border:3px solid #FFFFFF;border-radius:9999px;box-shadow:0 2px 10px rgba(0,0,0,0.4);margin:auto;"></div>
         </div>
       `,
-      iconSize: [24, 24],
-      iconAnchor: [12, 12]
+      iconSize: [36, 36],
+      iconAnchor: [18, 18]
     });
 
     const targetLatLng = L.latLng(lat, lng);
+
+    // Auto-pan map smooth camera follow as user walks
+    if (this.isAutoFollow && this.map) {
+      this.map.panTo(targetLatLng, { animate: true, duration: 0.5 });
+    }
 
     // 1. Update/Create 50-meter Claim Radar Circle (Always bound to exact same LatLng)
     if (this.userLocationCircle) {
@@ -143,6 +241,7 @@ export default class MapManager {
     // 2. Update/Create User GPS Marker (Centered at exact same LatLng)
     if (this.userLocationMarker) {
       this.userLocationMarker.setLatLng(targetLatLng);
+      this.userLocationMarker.setIcon(userIcon);
     } else {
       this.userLocationMarker = L.marker(targetLatLng, { icon: userIcon, zIndexOffset: 1000 })
         .addTo(this.map)
@@ -305,4 +404,3 @@ export default class MapManager {
       .bindPopup(popupHtml);
   }
 }
-

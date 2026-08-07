@@ -298,12 +298,12 @@ export default class MapManager {
     } else {
       this.userLocationCircle = L.circle(targetLatLng, {
         radius: 50, // 50 meters claim radius
-        color: '#1F3D20',
-        fillColor: '#1F3D20',
-        fillOpacity: 0.12,
-        weight: 2,
+        color: '#2563EB', // Vibrant Blue Radar Border
+        fillColor: '#3B82F6', // High visibility Blue Radar Fill
+        fillOpacity: 0.22, // Distinct overlay
+        weight: 2.5,
         dashArray: '6, 6'
-      }).addTo(this.map).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:11px;color:#1F3D20;">🎯 Area Jangkauan Klaim Spesies (50 Meter)</b>');
+      }).addTo(this.map).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:12px;color:#1E40AF;">🎯 Zona Jangkauan Klaim Spesies (50 Meter)</b>');
 
       if (this.userLocationCircle.bringToBack) {
         this.userLocationCircle.bringToBack();

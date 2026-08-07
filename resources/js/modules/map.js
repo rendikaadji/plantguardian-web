@@ -24,9 +24,16 @@ export default class MapManager {
     const defaultLat = -6.1754;
     const defaultLng = 106.8272;
 
+    // 60FPS Hardware Accelerated Leaflet Map Config
     this.map = L.map(this.mapContainerId, {
       zoomControl: true,
-      attributionControl: true
+      attributionControl: true,
+      zoomAnimation: true,
+      fadeAnimation: true,
+      markerZoomAnimation: true,
+      inertia: true,
+      inertiaDeceleration: 3000,
+      easeLinearity: 0.25
     }).setView([defaultLat, defaultLng], 17);
 
     // High quality OpenStreetMap vector tile layer
@@ -42,14 +49,11 @@ export default class MapManager {
       this.setAutoFollow(false);
     });
 
-    // Event listener: Ensure radar circle stays 100% locked & re-centered on user marker across all zoom levels
-    this.map.on('zoomend zoom moveend viewreset resize', () => {
+    // Native Leaflet Zoom & Viewport Synchronization
+    this.map.on('zoomend viewreset resize', () => {
       if (this.userLocationMarker && this.userLocationCircle) {
-        const currentPos = this.userLocationMarker.getLatLng();
-        this.userLocationCircle.setLatLng(currentPos);
-        if (this.userLocationCircle.redraw) {
-          this.userLocationCircle.redraw();
-        }
+        const pos = this.userLocationMarker.getLatLng();
+        this.userLocationCircle.setLatLng(pos);
       }
     });
 
@@ -92,9 +96,9 @@ export default class MapManager {
     if (rawHeading == null || isNaN(rawHeading)) return;
 
     let diff = (rawHeading - this.smoothedHeading + 540) % 360 - 180;
-    if (Math.abs(diff) < 2.5) return;
+    if (Math.abs(diff) < 2.0) return;
 
-    this.smoothedHeading = (this.smoothedHeading + diff * 0.25 + 360) % 360;
+    this.smoothedHeading = (this.smoothedHeading + diff * 0.2 + 360) % 360;
     this.heading = this.smoothedHeading;
   }
 
@@ -257,7 +261,7 @@ export default class MapManager {
           <div style="position:absolute;inset:4px;background-color:#3B82F6;border-radius:9999px;opacity:0.3;animation:ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;"></div>
 
           <!-- Directional Cone Arrow Pointer (Geometrically Symmetric around center [20,20]) -->
-          <div style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.3s ease-out;pointer-events:none;display:flex;align-items:center;justify-content:center;">
+          <div style="position:absolute;inset:0;transform:rotate(${headingDeg}deg);transition:transform 0.4s ease-out;pointer-events:none;display:flex;align-items:center;justify-content:center;">
             <svg viewBox="0 0 40 40" style="width:40px;height:40px;filter:drop-shadow(0 2px 4px rgba(0,0,0,0.3));">
               <path d="M20 3 L30 22 L20 17 L10 22 Z" fill="#2563EB" stroke="#FFFFFF" stroke-width="1.8" stroke-linejoin="round" />
             </svg>
@@ -271,15 +275,16 @@ export default class MapManager {
       iconAnchor: [20, 20]
     });
 
-    // Live Camera Auto-Follow as User Walks
+    // Smooth Camera Auto-Follow as User Walks
     if (this.isAutoFollow && this.map) {
-      this.map.panTo(targetLatLng, { animate: true, duration: 0.5 });
+      if (this.lastLat === null || this.calculateDistanceMeters(this.lastLat, this.lastLng, lat, lng) > 1.5) {
+        this.map.panTo(targetLatLng, { animate: true, duration: 0.8, easeLinearity: 0.25 });
+      }
     }
 
-    // 1. Update/Create 50-meter Claim Radar Circle (Strictly Centered on exact targetLatLng)
+    // 1. Update/Create 50-meter Claim Radar Circle (Always centered at exact targetLatLng)
     if (this.userLocationCircle) {
       this.userLocationCircle.setLatLng(targetLatLng);
-      if (this.userLocationCircle.redraw) this.userLocationCircle.redraw();
     } else {
       this.userLocationCircle = L.circle(targetLatLng, {
         radius: 50, // 50 meters claim radius

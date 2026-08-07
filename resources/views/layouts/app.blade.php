@@ -30,13 +30,9 @@
                 <!-- Left: Logo, Title, User Name & Level Badge (Never Covering Logo) -->
                 <div class="flex items-center gap-2.5 sm:gap-3.5">
                     <a href="{{ route('home') }}" class="flex items-center gap-2.5 sm:gap-3.5 group">
-                        <!-- Clean Unobstructed Logo Avatar -->
+                        <!-- Clean Unobstructed Official Plant Guardian Logo -->
                         <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl border-2 border-[#1F3D20] bg-white p-0.5 shadow-sm flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform overflow-hidden">
-                            @if(auth()->check() && auth()->user()->avatar_url)
-                                <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover rounded-xl">
-                            @else
-                                <img src="{{ asset('images/logo-plantGuardian.jpeg') }}" alt="PlantGuardian Logo" class="w-full h-full object-cover rounded-xl">
-                            @endif
+                            <img src="{{ asset('images/logo-plantGuardian.jpeg') }}" alt="PlantGuardian Logo" class="w-full h-full object-cover rounded-xl">
                         </div>
 
                         <!-- Brand & User Identity -->

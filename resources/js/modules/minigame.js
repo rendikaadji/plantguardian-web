@@ -199,6 +199,8 @@ export class MiniGameModule {
       return;
     }
 
+    const t = window.translations || {};
+
     const plotsHtml = this.plots.map(plot => {
       const isUnlocked = plot.unlocked;
       const planting = plot.current_planting;
@@ -207,6 +209,10 @@ export class MiniGameModule {
       if (!isUnlocked) {
         const cost = plot.purchase_cost || 50;
         const canAfford = this.userCoin >= cost;
+        const lockedText = (t.plot_locked || 'Lahan Terkunci #:number').replace(':number', plot.slot_number);
+        const costText = (t.cost_label || 'Biaya: 🪙 :cost NC').replace(':cost', cost);
+        const unlockBtnText = canAfford ? (t.unlock_btn || 'Buka Lahan') : (t.insufficient_coin || 'Coin Kurang');
+
         return `
           <div class="card-gg p-4 flex flex-col justify-between items-center text-center relative overflow-hidden group bg-[#FBFAF0] border-2 border-[#8B6A4C]/60 shadow-lg">
             <!-- Soil Bed Backdrop -->
@@ -215,13 +221,13 @@ export class MiniGameModule {
                 🔒
               </div>
               <span class="text-[11px] font-baloo font-bold text-[#F5F4DA] bg-[#2B1B10]/90 px-2.5 py-0.5 rounded-full border border-[#8B5A2B]/30">
-                Lahan Terkunci #${plot.slot_number}
+                ${lockedText}
               </span>
             </div>
 
             <div class="w-full pt-3 border-t border-[#1F3D20]/10">
               <div class="flex items-center justify-center gap-1 font-baloo font-bold text-xs text-[#1F3D20] mb-2">
-                <span>Biaya: 🪙 ${cost} NC</span>
+                <span>${costText}</span>
               </div>
               <button 
                 data-plot-id="${plot.id}"
@@ -229,7 +235,7 @@ export class MiniGameModule {
                 class="unlock-btn w-full btn-gg-primary text-xs py-2 px-3 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 ${!canAfford ? 'disabled title="Coin tidak mencukupi"' : ''}
               >
-                ${canAfford ? 'Buka Lahan' : 'Coin Kurang'}
+                ${unlockBtnText}
               </button>
             </div>
           </div>
@@ -239,6 +245,10 @@ export class MiniGameModule {
       // 2. VISUAL EMPTY UNLOCKED SOIL PLOT CARD
       if (!planting) {
         const totalSeedsCount = this.seeds.reduce((acc, s) => acc + s.quantity, 0);
+        const soilPlotText = (t.soil_plot || 'Tanah Gembur #:number').replace(':number', plot.slot_number);
+        const readyToPlantText = t.plot_ready_to_plant || 'Lahan Siap Ditanami';
+        const plantSeedText = (t.plant_seed_btn || 'Tanam Benih (:count)').replace(':count', totalSeedsCount);
+        const buySeedsText = t.buy_seeds_shop || 'Beli Benih di Shop';
 
         return `
           <div class="card-gg card-gg-hover p-4 flex flex-col justify-between items-center text-center relative bg-[#FBFAF0] border-2 border-[#8B6A4C] shadow-lg">
@@ -248,9 +258,9 @@ export class MiniGameModule {
                 ⛏️
               </div>
               <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#264225]/90 px-2.5 py-0.5 rounded-full border border-[#436B42]/40">
-                Tanah Gembur #${plot.slot_number}
+                ${soilPlotText}
               </span>
-              <p class="text-[10px] text-[#E7E6BE] mt-1 font-nunito opacity-80">Lahan Siap Ditanami</p>
+              <p class="text-[10px] text-[#E7E6BE] mt-1 font-nunito opacity-80">${readyToPlantText}</p>
             </div>
 
             <div class="w-full pt-3 border-t border-[#1F3D20]/10">
@@ -259,14 +269,14 @@ export class MiniGameModule {
                   data-plot-id="${plot.id}"
                   class="open-seed-modal-btn w-full btn-gg-primary text-xs py-2 px-3 cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  <span>🌱</span> Tanam Benih (${totalSeedsCount})
+                  <span>🌱</span> ${plantSeedText}
                 </button>
               ` : `
                 <a 
                   href="/shop" 
                   class="w-full inline-block text-center rounded-full bg-[#8B6A4C] hover:bg-[#72553B] text-[#F5F4DA] font-baloo font-bold text-xs py-2 px-3 transition-colors shadow-xs"
                 >
-                  🛒 Beli Benih di Shop
+                  🛒 ${buySeedsText}
                 </a>
               `}
             </div>
@@ -281,14 +291,16 @@ export class MiniGameModule {
       const seedCode = planting.seed_code || 'seed_sunflower';
       const seedInfo = this.getSeedDetails(seedCode);
       const speciesName = planting.plant_species ? planting.plant_species.common_name : seedInfo.name;
+      const plotLabel = (t.soil_plot || 'Lahan #:number').replace(':number', plot.slot_number);
+      const readyBadge = t.ready_to_harvest_badge || 'SIAP PANEN';
 
       if (isReady) {
         return `
           <div class="card-gg p-4 flex flex-col justify-between items-center text-center bg-[#FBFAF0] border-2 border-[#1F3D20] shadow-xl relative overflow-hidden">
             <div class="flex items-center justify-between w-full mb-1">
-              <span class="text-[10px] font-baloo font-extrabold text-[#1F3D20]">Lahan #${plot.slot_number}</span>
+              <span class="text-[10px] font-baloo font-extrabold text-[#1F3D20]">${plotLabel}</span>
               <span class="px-2 py-0.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] text-[9px] font-baloo font-extrabold shadow-xs animate-pulse">
-                🌾 SIAP PANEN
+                🌾 ${readyBadge}
               </span>
             </div>
 
@@ -305,7 +317,7 @@ export class MiniGameModule {
                 data-planting-id="${planting.id}"
                 class="harvest-btn w-full btn-gg-primary text-xs py-2 px-3 cursor-pointer flex items-center justify-center gap-1.5 shadow-md"
               >
-                <span>🌾</span> Panen (+${seedInfo.exp} EXP, ${typeof window.getNcIconSvg === 'function' ? window.getNcIconSvg('w-3.5 h-3.5') : '🪙'} +${seedInfo.coin} NC)
+                <span>🌾</span> ${t.harvest || 'Panen'} (+${seedInfo.exp} EXP, ${typeof window.getNcIconSvg === 'function' ? window.getNcIconSvg('w-3.5 h-3.5') : '🪙'} +${seedInfo.coin} NC)
               </button>
             </div>
           </div>
@@ -318,11 +330,12 @@ export class MiniGameModule {
       const elapsedMs = Math.max(0, now.getTime() - plantedAt.getTime());
       const progressPercent = Math.min(99, Math.max(5, Math.floor((elapsedMs / totalDurationMs) * 100)));
       const remainingSeconds = Math.max(0, Math.ceil((readyAt.getTime() - now.getTime()) / 1000));
+      const waitingHarvestText = t.waiting_harvest || 'Menunggu Panen:';
 
       return `
         <div class="card-gg p-4 flex flex-col justify-between items-center text-center bg-[#FBFAF0] border-2 border-[#8B6A4C] shadow-lg" data-plot-slot="${plot.slot_number}">
           <div class="flex items-center justify-between w-full mb-1">
-            <span class="text-[10px] font-baloo font-bold text-[#1F3D20]">Lahan #${plot.slot_number}</span>
+            <span class="text-[10px] font-baloo font-bold text-[#1F3D20]">${plotLabel}</span>
             <span class="growth-time-pill px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] text-[9px] font-baloo font-bold">
               ⏳ ${this.formatTimeRemaining(remainingSeconds)}
             </span>
@@ -339,7 +352,7 @@ export class MiniGameModule {
           <!-- Growth Progress Bar & Countdown Label -->
           <div class="w-full space-y-1 my-1">
             <div class="flex justify-between items-center text-[10px] font-baloo font-bold text-[#1F3D20] px-0.5">
-              <span>⏳ Menunggu Panen:</span>
+              <span>⏳ ${waitingHarvestText}</span>
               <span class="growth-countdown text-[#8B5A2B] font-extrabold">${this.formatTimeRemaining(remainingSeconds)}</span>
             </div>
             <div class="w-full bg-[#E2E1C4] rounded-full h-3 overflow-hidden border border-[#1F3D20]/10 p-0.5">
@@ -356,15 +369,20 @@ export class MiniGameModule {
               const fertQty = fertilizerItem ? fertilizerItem.quantity : 0;
 
               if (waterQty === 0 && fertQty === 0) {
+                const naturalGrowthText = t.natural_growth || 'Tumbuh Secara Alami';
+                const buyToolsText = t.buy_tools_speedup || 'Beli Alat di Shop untuk Mempercepat';
                 return `
                   <div class="w-full text-center py-1 bg-[#E2E1C4]/40 rounded-xl p-2 border border-[#1F3D20]/10">
-                    <span class="text-[10px] font-baloo font-bold text-[#6B6B55] block">🌱 Tumbuh Secara Alami</span>
+                    <span class="text-[10px] font-baloo font-bold text-[#6B6B55] block">🌱 ${naturalGrowthText}</span>
                     <a href="/shop" class="text-[10px] font-baloo font-extrabold text-[#8B6A4C] hover:underline flex items-center justify-center gap-1 mt-0.5">
-                      <span>🛒</span> Beli Alat di Shop untuk Mempercepat
+                      <span>🛒</span> ${buyToolsText}
                     </a>
                   </div>
                 `;
               }
+
+              const waterText = (t.water_auto || 'Siram Otomatis (-10m) [x:qty]').replace(':qty', waterQty);
+              const fertText = (t.fertilize_organic || 'Pupuk Organik (-5m) [x:qty]').replace(':qty', fertQty);
 
               return `
                 ${waterQty > 0 ? `
@@ -372,7 +390,7 @@ export class MiniGameModule {
                     data-planting-id="${planting.id}"
                     class="water-btn w-full rounded-full bg-[#E2E1C4] hover:bg-[#1F3D20] text-[#1F3D20] hover:text-[#F5F4DA] font-baloo font-bold text-xs py-1.5 px-3 transition-colors cursor-pointer flex items-center justify-center gap-1.5"
                   >
-                    <span>💧</span> Siram Otomatis (-10m) [x${waterQty}]
+                    <span>💧</span> ${waterText}
                   </button>
                 ` : ''}
                 ${fertQty > 0 ? `
@@ -380,7 +398,7 @@ export class MiniGameModule {
                     data-planting-id="${planting.id}"
                     class="fertilize-btn w-full rounded-full bg-[#27AE60] hover:bg-[#1E8449] text-white font-baloo font-bold text-xs py-1.5 px-3 transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
                   >
-                    <span>🧪</span> Pupuk Organik (-5m) [x${fertQty}]
+                    <span>🧪</span> ${fertText}
                   </button>
                 ` : ''}
               `;
@@ -390,14 +408,17 @@ export class MiniGameModule {
       `;
     }).join('');
 
+    const headerTitle = t.garden_field_header || 'LAHAN KEBUN VIRTUAL GUARDIAN';
+    const headerSubtitle = t.garden_field_subtitle || '4 Petak Tanah Gembur';
+
     this.containerElement.innerHTML = `
       <div class="wooden-fence-header rounded-2xl px-5 py-3 flex items-center justify-between shadow-md mb-6 border-2 border-[#5C3A24]">
         <div class="flex items-center gap-2">
           <span class="text-xl">🌾</span>
-          <h3 class="font-baloo font-extrabold text-base sm:text-lg text-[#F5F4DA] tracking-wide">LAHAN KEBUN VIRTUAL GUARDIAN</h3>
+          <h3 class="font-baloo font-extrabold text-base sm:text-lg text-[#F5F4DA] tracking-wide">${headerTitle}</h3>
         </div>
         <div class="flex items-center gap-2 text-xs font-baloo font-bold text-[#E7E6BE]">
-          <span>4 Petak Tanah Gembur</span>
+          <span>${headerSubtitle}</span>
         </div>
       </div>
 
@@ -467,16 +488,22 @@ export class MiniGameModule {
 
     const availableSeeds = this.seeds.filter(s => s.quantity > 0);
 
+    const t = window.translations || {};
+    const modalTitle = t.select_seed_title || 'Pilih Benih untuk Ditanam';
+    const plantBtnText = t.plant_btn || 'Tanam';
+    const buyMoreText = t.buy_more_seeds || 'Beli Benih Lain di Shop';
+
     modal.innerHTML = `
       <div class="card-gg max-w-md w-full p-6 shadow-2xl space-y-4 bg-[#FBFAF0]">
         <div class="flex justify-between items-center border-b border-[#1F3D20]/10 pb-3">
-            <h3 class="font-baloo font-extrabold text-xl text-[#1F3D20]">Pilih Benih untuk Ditanam</h3>
+            <h3 class="font-baloo font-extrabold text-xl text-[#1F3D20]">${modalTitle}</h3>
             <button id="close-seed-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>
         </div>
 
         <div class="space-y-3 max-h-60 overflow-y-auto pr-1">
           ${availableSeeds.map(s => {
             const seedInfo = this.getSeedDetails(s.item_code);
+            const stockText = (t.stock_label || 'Stok: x:qty').replace(':qty', s.quantity);
             return `
               <div class="p-3 rounded-2xl bg-[#F5F4DA] border border-[#1F3D20]/10 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
@@ -488,14 +515,14 @@ export class MiniGameModule {
                       <span>✨ +${seedInfo.exp} EXP</span>
                       <span class="flex items-center gap-0.5">${typeof window.getNcIconSvg === 'function' ? window.getNcIconSvg('w-3.5 h-3.5') : '🪙'} +${seedInfo.coin} NC</span>
                     </div>
-                    <span class="text-[10px] text-[#6B6B55]">Stok: x${s.quantity}</span>
+                    <span class="text-[10px] text-[#6B6B55]">${stockText}</span>
                   </div>
                 </div>
                 <button 
                   data-seed-code="${s.item_code}"
                   class="select-seed-btn btn-gg-primary text-xs py-1.5 px-3 cursor-pointer"
                 >
-                  Tanam
+                  ${plantBtnText}
                 </button>
               </div>
             `;
@@ -504,7 +531,7 @@ export class MiniGameModule {
 
         <div class="pt-2 text-center border-t border-[#1F3D20]/10">
           <a href="/shop" class="text-xs font-baloo font-bold text-[#8B6A4C] hover:underline">
-            🛒 Beli Benih Lain di Shop
+            🛒 ${buyMoreText}
           </a>
         </div>
       </div>

@@ -69,7 +69,7 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
           <span class="animate-spin inline-block text-2xl mb-2">🌿</span>
           <p class="font-baloo font-bold">Membuat petak lahan kebun...</p>
         </div>
-      `;return}let e=this.plots.map(e=>{let t=e.unlocked,n=e.current_planting;if(!t){let t=e.purchase_cost||50,n=this.userCoin>=t;return`
+      `;return}let e=window.translations||{},t=this.plots.map(t=>{let n=t.unlocked,r=t.current_planting;if(!n){let n=t.purchase_cost||50,r=this.userCoin>=n,i=(e.plot_locked||`Lahan Terkunci #:number`).replace(`:number`,t.slot_number),a=(e.cost_label||`Biaya: 🪙 :cost NC`).replace(`:cost`,n),o=r?e.unlock_btn||`Buka Lahan`:e.insufficient_coin||`Coin Kurang`;return`
           <div class="card-gg p-4 flex flex-col justify-between items-center text-center relative overflow-hidden group bg-[#FBFAF0] border-2 border-[#8B6A4C]/60 shadow-lg">
             <!-- Soil Bed Backdrop -->
             <div class="w-full rounded-2xl plot-soil-bed p-4 flex flex-col items-center justify-center text-center my-1 min-h-[140px] opacity-75">
@@ -77,25 +77,25 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
                 🔒
               </div>
               <span class="text-[11px] font-baloo font-bold text-[#F5F4DA] bg-[#2B1B10]/90 px-2.5 py-0.5 rounded-full border border-[#8B5A2B]/30">
-                Lahan Terkunci #${e.slot_number}
+                ${i}
               </span>
             </div>
 
             <div class="w-full pt-3 border-t border-[#1F3D20]/10">
               <div class="flex items-center justify-center gap-1 font-baloo font-bold text-xs text-[#1F3D20] mb-2">
-                <span>Biaya: 🪙 ${t} NC</span>
+                <span>${a}</span>
               </div>
               <button 
-                data-plot-id="${e.id}"
-                data-cost="${t}"
+                data-plot-id="${t.id}"
+                data-cost="${n}"
                 class="unlock-btn w-full btn-gg-primary text-xs py-2 px-3 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                ${n?``:`disabled title="Coin tidak mencukupi"`}
+                ${r?``:`disabled title="Coin tidak mencukupi"`}
               >
-                ${n?`Buka Lahan`:`Coin Kurang`}
+                ${o}
               </button>
             </div>
           </div>
-        `}if(!n){let t=this.seeds.reduce((e,t)=>e+t.quantity,0);return`
+        `}if(!r){let n=this.seeds.reduce((e,t)=>e+t.quantity,0),r=(e.soil_plot||`Tanah Gembur #:number`).replace(`:number`,t.slot_number),i=e.plot_ready_to_plant||`Lahan Siap Ditanami`,a=(e.plant_seed_btn||`Tanam Benih (:count)`).replace(`:count`,n),o=e.buy_seeds_shop||`Beli Benih di Shop`;return`
           <div class="card-gg card-gg-hover p-4 flex flex-col justify-between items-center text-center relative bg-[#FBFAF0] border-2 border-[#8B6A4C] shadow-lg">
             <!-- Visual Earth Soil Mound -->
             <div class="w-full rounded-2xl plot-soil-bed p-3 flex flex-col items-center justify-center text-center my-1 min-h-[140px] relative group-hover:border-[#7A5840] transition-colors">
@@ -103,135 +103,135 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
                 ⛏️
               </div>
               <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#264225]/90 px-2.5 py-0.5 rounded-full border border-[#436B42]/40">
-                Tanah Gembur #${e.slot_number}
+                ${r}
               </span>
-              <p class="text-[10px] text-[#E7E6BE] mt-1 font-nunito opacity-80">Lahan Siap Ditanami</p>
+              <p class="text-[10px] text-[#E7E6BE] mt-1 font-nunito opacity-80">${i}</p>
             </div>
 
             <div class="w-full pt-3 border-t border-[#1F3D20]/10">
-              ${t>0?`
+              ${n>0?`
                 <button 
-                  data-plot-id="${e.id}"
+                  data-plot-id="${t.id}"
                   class="open-seed-modal-btn w-full btn-gg-primary text-xs py-2 px-3 cursor-pointer flex items-center justify-center gap-1.5"
                 >
-                  <span>🌱</span> Tanam Benih (${t})
+                  <span>🌱</span> ${a}
                 </button>
               `:`
                 <a 
                   href="/shop" 
                   class="w-full inline-block text-center rounded-full bg-[#8B6A4C] hover:bg-[#72553B] text-[#F5F4DA] font-baloo font-bold text-xs py-2 px-3 transition-colors shadow-xs"
                 >
-                  🛒 Beli Benih di Shop
+                  🛒 ${o}
                 </a>
               `}
             </div>
           </div>
-        `}let r=new Date,i=n.ready_at?new Date(n.ready_at):r,a=n.status===`ready`||r>=i,o=n.seed_code||`seed_sunflower`,s=this.getSeedDetails(o),c=n.plant_species?n.plant_species.common_name:s.name;if(a)return`
+        `}let i=new Date,a=r.ready_at?new Date(r.ready_at):i,o=r.status===`ready`||i>=a,s=r.seed_code||`seed_sunflower`,c=this.getSeedDetails(s),l=r.plant_species?r.plant_species.common_name:c.name,u=(e.soil_plot||`Lahan #:number`).replace(`:number`,t.slot_number),d=e.ready_to_harvest_badge||`SIAP PANEN`;if(o)return`
           <div class="card-gg p-4 flex flex-col justify-between items-center text-center bg-[#FBFAF0] border-2 border-[#1F3D20] shadow-xl relative overflow-hidden">
             <div class="flex items-center justify-between w-full mb-1">
-              <span class="text-[10px] font-baloo font-extrabold text-[#1F3D20]">Lahan #${e.slot_number}</span>
+              <span class="text-[10px] font-baloo font-extrabold text-[#1F3D20]">${u}</span>
               <span class="px-2 py-0.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] text-[9px] font-baloo font-extrabold shadow-xs animate-pulse">
-                🌾 SIAP PANEN
+                🌾 ${d}
               </span>
             </div>
 
             <!-- Soil Bed & Blooming Plant Visual -->
             <div class="w-full rounded-2xl plot-soil-bed p-2 flex flex-col items-center justify-center text-center my-1 min-h-[140px] relative border-2 border-[#FFD700]/60 shadow-lg">
-              ${this.renderPlantVisual(n,100,s)}
+              ${this.renderPlantVisual(r,100,c)}
               <h4 class="font-baloo font-extrabold text-xs text-[#F5F4DA] drop-shadow-md bg-[#2B1B10]/80 px-2 py-0.5 rounded-md mt-1">
-                ${c}
+                ${l}
               </h4>
             </div>
 
             <div class="w-full pt-2 border-t border-[#1F3D20]/10">
               <button 
-                data-planting-id="${n.id}"
+                data-planting-id="${r.id}"
                 class="harvest-btn w-full btn-gg-primary text-xs py-2 px-3 cursor-pointer flex items-center justify-center gap-1.5 shadow-md"
               >
-                <span>🌾</span> Panen (+${s.exp} EXP, ${typeof window.getNcIconSvg==`function`?window.getNcIconSvg(`w-3.5 h-3.5`):`🪙`} +${s.coin} NC)
+                <span>🌾</span> ${e.harvest||`Panen`} (+${c.exp} EXP, ${typeof window.getNcIconSvg==`function`?window.getNcIconSvg(`w-3.5 h-3.5`):`🪙`} +${c.coin} NC)
               </button>
             </div>
           </div>
-        `;let l=n.planted_at?new Date(n.planted_at):r,u=Math.max(1,i.getTime()-l.getTime()),d=Math.max(0,r.getTime()-l.getTime()),f=Math.min(99,Math.max(5,Math.floor(d/u*100))),p=Math.max(0,Math.ceil((i.getTime()-r.getTime())/1e3));return`
-        <div class="card-gg p-4 flex flex-col justify-between items-center text-center bg-[#FBFAF0] border-2 border-[#8B6A4C] shadow-lg" data-plot-slot="${e.slot_number}">
+        `;let f=r.planted_at?new Date(r.planted_at):i,p=Math.max(1,a.getTime()-f.getTime()),m=Math.max(0,i.getTime()-f.getTime()),h=Math.min(99,Math.max(5,Math.floor(m/p*100))),g=Math.max(0,Math.ceil((a.getTime()-i.getTime())/1e3)),_=e.waiting_harvest||`Menunggu Panen:`;return`
+        <div class="card-gg p-4 flex flex-col justify-between items-center text-center bg-[#FBFAF0] border-2 border-[#8B6A4C] shadow-lg" data-plot-slot="${t.slot_number}">
           <div class="flex items-center justify-between w-full mb-1">
-            <span class="text-[10px] font-baloo font-bold text-[#1F3D20]">Lahan #${e.slot_number}</span>
+            <span class="text-[10px] font-baloo font-bold text-[#1F3D20]">${u}</span>
             <span class="growth-time-pill px-2 py-0.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] text-[9px] font-baloo font-bold">
-              ⏳ ${this.formatTimeRemaining(p)}
+              ⏳ ${this.formatTimeRemaining(g)}
             </span>
           </div>
 
           <!-- Soil Bed & Growing Plant Visual Stage -->
           <div class="w-full rounded-2xl plot-soil-bed p-2 flex flex-col items-center justify-center text-center my-1 min-h-[140px] relative">
-            ${this.renderPlantVisual(n,f,s)}
+            ${this.renderPlantVisual(r,h,c)}
             <h4 class="font-baloo font-bold text-xs text-[#F5F4DA] drop-shadow-md bg-[#2B1B10]/80 px-2 py-0.5 rounded-md mt-1">
-              ${c}
+              ${l}
             </h4>
           </div>
 
           <!-- Growth Progress Bar & Countdown Label -->
           <div class="w-full space-y-1 my-1">
             <div class="flex justify-between items-center text-[10px] font-baloo font-bold text-[#1F3D20] px-0.5">
-              <span>⏳ Menunggu Panen:</span>
-              <span class="growth-countdown text-[#8B5A2B] font-extrabold">${this.formatTimeRemaining(p)}</span>
+              <span>⏳ ${_}</span>
+              <span class="growth-countdown text-[#8B5A2B] font-extrabold">${this.formatTimeRemaining(g)}</span>
             </div>
             <div class="w-full bg-[#E2E1C4] rounded-full h-3 overflow-hidden border border-[#1F3D20]/10 p-0.5">
-              <div class="growth-bar-fill bg-gradient-to-r from-[#1F3D20] to-[#27AE60] h-full rounded-full transition-[width] duration-1000 ease-linear" style="width: ${f}%;"></div>
+              <div class="growth-bar-fill bg-gradient-to-r from-[#1F3D20] to-[#27AE60] h-full rounded-full transition-[width] duration-1000 ease-linear" style="width: ${h}%;"></div>
             </div>
           </div>
 
           <!-- Growth Action Buttons -->
           <div class="w-full pt-2 border-t border-[#1F3D20]/10 flex flex-col gap-1.5">
-            ${(()=>{let e=this.tools.find(e=>e.item_code===`tool_watering_can`&&e.quantity>0),t=e?e.quantity:0,r=this.tools.find(e=>e.item_code===`tool_fertilizer`&&e.quantity>0),i=r?r.quantity:0;return t===0&&i===0?`
+            ${(()=>{let t=this.tools.find(e=>e.item_code===`tool_watering_can`&&e.quantity>0),n=t?t.quantity:0,i=this.tools.find(e=>e.item_code===`tool_fertilizer`&&e.quantity>0),a=i?i.quantity:0;if(n===0&&a===0)return`
                   <div class="w-full text-center py-1 bg-[#E2E1C4]/40 rounded-xl p-2 border border-[#1F3D20]/10">
-                    <span class="text-[10px] font-baloo font-bold text-[#6B6B55] block">🌱 Tumbuh Secara Alami</span>
+                    <span class="text-[10px] font-baloo font-bold text-[#6B6B55] block">🌱 ${e.natural_growth||`Tumbuh Secara Alami`}</span>
                     <a href="/shop" class="text-[10px] font-baloo font-extrabold text-[#8B6A4C] hover:underline flex items-center justify-center gap-1 mt-0.5">
-                      <span>🛒</span> Beli Alat di Shop untuk Mempercepat
+                      <span>🛒</span> ${e.buy_tools_speedup||`Beli Alat di Shop untuk Mempercepat`}
                     </a>
                   </div>
-                `:`
-                ${t>0?`
+                `;let o=(e.water_auto||`Siram Otomatis (-10m) [x:qty]`).replace(`:qty`,n),s=(e.fertilize_organic||`Pupuk Organik (-5m) [x:qty]`).replace(`:qty`,a);return`
+                ${n>0?`
                   <button 
-                    data-planting-id="${n.id}"
+                    data-planting-id="${r.id}"
                     class="water-btn w-full rounded-full bg-[#E2E1C4] hover:bg-[#1F3D20] text-[#1F3D20] hover:text-[#F5F4DA] font-baloo font-bold text-xs py-1.5 px-3 transition-colors cursor-pointer flex items-center justify-center gap-1.5"
                   >
-                    <span>💧</span> Siram Otomatis (-10m) [x${t}]
+                    <span>💧</span> ${o}
                   </button>
                 `:``}
-                ${i>0?`
+                ${a>0?`
                   <button 
-                    data-planting-id="${n.id}"
+                    data-planting-id="${r.id}"
                     class="fertilize-btn w-full rounded-full bg-[#27AE60] hover:bg-[#1E8449] text-white font-baloo font-bold text-xs py-1.5 px-3 transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-sm"
                   >
-                    <span>🧪</span> Pupuk Organik (-5m) [x${i}]
+                    <span>🧪</span> ${s}
                   </button>
                 `:``}
               `})()}
           </div>
         </div>
-      `}).join(``);this.containerElement.innerHTML=`
+      `}).join(``),n=e.garden_field_header||`LAHAN KEBUN VIRTUAL GUARDIAN`,r=e.garden_field_subtitle||`4 Petak Tanah Gembur`;this.containerElement.innerHTML=`
       <div class="wooden-fence-header rounded-2xl px-5 py-3 flex items-center justify-between shadow-md mb-6 border-2 border-[#5C3A24]">
         <div class="flex items-center gap-2">
           <span class="text-xl">🌾</span>
-          <h3 class="font-baloo font-extrabold text-base sm:text-lg text-[#F5F4DA] tracking-wide">LAHAN KEBUN VIRTUAL GUARDIAN</h3>
+          <h3 class="font-baloo font-extrabold text-base sm:text-lg text-[#F5F4DA] tracking-wide">${n}</h3>
         </div>
         <div class="flex items-center gap-2 text-xs font-baloo font-bold text-[#E7E6BE]">
-          <span>4 Petak Tanah Gembur</span>
+          <span>${r}</span>
         </div>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-        ${e}
+        ${t}
       </div>
-    `,this.attachEventListeners()}attachEventListeners(){this.containerElement&&(this.containerElement.querySelectorAll(`.unlock-btn`).forEach(e=>{e.addEventListener(`click`,async t=>{t.preventDefault();let n=e.dataset.plotId,r=parseInt(e.dataset.cost||`50`);await this.unlockPlot(n,r)})}),this.containerElement.querySelectorAll(`.open-seed-modal-btn`).forEach(e=>{e.addEventListener(`click`,t=>{t.preventDefault();let n=e.dataset.plotId;this.openSeedSelectorModal(n)})}),this.containerElement.querySelectorAll(`.water-btn`).forEach(e=>{e.addEventListener(`click`,async t=>{t.preventDefault();let n=e.dataset.plantingId;await this.waterPlant(n)})}),this.containerElement.querySelectorAll(`.fertilize-btn`).forEach(e=>{e.addEventListener(`click`,async t=>{t.preventDefault();let n=e.dataset.plantingId;await this.applyFertilizer(n)})}),this.containerElement.querySelectorAll(`.harvest-btn`).forEach(e=>{e.addEventListener(`click`,async t=>{t.preventDefault();let n=e.dataset.plantingId;await this.harvestPlant(n)})}))}openSeedSelectorModal(e){this.selectedPlotForPlanting=e;let t=document.querySelector(`#seed-selector-modal`);t||(t=document.createElement(`div`),t.id=`seed-selector-modal`,t.className=`fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-50 flex items-center justify-center p-4`,document.body.appendChild(t));let n=this.seeds.filter(e=>e.quantity>0);t.innerHTML=`
+    `,this.attachEventListeners()}attachEventListeners(){this.containerElement&&(this.containerElement.querySelectorAll(`.unlock-btn`).forEach(e=>{e.addEventListener(`click`,async t=>{t.preventDefault();let n=e.dataset.plotId,r=parseInt(e.dataset.cost||`50`);await this.unlockPlot(n,r)})}),this.containerElement.querySelectorAll(`.open-seed-modal-btn`).forEach(e=>{e.addEventListener(`click`,t=>{t.preventDefault();let n=e.dataset.plotId;this.openSeedSelectorModal(n)})}),this.containerElement.querySelectorAll(`.water-btn`).forEach(e=>{e.addEventListener(`click`,async t=>{t.preventDefault();let n=e.dataset.plantingId;await this.waterPlant(n)})}),this.containerElement.querySelectorAll(`.fertilize-btn`).forEach(e=>{e.addEventListener(`click`,async t=>{t.preventDefault();let n=e.dataset.plantingId;await this.applyFertilizer(n)})}),this.containerElement.querySelectorAll(`.harvest-btn`).forEach(e=>{e.addEventListener(`click`,async t=>{t.preventDefault();let n=e.dataset.plantingId;await this.harvestPlant(n)})}))}openSeedSelectorModal(e){this.selectedPlotForPlanting=e;let t=document.querySelector(`#seed-selector-modal`);t||(t=document.createElement(`div`),t.id=`seed-selector-modal`,t.className=`fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-50 flex items-center justify-center p-4`,document.body.appendChild(t));let n=this.seeds.filter(e=>e.quantity>0),r=window.translations||{},i=r.select_seed_title||`Pilih Benih untuk Ditanam`,a=r.plant_btn||`Tanam`,o=r.buy_more_seeds||`Beli Benih Lain di Shop`;t.innerHTML=`
       <div class="card-gg max-w-md w-full p-6 shadow-2xl space-y-4 bg-[#FBFAF0]">
         <div class="flex justify-between items-center border-b border-[#1F3D20]/10 pb-3">
-            <h3 class="font-baloo font-extrabold text-xl text-[#1F3D20]">Pilih Benih untuk Ditanam</h3>
+            <h3 class="font-baloo font-extrabold text-xl text-[#1F3D20]">${i}</h3>
             <button id="close-seed-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>
         </div>
 
         <div class="space-y-3 max-h-60 overflow-y-auto pr-1">
-          ${n.map(e=>{let t=this.getSeedDetails(e.item_code);return`
+          ${n.map(e=>{let t=this.getSeedDetails(e.item_code),n=(r.stock_label||`Stok: x:qty`).replace(`:qty`,e.quantity);return`
               <div class="p-3 rounded-2xl bg-[#F5F4DA] border border-[#1F3D20]/10 flex items-center justify-between gap-3">
                 <div class="flex items-center gap-3">
                   <span class="text-2xl p-2 rounded-xl bg-[#E2E1C4]">${t.icon}</span>
@@ -242,14 +242,14 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
                       <span>✨ +${t.exp} EXP</span>
                       <span class="flex items-center gap-0.5">${typeof window.getNcIconSvg==`function`?window.getNcIconSvg(`w-3.5 h-3.5`):`🪙`} +${t.coin} NC</span>
                     </div>
-                    <span class="text-[10px] text-[#6B6B55]">Stok: x${e.quantity}</span>
+                    <span class="text-[10px] text-[#6B6B55]">${n}</span>
                   </div>
                 </div>
                 <button 
                   data-seed-code="${e.item_code}"
                   class="select-seed-btn btn-gg-primary text-xs py-1.5 px-3 cursor-pointer"
                 >
-                  Tanam
+                  ${a}
                 </button>
               </div>
             `}).join(``)}
@@ -257,7 +257,7 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
 
         <div class="pt-2 text-center border-t border-[#1F3D20]/10">
           <a href="/shop" class="text-xs font-baloo font-bold text-[#8B6A4C] hover:underline">
-            🛒 Beli Benih Lain di Shop
+            🛒 ${o}
           </a>
         </div>
       </div>

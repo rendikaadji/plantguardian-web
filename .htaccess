@@ -1,7 +1,12 @@
+DirectoryIndex index.php
+
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
-    # Direct all requests to the public directory
+    # Directly handle root URL request to public/index.php
+    RewriteRule ^$ public/index.php [L]
+
+    # Redirect all other non-public requests into public directory
     RewriteCond %{REQUEST_URI} !^/public/
     RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>

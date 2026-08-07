@@ -1,17 +1,8 @@
-DirectoryIndex index.php
-
-RewriteEngine On
-RewriteBase /
-
-# Redirect Trailing Slashes If Not A Folder...
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_URI} (.+)/$
-RewriteRule ^ %1 [L,R=301]
-
-# Send Requests To Front Controller...
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [L,QSA]
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ public/$1 [L]
+</IfModule>
 
 # php -- BEGIN cPanel-generated handler, do not edit
 # Set the “ea-php85” package as the default “PHP” programming language.

@@ -86,9 +86,9 @@
                     <label for="password" class="block font-mono-code text-xs font-bold uppercase tracking-wider" style="font-family: 'IBM Plex Mono', monospace !important; color: #5C574C !important;">
                         {{ __('auth.password_label') }}
                     </label>
-                    <div class="relative">
-                        <input type="password" id="password" name="password" required placeholder="{{ __('auth.password_placeholder') }}" class="w-full px-4 py-3 pr-12 rounded-xs border font-sans text-sm transition-colors focus:outline-none" style="background-color: #E3DABF !important; border-color: #2F4A3C !important; color: #2A2823 !important;">
-                        <button type="button" onclick="togglePasswordVisibility('password', this)" class="absolute right-1 top-1/2 -translate-y-1/2 text-[#5C574C] hover:text-[#2F4A3C] transition-colors p-2 cursor-pointer focus:outline-none" title="Tampilkan/Sembunyikan Kata Sandi">
+                    <div class="flex items-center rounded-xs border overflow-hidden transition-colors focus-within:ring-1 focus-within:ring-[#2F4A3C]/40" style="background-color: #E3DABF !important; border-color: #2F4A3C !important;">
+                        <input type="password" id="password" name="password" required placeholder="{{ __('auth.password_placeholder') }}" class="flex-1 min-w-0 px-4 py-3 bg-transparent border-none font-sans text-sm focus:outline-none" style="color: #2A2823 !important;">
+                        <button type="button" onclick="togglePasswordVisibility('password', this)" class="flex-shrink-0 flex items-center justify-center w-11 h-full text-[#5C574C] hover:text-[#2F4A3C] transition-colors cursor-pointer focus:outline-none" title="Tampilkan/Sembunyikan Kata Sandi">
                             <svg class="w-5 h-5 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>

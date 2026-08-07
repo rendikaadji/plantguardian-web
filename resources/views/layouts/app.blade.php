@@ -22,96 +22,114 @@
     <link rel="icon" type="image/jpeg" href="{{ asset('images/logo-plantGuardian.jpeg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen flex flex-col antialiased" style="background-color: #F5F4DA !important; color: #2A2A22 !important;">    <!-- Top Header Bar (Plant Guardian Design System) -->
-    <header class="sticky top-0 z-50 border-b border-[#1F3D20]/10 shadow-xs" style="background-color: rgba(245, 244, 218, 0.95) !important; backdrop-filter: blur(8px);">
-        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2.5">
-            <div class="flex items-center justify-between gap-2 sm:gap-4 flex-wrap sm:flex-nowrap">
+<body class="min-h-screen flex flex-col antialiased" style="background-color: #F5F4DA !important; color: #2A2A22 !important;">    <!-- Top Header Bar (Plant Guardian Premium Design System) -->
+    <header class="sticky top-0 z-50 border-b border-[#1F3D20]/15 shadow-sm" style="background-color: rgba(245, 244, 218, 0.96) !important; backdrop-filter: blur(12px);">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
                 
-                <!-- User Avatar & Title -->
-                <div class="flex items-center gap-2 sm:gap-3">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2 sm:gap-3 group">
-                        <div class="relative">
-                            <div class="w-9 h-9 sm:w-11 sm:h-11 rounded-full border-2 border-[#1F3D20] bg-[#FBFAF0] flex items-center justify-center overflow-hidden shadow-xs">
-                                <img src="{{ asset('images/logo-plantGuardian.jpeg') }}" alt="PlantGuardian Logo" class="w-full h-full object-cover">
-                            </div>
-                            @if(auth()->check() && auth()->user()->role !== 'ranger')
-                                <span class="absolute -bottom-1 -right-1 bg-[#1F3D20] text-[#F5F4DA] text-[8px] sm:text-[9px] font-extrabold px-1.5 py-0.2 rounded-full font-baloo border border-[#F5F4DA]">
-                                    LVL {{ auth()->user()->level }}
-                                </span>
+                <!-- Left: Logo, Title, User Name & Level Badge (Never Covering Logo) -->
+                <div class="flex items-center gap-2.5 sm:gap-3.5">
+                    <a href="{{ route('home') }}" class="flex items-center gap-2.5 sm:gap-3.5 group">
+                        <!-- Clean Unobstructed Logo Avatar -->
+                        <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl border-2 border-[#1F3D20] bg-white p-0.5 shadow-sm flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform overflow-hidden">
+                            @if(auth()->check() && auth()->user()->avatar_url)
+                                <img src="{{ auth()->user()->avatar_url }}" alt="{{ auth()->user()->name }}" class="w-full h-full object-cover rounded-xl">
+                            @else
+                                <img src="{{ asset('images/logo-plantGuardian.jpeg') }}" alt="PlantGuardian Logo" class="w-full h-full object-cover rounded-xl">
                             @endif
                         </div>
-                        <div class="flex flex-col">
-                            <span class="font-baloo font-extrabold text-lg sm:text-2xl leading-none text-[#1F3D20] tracking-tight">
+
+                        <!-- Brand & User Identity -->
+                        <div class="flex flex-col justify-center min-w-0">
+                            <span class="font-baloo font-extrabold text-lg sm:text-2xl leading-none text-[#1F3D20] tracking-tight group-hover:text-[#2D5A2F] transition-colors">
                                 Plant Guardian
                             </span>
-                            <span class="text-[10px] sm:text-[11px] font-bold text-[#6B6B55] tracking-wide flex items-center gap-1">
-                                {{ auth()->user()->name ?? 'Penjelajah Flora' }}
-                                @if(auth()->check() && auth()->user()->role === 'ranger')
-                                    <span class="bg-[#8B6A4C] text-[#F5F4DA] text-[8px] sm:text-[9px] font-extrabold px-1.5 rounded-full uppercase">RANGER</span>
+                            <div class="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                                <span class="text-[11px] font-bold text-[#6B6B55] leading-none truncate max-w-[140px] sm:max-w-none">
+                                    {{ auth()->user()->name ?? 'Penjelajah Flora' }}
+                                </span>
+                                @if(auth()->check())
+                                    @if(auth()->user()->role === 'ranger')
+                                        <span class="bg-[#8B6A4C] text-[#F5F4DA] text-[9px] font-baloo font-extrabold px-2 py-0.5 rounded-full uppercase leading-none shadow-2xs">
+                                            RANGER
+                                        </span>
+                                    @elseif(auth()->user()->role === 'admin')
+                                        <span class="bg-[#FFD700] text-[#1F3D20] text-[9px] font-baloo font-extrabold px-2 py-0.5 rounded-full uppercase leading-none shadow-2xs">
+                                            ADMIN
+                                        </span>
+                                    @else
+                                        <!-- Level Badge Cleanly Beside Name (Never Covering Logo) -->
+                                        <span class="bg-[#1F3D20] text-[#F5F4DA] text-[9px] font-baloo font-extrabold px-2 py-0.5 rounded-full leading-none shadow-2xs border border-[#F5F4DA]/20">
+                                            LVL {{ auth()->user()->level ?? 1 }}
+                                        </span>
+                                    @endif
                                 @endif
-                            </span>
+                            </div>
                         </div>
                     </a>
                 </div>
 
-                <!-- Currency Pills & Action Buttons -->
-                <div class="flex items-center gap-1.5 sm:gap-3 shrink-0">
+                <!-- Right: NC, EXP, Language Switcher & Logout Controls (Consistent & Premium) -->
+                <div class="flex items-center gap-1.5 sm:gap-2.5 self-stretch sm:self-auto justify-between sm:justify-end shrink-0 pt-1 sm:pt-0 border-t sm:border-t-0 border-[#1F3D20]/10">
                     @auth
                         @if(auth()->user()->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="px-3 py-1 rounded-full bg-[#FFD700] text-[#1F3D20] font-baloo font-extrabold text-xs shadow-xs hover:bg-[#FFD700]/80">
+                            <a href="{{ route('admin.dashboard') }}" class="px-3.5 py-1.5 rounded-full bg-[#FFD700] text-[#1F3D20] font-baloo font-extrabold text-xs shadow-xs hover:bg-[#FFD700]/90 transition-colors">
                                 👑 MODE ADMIN
                             </a>
                         @elseif(auth()->user()->role === 'ranger')
-                            <a href="{{ route('ranger.dashboard') }}" class="px-3 py-1 rounded-full bg-[#8B6A4C] text-[#F5F4DA] font-baloo font-bold text-xs hover:bg-[#8B6A4C]/80 shadow-xs">
+                            <a href="{{ route('ranger.dashboard') }}" class="px-3.5 py-1.5 rounded-full bg-[#8B6A4C] text-[#F5F4DA] font-baloo font-bold text-xs hover:bg-[#8B6A4C]/90 transition-colors shadow-xs">
                                 🌿 MODE RANGER
                             </a>
                         @else
-                            <!-- Coin Pill (Viewer Only) -->
-                            <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs sm:text-sm shadow-xs">
-                                <svg class="w-4.5 h-4.5 shrink-0" viewBox="0 0 24 24" fill="none">
+                            <!-- NC (Nature Coin) Pill -->
+                            <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs sm:text-sm shadow-xs border border-[#F5F4DA]/10 shrink-0">
+                                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none">
                                     <circle cx="12" cy="12" r="10" fill="#F4C430" stroke="#B8860B" stroke-width="1.5"/>
                                     <circle cx="12" cy="12" r="7.5" fill="#FFD700" stroke="#DAA520" stroke-width="1"/>
                                     <path d="M12 6.5c-3 3.5-3.5 7.5-1.2 10.5 3-3.5 3.5-7.5 1.2-10.5z" fill="#1F3D20"/>
                                     <path d="M12 6.5c3 3.5 3.5 7.5 1.2 10.5-3-3.5-3.5-7.5-1.2-10.5z" fill="#27AE60"/>
                                 </svg>
-                                <span id="user-coin">0</span>
-                                <span class="text-[10px] opacity-80">NC</span>
+                                <span id="user-coin" class="leading-none">{{ auth()->user()->coin ?? 0 }}</span>
+                                <span class="text-[10px] text-[#F5F4DA]/80 leading-none">NC</span>
                             </div>
 
-                            <!-- EXP Pill (Viewer Only) -->
-                            <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#E7E6BE] text-[#1F3D20] font-baloo font-bold text-xs sm:text-sm shadow-xs">
-                                <span class="text-[10px] text-[#1F3D20] font-extrabold">EXP</span>
-                                <span id="user-exp">0</span>
+                            <!-- EXP Pill -->
+                            <div class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs sm:text-sm shadow-xs border border-[#1F3D20]/10 shrink-0">
+                                <span class="text-[10px] font-extrabold text-[#1F3D20]/70 leading-none">EXP</span>
+                                <span id="user-exp" class="leading-none">{{ auth()->user()->exp ?? 0 }}</span>
                             </div>
                         @endif
 
-                        <!-- Language Switcher (EN / ID) -->
-                        <div class="flex items-center bg-[#E7E6BE] p-0.5 rounded-full border border-[#1F3D20]/10 font-baloo font-extrabold text-[11px] text-[#1F3D20]">
-                            <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                        <!-- Controls Group: Language Switcher & Logout -->
+                        <div class="flex items-center gap-1.5 ml-auto sm:ml-0">
+                            <!-- Language Switcher (EN / ID) -->
+                            <div class="flex items-center bg-[#E2E1C4] p-0.5 rounded-full border border-[#1F3D20]/15 font-baloo font-extrabold text-[11px] text-[#1F3D20] shadow-2xs">
+                                <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="locale" value="en">
+                                    <button type="submit" class="px-2.5 py-0.5 rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'en' ? 'bg-[#1F3D20] text-[#F5F4DA] shadow-2xs' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
+                                        EN
+                                    </button>
+                                </form>
+                                <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                                    @csrf
+                                    <input type="hidden" name="locale" value="id">
+                                    <button type="submit" class="px-2.5 py-0.5 rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'id' ? 'bg-[#1F3D20] text-[#F5F4DA] shadow-2xs' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
+                                        ID
+                                    </button>
+                                </form>
+                            </div>
+
+                            <!-- Logout Button -->
+                            <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
-                                <input type="hidden" name="locale" value="en">
-                                <button type="submit" class="px-2 py-0.5 rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'en' ? 'bg-[#1F3D20] text-[#F5F4DA]' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
-                                    EN
-                                </button>
-                            </form>
-                            <form method="POST" action="{{ route('locale.switch') }}" class="inline">
-                                @csrf
-                                <input type="hidden" name="locale" value="id">
-                                <button type="submit" class="px-2 py-0.5 rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'id' ? 'bg-[#1F3D20] text-[#F5F4DA]' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
-                                    ID
+                                <button type="submit" class="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center hover:bg-[#C0392B] hover:text-white transition-all cursor-pointer shadow-2xs border border-[#1F3D20]/10 active:scale-95" title="Keluar">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                                    </svg>
                                 </button>
                             </form>
                         </div>
-
-                        <!-- Logout Form -->
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button type="submit" class="w-8 h-8 rounded-full bg-[#E7E6BE] text-[#1F3D20] flex items-center justify-center hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors cursor-pointer" title="Keluar">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                                </svg>
-                            </button>
-                        </form>
                     @endauth
                 </div>
 

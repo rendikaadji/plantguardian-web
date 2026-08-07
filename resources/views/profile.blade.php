@@ -510,10 +510,10 @@
         <div class="grid grid-cols-2 gap-3 max-h-80 overflow-y-auto p-1">
             @php
                 $availableAvatars = [
-                    ['key' => 'default', 'name' => 'Default Guardian', 'url' => asset('images/avatars/guardian_avatar.png'), 'owned' => true],
-                    ['key' => 'profile1', 'name' => 'Foto Profil #1', 'url' => asset('images/avatars/profile1.png'), 'owned' => in_array('profile1', $ownedAvatarCodes ?? [])],
-                    ['key' => 'profile2', 'name' => 'Foto Profil #2', 'url' => asset('images/avatars/profile2.png'), 'owned' => in_array('profile2', $ownedAvatarCodes ?? [])],
-                    ['key' => 'profile3', 'name' => 'Foto Profil #3', 'url' => asset('images/avatars/profile3.png'), 'owned' => in_array('profile3', $ownedAvatarCodes ?? [])],
+                    ['key' => 'default', 'name' => 'Default Guardian', 'url' => asset('images/guardian_avatar.png'), 'owned' => true],
+                    ['key' => 'profile1', 'name' => 'Foto Profil #1', 'url' => asset('images/profile1.png'), 'owned' => in_array('profile1', $ownedAvatarCodes ?? [])],
+                    ['key' => 'profile2', 'name' => 'Foto Profil #2', 'url' => asset('images/profile2.png'), 'owned' => in_array('profile2', $ownedAvatarCodes ?? [])],
+                    ['key' => 'profile3', 'name' => 'Foto Profil #3', 'url' => asset('images/profile3.png'), 'owned' => in_array('profile3', $ownedAvatarCodes ?? [])],
                 ];
                 $currentAvatarKey = auth()->user()->avatar ?? 'default';
             @endphp

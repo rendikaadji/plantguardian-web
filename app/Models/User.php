@@ -36,12 +36,12 @@ class User extends Authenticatable
                 ? $this->avatar
                 : $this->avatar . '.png';
 
-            if (file_exists(public_path("images/{$filename}"))) {
-                return asset("images/{$filename}");
+            if (file_exists(public_path("images/avatars/{$filename}"))) {
+                return asset("images/avatars/{$filename}");
             }
         }
 
-        return asset('images/guardian_avatar.png');
+        return asset('images/avatars/guardian_avatar.png');
     }
 
     protected $hidden = [

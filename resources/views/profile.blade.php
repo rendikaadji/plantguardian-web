@@ -50,127 +50,103 @@
         </div>
 
         <!-- Account Settings & Change Password Card for Ranger -->
-        <div class="card-gg p-6 space-y-5 bg-[#FBFAF0] rounded-2xl border border-[#1F3D20]/15 shadow-sm">
-            <!-- Header with Icon & Title -->
-            <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3.5">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-[#1F3D20]/10 flex items-center justify-center text-[#1F3D20] text-sm">
-                        ⚙️
-                    </div>
-                    <div>
-                        <h3 class="font-baloo font-bold text-base text-[#1F3D20] leading-tight">
-                            {{ __('profile.account_settings') }}
-                        </h3>
-                        <p class="text-[11px] font-nunito text-[#6B6B55]">Kelola informasi akun & kata sandi Anda</p>
-                    </div>
+        <div class="card-gg p-6 space-y-5 bg-[#FBFAF0]">
+            <!-- Header -->
+            <div class="flex items-center gap-2.5 border-b border-[#1F3D20]/10 pb-3.5">
+                <div class="w-8 h-8 rounded-xl bg-[#1F3D20]/10 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-[#1F3D20]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <div>
+                    <h3 class="font-baloo font-bold text-base text-[#1F3D20] leading-tight">{{ __('profile.account_settings') }}</h3>
+                    <p class="text-[11px] font-nunito text-[#6B6B55]">Kelola informasi akun & kata sandi Anda</p>
                 </div>
             </div>
             
-            <!-- User Information Box -->
-            <div class="bg-white p-3.5 rounded-xl border border-[#1F3D20]/10 space-y-2">
-                <div class="flex items-center justify-between text-xs font-nunito">
-                    <span class="text-[#6B6B55] font-semibold">Email:</span>
+            <!-- User Information -->
+            <div class="bg-white p-3.5 rounded-xl border border-[#1F3D20]/10">
+                <div class="flex items-center justify-between text-xs font-nunito pb-2 mb-2 border-b border-[#1F3D20]/5">
+                    <span class="text-[#6B6B55] font-semibold">Email</span>
                     <span class="font-bold text-[#1F3D20]">{{ auth()->user()->email }}</span>
                 </div>
-                <div class="flex items-center justify-between text-xs font-nunito pt-1.5 border-t border-[#1F3D20]/5">
-                    <span class="text-[#6B6B55] font-semibold">Peran Utama:</span>
-                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-baloo font-extrabold bg-[#1F3D20]/10 text-[#1F3D20] uppercase tracking-wide">
-                        {{ auth()->user()->role }}
-                    </span>
+                <div class="flex items-center justify-between text-xs font-nunito">
+                    <span class="text-[#6B6B55] font-semibold">Peran Utama</span>
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-baloo font-extrabold bg-[#1F3D20]/10 text-[#1F3D20] uppercase tracking-wide">{{ auth()->user()->role }}</span>
                 </div>
             </div>
 
-            <!-- Change Password Form Section -->
-            <div class="space-y-3.5 pt-1">
-                <div class="flex items-center gap-2">
-                    <span class="text-sm">🔒</span>
-                    <h4 class="font-baloo font-bold text-xs uppercase tracking-wider text-[#1F3D20]">
-                        {{ __('profile.change_password_title') }}
-                    </h4>
-                </div>
+            <!-- Change Password Section -->
+            <div class="space-y-3.5">
+                <h4 class="font-baloo font-bold text-xs uppercase tracking-wider text-[#1F3D20] flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-[#1F3D20]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    {{ __('profile.change_password_title') }}
+                </h4>
 
                 @if (session('status'))
                     <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-nunito font-bold flex items-center gap-2">
-                        <svg class="w-4 h-4 shrink-0 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
+                        <svg class="w-4 h-4 shrink-0 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         <span>{{ session('status') }}</span>
                     </div>
                 @endif
 
                 <form method="POST" action="{{ route('profile.password.update') }}" class="space-y-3">
                     @csrf
+                    {{-- Kata Sandi Saat Ini --}}
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.current_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="ranger_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
-                            <button type="button" onclick="togglePasswordVisibility('ranger_current_password', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
-                                <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
-                                <svg class="w-4 h-4 eye-closed hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/>
-                                </svg>
+                        <div style="position:relative;display:flex;align-items:center;">
+                            <input type="password" id="ranger_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" style="padding:10px 44px 10px 14px;" />
+                            <button type="button" onclick="togglePasswordVisibility('ranger_current_password', this)" style="position:absolute;right:0;top:0;bottom:0;width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:#5C574C;" title="Tampilkan/Sembunyikan Kata Sandi">
+                                <svg class="eye-open" style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <svg class="eye-closed" style="width:16px;height:16px;display:none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/></svg>
                             </button>
                         </div>
                         @error('current_password')
-                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">⚠️ {{ $message }}</span>
+                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">{{ $message }}</span>
                         @enderror
                     </div>
 
+                    {{-- Kata Sandi Baru --}}
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.new_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="ranger_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
-                            <button type="button" onclick="togglePasswordVisibility('ranger_password', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
-                                <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
-                                <svg class="w-4 h-4 eye-closed hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/>
-                                </svg>
+                        <div style="position:relative;display:flex;align-items:center;">
+                            <input type="password" id="ranger_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" style="padding:10px 44px 10px 14px;" />
+                            <button type="button" onclick="togglePasswordVisibility('ranger_password', this)" style="position:absolute;right:0;top:0;bottom:0;width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:#5C574C;" title="Tampilkan/Sembunyikan Kata Sandi">
+                                <svg class="eye-open" style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <svg class="eye-closed" style="width:16px;height:16px;display:none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/></svg>
                             </button>
                         </div>
                         @error('password')
-                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">⚠️ {{ $message }}</span>
+                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">{{ $message }}</span>
                         @enderror
                     </div>
 
+                    {{-- Konfirmasi Kata Sandi Baru --}}
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.confirm_new_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="ranger_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
-                            <button type="button" onclick="togglePasswordVisibility('ranger_password_confirmation', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
-                                <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
-                                <svg class="w-4 h-4 eye-closed hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/>
-                                </svg>
+                        <div style="position:relative;display:flex;align-items:center;">
+                            <input type="password" id="ranger_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" style="padding:10px 44px 10px 14px;" />
+                            <button type="button" onclick="togglePasswordVisibility('ranger_password_confirmation', this)" style="position:absolute;right:0;top:0;bottom:0;width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:#5C574C;" title="Tampilkan/Sembunyikan Kata Sandi">
+                                <svg class="eye-open" style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <svg class="eye-closed" style="width:16px;height:16px;display:none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/></svg>
                             </button>
                         </div>
                     </div>
 
                     <div class="pt-2">
                         <button type="submit" class="w-full py-2.5 rounded-xl bg-[#1F3D20] hover:bg-[#142815] text-[#F5F4DA] font-baloo font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm active:scale-[0.99]">
-                            <span>🔑 {{ __('profile.update_password_button') }}</span>
+                            🔑 {{ __('profile.update_password_button') }}
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- Logout Section -->
+            <!-- Logout -->
             <div class="pt-3 border-t border-[#1F3D20]/10">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="w-full py-2.5 rounded-xl bg-white border border-[#C0392B]/30 hover:bg-[#C0392B] text-[#C0392B] hover:text-white font-baloo font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-xs active:scale-[0.99]">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                        <span>{{ __('profile.logout') }}</span>
+                    <button type="submit" class="w-full py-2.5 rounded-xl bg-white border border-[#C0392B]/30 hover:bg-[#C0392B] text-[#C0392B] hover:text-white font-baloo font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.99]">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        {{ __('profile.logout') }}
                     </button>
                 </form>
             </div>
@@ -292,127 +268,103 @@
         </div>
 
         <!-- 6. Account & Settings Options Card for Viewer -->
-        <div class="card-gg p-6 space-y-5 bg-[#FBFAF0] rounded-2xl border border-[#1F3D20]/15 shadow-sm">
-            <!-- Header with Icon & Title -->
-            <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3.5">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-8 h-8 rounded-xl bg-[#1F3D20]/10 flex items-center justify-center text-[#1F3D20] text-sm">
-                        ⚙️
-                    </div>
-                    <div>
-                        <h3 class="font-baloo font-bold text-base text-[#1F3D20] leading-tight">
-                            {{ __('profile.account_settings') }}
-                        </h3>
-                        <p class="text-[11px] font-nunito text-[#6B6B55]">Kelola informasi akun & kata sandi Anda</p>
-                    </div>
+        <div class="card-gg p-6 space-y-5 bg-[#FBFAF0]">
+            <!-- Header -->
+            <div class="flex items-center gap-2.5 border-b border-[#1F3D20]/10 pb-3.5">
+                <div class="w-8 h-8 rounded-xl bg-[#1F3D20]/10 flex items-center justify-center">
+                    <svg class="w-4 h-4 text-[#1F3D20]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.066 2.573c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.573 1.066c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.066-2.573c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </div>
+                <div>
+                    <h3 class="font-baloo font-bold text-base text-[#1F3D20] leading-tight">{{ __('profile.account_settings') }}</h3>
+                    <p class="text-[11px] font-nunito text-[#6B6B55]">Kelola informasi akun & kata sandi Anda</p>
                 </div>
             </div>
             
-            <!-- User Information Box -->
-            <div class="bg-white p-3.5 rounded-xl border border-[#1F3D20]/10 space-y-2">
-                <div class="flex items-center justify-between text-xs font-nunito">
-                    <span class="text-[#6B6B55] font-semibold">Email:</span>
+            <!-- User Information -->
+            <div class="bg-white p-3.5 rounded-xl border border-[#1F3D20]/10">
+                <div class="flex items-center justify-between text-xs font-nunito pb-2 mb-2 border-b border-[#1F3D20]/5">
+                    <span class="text-[#6B6B55] font-semibold">Email</span>
                     <span class="font-bold text-[#1F3D20]">{{ $user->email }}</span>
                 </div>
-                <div class="flex items-center justify-between text-xs font-nunito pt-1.5 border-t border-[#1F3D20]/5">
-                    <span class="text-[#6B6B55] font-semibold">Peran Utama:</span>
-                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-baloo font-extrabold bg-[#1F3D20]/10 text-[#1F3D20] uppercase tracking-wide">
-                        {{ $user->role }}
-                    </span>
+                <div class="flex items-center justify-between text-xs font-nunito">
+                    <span class="text-[#6B6B55] font-semibold">Peran Utama</span>
+                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-baloo font-extrabold bg-[#1F3D20]/10 text-[#1F3D20] uppercase tracking-wide">{{ $user->role }}</span>
                 </div>
             </div>
 
-            <!-- Change Password Form Section -->
-            <div class="space-y-3.5 pt-1">
-                <div class="flex items-center gap-2">
-                    <span class="text-sm">🔒</span>
-                    <h4 class="font-baloo font-bold text-xs uppercase tracking-wider text-[#1F3D20]">
-                        {{ __('profile.change_password_title') }}
-                    </h4>
-                </div>
+            <!-- Change Password Section -->
+            <div class="space-y-3.5">
+                <h4 class="font-baloo font-bold text-xs uppercase tracking-wider text-[#1F3D20] flex items-center gap-2">
+                    <svg class="w-3.5 h-3.5 text-[#1F3D20]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    {{ __('profile.change_password_title') }}
+                </h4>
 
                 @if (session('status'))
                     <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-nunito font-bold flex items-center gap-2">
-                        <svg class="w-4 h-4 shrink-0 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                        </svg>
+                        <svg class="w-4 h-4 shrink-0 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
                         <span>{{ session('status') }}</span>
                     </div>
                 @endif
 
                 <form method="POST" action="{{ route('profile.password.update') }}" class="space-y-3">
                     @csrf
+                    {{-- Kata Sandi Saat Ini --}}
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.current_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="viewer_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
-                            <button type="button" onclick="togglePasswordVisibility('viewer_current_password', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
-                                <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
-                                <svg class="w-4 h-4 eye-closed hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/>
-                                </svg>
+                        <div style="position:relative;display:flex;align-items:center;">
+                            <input type="password" id="viewer_current_password" name="current_password" required placeholder="{{ __('profile.current_password_placeholder') }}" class="w-full text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" style="padding:10px 44px 10px 14px;" />
+                            <button type="button" onclick="togglePasswordVisibility('viewer_current_password', this)" style="position:absolute;right:0;top:0;bottom:0;width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:#5C574C;" title="Tampilkan/Sembunyikan Kata Sandi">
+                                <svg class="eye-open" style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <svg class="eye-closed" style="width:16px;height:16px;display:none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/></svg>
                             </button>
                         </div>
                         @error('current_password')
-                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">⚠️ {{ $message }}</span>
+                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">{{ $message }}</span>
                         @enderror
                     </div>
 
+                    {{-- Kata Sandi Baru --}}
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.new_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="viewer_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
-                            <button type="button" onclick="togglePasswordVisibility('viewer_password', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
-                                <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
-                                <svg class="w-4 h-4 eye-closed hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/>
-                                </svg>
+                        <div style="position:relative;display:flex;align-items:center;">
+                            <input type="password" id="viewer_password" name="password" required placeholder="{{ __('profile.new_password_placeholder') }}" class="w-full text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" style="padding:10px 44px 10px 14px;" />
+                            <button type="button" onclick="togglePasswordVisibility('viewer_password', this)" style="position:absolute;right:0;top:0;bottom:0;width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:#5C574C;" title="Tampilkan/Sembunyikan Kata Sandi">
+                                <svg class="eye-open" style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <svg class="eye-closed" style="width:16px;height:16px;display:none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/></svg>
                             </button>
                         </div>
                         @error('password')
-                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">⚠️ {{ $message }}</span>
+                            <span class="text-[11px] text-red-600 font-nunito font-semibold block mt-1">{{ $message }}</span>
                         @enderror
                     </div>
 
+                    {{-- Konfirmasi Kata Sandi Baru --}}
                     <div>
                         <label class="block text-[11px] font-baloo font-bold text-[#1F3D20] mb-1">{{ __('profile.confirm_new_password_label') }}</label>
-                        <div class="relative">
-                            <input type="password" id="viewer_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full py-2.5 pl-3.5 pr-11 text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" />
-                            <button type="button" onclick="togglePasswordVisibility('viewer_password_confirmation', this)" class="absolute inset-y-0 right-0 px-3.5 flex items-center text-[#5C574C] hover:text-[#1F3D20] transition-colors focus:outline-none cursor-pointer" title="Tampilkan/Sembunyikan Kata Sandi">
-                                <svg class="w-4 h-4 eye-open" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                                </svg>
-                                <svg class="w-4 h-4 eye-closed hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/>
-                                </svg>
+                        <div style="position:relative;display:flex;align-items:center;">
+                            <input type="password" id="viewer_password_confirmation" name="password_confirmation" required placeholder="{{ __('profile.confirm_new_password_placeholder') }}" class="w-full text-xs font-nunito border border-[#1F3D20]/20 rounded-xl bg-white text-[#1F3D20] placeholder:text-[#6B6B55]/50 focus:outline-none focus:border-[#1F3D20] focus:ring-1 focus:ring-[#1F3D20]/30 transition-all" style="padding:10px 44px 10px 14px;" />
+                            <button type="button" onclick="togglePasswordVisibility('viewer_password_confirmation', this)" style="position:absolute;right:0;top:0;bottom:0;width:44px;display:flex;align-items:center;justify-content:center;background:none;border:none;cursor:pointer;color:#5C574C;" title="Tampilkan/Sembunyikan Kata Sandi">
+                                <svg class="eye-open" style="width:16px;height:16px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                                <svg class="eye-closed" style="width:16px;height:16px;display:none;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858-5.908a10.05 10.05 0 014.122-.963c4.478 0 8.268 2.943 9.542 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21M3 3l18 18"/></svg>
                             </button>
                         </div>
                     </div>
 
                     <div class="pt-2">
                         <button type="submit" class="w-full py-2.5 rounded-xl bg-[#1F3D20] hover:bg-[#142815] text-[#F5F4DA] font-baloo font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-sm active:scale-[0.99]">
-                            <span>🔑 {{ __('profile.update_password_button') }}</span>
+                            🔑 {{ __('profile.update_password_button') }}
                         </button>
                     </div>
                 </form>
             </div>
 
-            <!-- Logout Section -->
+            <!-- Logout -->
             <div class="pt-3 border-t border-[#1F3D20]/10">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="w-full py-2.5 rounded-xl bg-white border border-[#C0392B]/30 hover:bg-[#C0392B] text-[#C0392B] hover:text-white font-baloo font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 shadow-xs active:scale-[0.99]">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
-                        </svg>
-                        <span>{{ __('profile.logout') }}</span>
+                    <button type="submit" class="w-full py-2.5 rounded-xl bg-white border border-[#C0392B]/30 hover:bg-[#C0392B] text-[#C0392B] hover:text-white font-baloo font-bold text-xs transition-all cursor-pointer flex items-center justify-center gap-2 active:scale-[0.99]">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        {{ __('profile.logout') }}
                     </button>
                 </form>
             </div>
@@ -544,12 +496,12 @@
 
         if (input.type === 'password') {
             input.type = 'text';
-            if (eyeOpen) eyeOpen.classList.add('hidden');
-            if (eyeClosed) eyeClosed.classList.remove('hidden');
+            if (eyeOpen) eyeOpen.style.display = 'none';
+            if (eyeClosed) eyeClosed.style.display = 'block';
         } else {
             input.type = 'password';
-            if (eyeOpen) eyeOpen.classList.remove('hidden');
-            if (eyeClosed) eyeClosed.classList.add('hidden');
+            if (eyeOpen) eyeOpen.style.display = 'block';
+            if (eyeClosed) eyeClosed.style.display = 'none';
         }
     }
 

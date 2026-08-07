@@ -61,9 +61,11 @@ export default class MapManager {
 
     const options = {
       enableHighAccuracy: true,
-      timeout: 10000,
+      timeout: 15000,
       maximumAge: 0
     };
+
+    let hasCentered = false;
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -71,11 +73,14 @@ export default class MapManager {
         const lng = position.coords.longitude;
         this.userLat = lat;
         this.userLng = lng;
-        this.map.setView([lat, lng], 16);
+        if (!hasCentered && this.map) {
+          this.map.setView([lat, lng], 17);
+          hasCentered = true;
+        }
         this.addUserMarker(lat, lng);
         this.refreshMarkers();
       },
-      () => console.warn('Akses lokasi GPS ditolak/tidak tersedia. Menggunakan peta pusat.'),
+      (err) => console.warn('Akses lokasi GPS ditolak/tidak tersedia:', err.message),
       options
     );
 
@@ -85,6 +90,10 @@ export default class MapManager {
         const lng = position.coords.longitude;
         this.userLat = lat;
         this.userLng = lng;
+        if (!hasCentered && this.map) {
+          this.map.setView([lat, lng], 17);
+          hasCentered = true;
+        }
         this.addUserMarker(lat, lng);
       },
       (err) => console.warn('GPS Watch Error:', err.message),
@@ -93,12 +102,12 @@ export default class MapManager {
   }
 
   addUserMarker(lat, lng) {
-    if (!this.map) return;
+    if (!this.map || lat == null || lng == null) return;
     this.userLat = lat;
     this.userLng = lng;
 
     const t = window.translations || {};
-    const gpsText = t.gps_active || 'GPS Aktif';
+    const gpsText = t.gps_active || 'GPS Presisi Aktif';
 
     const userIcon = L.divIcon({
       className: 'user-gps-marker',
@@ -112,26 +121,35 @@ export default class MapManager {
       iconAnchor: [12, 12]
     });
 
-    if (this.userLocationMarker) {
-      this.userLocationMarker.setLatLng([lat, lng]);
-    } else {
-      this.userLocationMarker = L.marker([lat, lng], { icon: userIcon })
-        .addTo(this.map)
-        .bindPopup(`<b style="font-family:Baloo 2,sans-serif;">📍 ${gpsText}</b>`);
-    }
+    const targetLatLng = L.latLng(lat, lng);
 
-    // Visual 50-meter Claim Radius Circle around user
+    // 1. Update/Create 50-meter Claim Radar Circle (Always bound to exact same LatLng)
     if (this.userLocationCircle) {
-      this.userLocationCircle.setLatLng([lat, lng]);
+      this.userLocationCircle.setLatLng(targetLatLng);
     } else {
-      this.userLocationCircle = L.circle([lat, lng], {
+      this.userLocationCircle = L.circle(targetLatLng, {
         radius: 50, // 50 meters claim radius
         color: '#1F3D20',
         fillColor: '#1F3D20',
-        fillOpacity: 0.15,
+        fillOpacity: 0.12,
         weight: 2,
         dashArray: '6, 6'
-      }).addTo(this.map).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:11px;color:#1F3D20;">🎯 Area Jangkauan Klaim Spesies (50 Meter)</b>');
+      }).addTo(this.map).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:11px;color:#1F3D20;">🎯 Radar Jangkauan Klaim Spesies (50 Meter)</b>');
+    }
+    if (this.userLocationCircle.bringToBack) {
+      this.userLocationCircle.bringToBack();
+    }
+
+    // 2. Update/Create User GPS Marker (Centered at exact same LatLng)
+    if (this.userLocationMarker) {
+      this.userLocationMarker.setLatLng(targetLatLng);
+    } else {
+      this.userLocationMarker = L.marker(targetLatLng, { icon: userIcon, zIndexOffset: 1000 })
+        .addTo(this.map)
+        .bindPopup(`<b style="font-family:Baloo 2,sans-serif;">📍 ${gpsText}</b>`);
+    }
+    if (this.userLocationMarker.bringToFront) {
+      this.userLocationMarker.bringToFront();
     }
   }
 

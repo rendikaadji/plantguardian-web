@@ -19,15 +19,17 @@ class AchievementControllerTest extends TestCase
             'coin' => 50,
         ]);
 
-        $sighting = \App\Models\PlantSighting::factory()->create([
-            'verification_status' => 'verified',
-        ]);
+        for ($i = 0; $i < 5; $i++) {
+            $sighting = \App\Models\PlantSighting::factory()->create([
+                'verification_status' => 'verified',
+            ]);
 
-        \App\Models\PlantDiscovery::create([
-            'user_id' => $user->id,
-            'plant_sighting_id' => $sighting->id,
-            'discovered_at' => now(),
-        ]);
+            \App\Models\PlantDiscovery::create([
+                'user_id' => $user->id,
+                'plant_sighting_id' => $sighting->id,
+                'discovered_at' => now(),
+            ]);
+        }
 
         $response = $this->actingAs($user)->postJson('/api/achievements/claim', [
             'achievement_code' => 'flora_explorer',
@@ -35,8 +37,8 @@ class AchievementControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJsonPath('success', true)
-            ->assertJsonPath('user_exp', 200)
-            ->assertJsonPath('user_coin', 100);
+            ->assertJsonPath('user_exp', 250)
+            ->assertJsonPath('user_coin', 125);
 
         $this->assertDatabaseHas('user_achievements', [
             'user_id' => $user->id,
@@ -46,8 +48,8 @@ class AchievementControllerTest extends TestCase
 
         $this->assertDatabaseHas('users', [
             'id' => $user->id,
-            'exp' => 200,
-            'coin' => 100,
+            'exp' => 250,
+            'coin' => 125,
         ]);
 
         // Attempting to claim the same achievement again should fail

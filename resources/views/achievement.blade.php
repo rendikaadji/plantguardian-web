@@ -32,7 +32,7 @@
             <!-- Progress Summary Box -->
             <div class="bg-[#FBFAF0]/10 border border-[#F5F4DA]/20 p-4 rounded-2xl shrink-0 text-center space-y-1 backdrop-blur-md min-w-[150px]">
                 <span class="text-[10px] font-baloo font-bold text-[#F5F4DA]/70 uppercase tracking-wider block">{{ __('achievement.total_unlocked') }}</span>
-                <span id="achievement-ratio-text" class="font-baloo font-extrabold text-3xl text-[#FFD700] block leading-none">{{ $unlockedCount ?? 0 }} / {{ $totalCount ?? 12 }}</span>
+                <span id="achievement-ratio-text" class="font-baloo font-extrabold text-3xl text-[#FFD700] block leading-none">{{ $unlockedCount ?? 0 }} / {{ $totalCount ?? 24 }}</span>
                 <span class="text-[10px] font-baloo font-bold text-[#27AE60] bg-[#27AE60]/20 px-2 py-0.5 rounded-full inline-block mt-1">{{ $completionPercentage ?? 0 }}% {{ __('achievement.completed') }}</span>
             </div>
         </div>
@@ -73,18 +73,37 @@
 
             @php
                 $items = [
-                    ['code' => 'flora_explorer', 'cat' => 'exploration', 'icon' => '🌱', 'exp' => 100, 'coin' => 50],
-                    ['code' => 'region_mapper', 'cat' => 'exploration', 'icon' => '🗺️', 'exp' => 150, 'coin' => 75],
-                    ['code' => 'seedex_expert', 'cat' => 'exploration', 'icon' => '📚', 'exp' => 250, 'coin' => 120],
-                    ['code' => 'digital_farmer', 'cat' => 'garden', 'icon' => '🌻', 'exp' => 150, 'coin' => 75],
-                    ['code' => 'hydrator_master', 'cat' => 'garden', 'icon' => '🚿', 'exp' => 120, 'coin' => 60],
-                    ['code' => 'super_fertilizer', 'cat' => 'garden', 'icon' => '🧪', 'exp' => 180, 'coin' => 90],
-                    ['code' => 'loyal_shopper', 'cat' => 'shop', 'icon' => '🛒', 'exp' => 200, 'coin' => 100],
-                    ['code' => 'rare_seed_collector', 'cat' => 'shop', 'icon' => '🌸', 'exp' => 220, 'coin' => 110],
-                    ['code' => 'alliance_guardian', 'cat' => 'social', 'icon' => '🤝', 'exp' => 200, 'coin' => 100],
-                    ['code' => 'alliance_courier', 'cat' => 'social', 'icon' => '🎁', 'exp' => 150, 'coin' => 80],
-                    ['code' => 'ecosystem_master', 'cat' => 'social', 'icon' => '👑', 'exp' => 500, 'coin' => 250],
-                    ['code' => 'ancient_legend', 'cat' => 'social', 'icon' => '🏆', 'exp' => 1000, 'coin' => 500],
+                    // Category 1: Exploration
+                    ['code' => 'flora_explorer', 'cat' => 'exploration', 'icon' => '🌱', 'exp' => 150, 'coin' => 75],
+                    ['code' => 'region_mapper', 'cat' => 'exploration', 'icon' => '🗺️', 'exp' => 300, 'coin' => 150],
+                    ['code' => 'seedex_expert', 'cat' => 'exploration', 'icon' => '📚', 'exp' => 500, 'coin' => 250],
+                    ['code' => 'master_botanist', 'cat' => 'exploration', 'icon' => '🔬', 'exp' => 1000, 'coin' => 500],
+                    ['code' => 'ranger_pioneer', 'cat' => 'exploration', 'icon' => '📡', 'exp' => 400, 'coin' => 200],
+                    ['code' => 'legendary_explorer', 'cat' => 'exploration', 'icon' => '🧭', 'exp' => 2000, 'coin' => 1000],
+
+                    // Category 2: Garden
+                    ['code' => 'digital_farmer', 'cat' => 'garden', 'icon' => '🌻', 'exp' => 200, 'coin' => 100],
+                    ['code' => 'harvest_master', 'cat' => 'garden', 'icon' => '🌾', 'exp' => 600, 'coin' => 300],
+                    ['code' => 'hydrator_master', 'cat' => 'garden', 'icon' => '🚿', 'exp' => 300, 'coin' => 150],
+                    ['code' => 'super_fertilizer', 'cat' => 'garden', 'icon' => '🧪', 'exp' => 400, 'coin' => 200],
+                    ['code' => 'green_thumb', 'cat' => 'garden', 'icon' => '🏡', 'exp' => 800, 'coin' => 400],
+                    ['code' => 'agrarian_legend', 'cat' => 'garden', 'icon' => '🚜', 'exp' => 2500, 'coin' => 1250],
+
+                    // Category 3: Shop & Items
+                    ['code' => 'loyal_shopper', 'cat' => 'shop', 'icon' => '🛒', 'exp' => 350, 'coin' => 175],
+                    ['code' => 'rare_seed_collector', 'cat' => 'shop', 'icon' => '🌸', 'exp' => 500, 'coin' => 250],
+                    ['code' => 'botanical_investor', 'cat' => 'shop', 'icon' => '💰', 'exp' => 750, 'coin' => 375],
+                    ['code' => 'shop_tycoon', 'cat' => 'shop', 'icon' => '🏬', 'exp' => 1500, 'coin' => 750],
+                    ['code' => 'seed_hoarder', 'cat' => 'shop', 'icon' => '💎', 'exp' => 1200, 'coin' => 600],
+                    ['code' => 'equipment_master', 'cat' => 'shop', 'icon' => '🛠️', 'exp' => 3000, 'coin' => 1500],
+
+                    // Category 4: Social & Guardian Titles
+                    ['code' => 'alliance_guardian', 'cat' => 'social', 'icon' => '🤝', 'exp' => 350, 'coin' => 175],
+                    ['code' => 'alliance_veteran', 'cat' => 'social', 'icon' => '🛡️', 'exp' => 800, 'coin' => 400],
+                    ['code' => 'alliance_courier', 'cat' => 'social', 'icon' => '🎁', 'exp' => 450, 'coin' => 225],
+                    ['code' => 'social_philanthropist', 'cat' => 'social', 'icon' => '💖', 'exp' => 1000, 'coin' => 500],
+                    ['code' => 'ecosystem_master', 'cat' => 'social', 'icon' => '👑', 'exp' => 1200, 'coin' => 600],
+                    ['code' => 'ancient_legend', 'cat' => 'social', 'icon' => '🏆', 'exp' => 5000, 'coin' => 2500],
                 ];
             @endphp
 

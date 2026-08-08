@@ -21,18 +21,64 @@
                 <button type="button" onclick="openAvatarModal()" class="absolute bottom-0 right-0 p-2 rounded-full bg-[#1F3D20] text-[#F5F4DA] border-2 border-[#F5F4DA] shadow-md hover:bg-[#8B6A4C] transition-all cursor-pointer" title="Ubah Foto Profil">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 </button>
+                <span class="absolute top-0 right-0 bg-[#1F3D20] text-[#F5F4DA] text-xs font-baloo font-extrabold px-2.5 py-0.5 rounded-full border-2 border-[#F5F4DA] shadow-xs">
+                    LVL {{ $currentLevel }}
+                </span>
             </div>
 
             <div class="space-y-1">
-                <span class="font-mono-code text-xs font-bold px-3 py-1 rounded-xs uppercase tracking-widest border border-[#8B6A4C]" style="font-family: 'IBM Plex Mono', monospace; background-color: #8B6A4C !important; color: #EDE6D3 !important;">
-                    {{ __('profile.ranger_role') }}
-                </span>
+                <div class="flex items-center justify-center gap-2">
+                    <span class="font-mono-code text-xs font-bold px-3 py-1 rounded-xs uppercase tracking-widest border border-[#8B6A4C]" style="font-family: 'IBM Plex Mono', monospace; background-color: #8B6A4C !important; color: #EDE6D3 !important;">
+                        {{ __('profile.ranger_role') }}
+                    </span>
+                    <span class="font-baloo font-extrabold text-xs px-2.5 py-0.5 rounded-full bg-[#1F3D20] text-[#F5F4DA]">
+                        LVL {{ $currentLevel }}
+                    </span>
+                </div>
                 <h1 class="font-serif-headline font-extrabold text-2xl text-[#1F3D20] pt-2" style="font-family: 'Fraunces', Georgia, serif;">
                     {{ auth()->user()->name }}
                 </h1>
                 <p class="font-mono-code text-xs text-[#5C574C]" style="font-family: 'IBM Plex Mono', monospace;">
                     ID: {{ sprintf('RNG-%04d', auth()->id()) }} | {{ auth()->user()->email }}
                 </p>
+            </div>
+        </div>
+
+        <!-- Growth Synergy Progress Card for Ranger -->
+        <div class="card-gg p-5 space-y-4">
+            <div class="flex items-center justify-between font-baloo font-extrabold text-sm text-[#1F3D20]">
+                <span>Growth Synergy</span>
+                <span class="text-xs text-[#1F3D20]">{{ number_format($exp) }} / {{ number_format($currentLevel * $expPerLevel) }} XP</span>
+            </div>
+
+            <div class="progress-bar-gg">
+                <div class="progress-fill-gg" style="width: {{ $levelProgressPercent }}%;"></div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-1">
+                <div class="bg-[#FBFAF0] p-3.5 rounded-2xl border border-[#D96C63]/20 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-[#D96C63]/15 text-[#D96C63] flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L5.605 15.12a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-baloo font-bold text-[#6B6B55] uppercase block leading-none">HYDRATION</span>
+                        <span class="font-baloo font-extrabold text-xl text-[#1F3D20]">{{ $hydrationPercent }}%</span>
+                    </div>
+                </div>
+
+                <div class="bg-[#FBFAF0] p-3.5 rounded-2xl border border-[#2E6DA4]/20 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-[#2E6DA4]/15 text-[#2E6DA4] flex items-center justify-center shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-baloo font-bold text-[#6B6B55] uppercase block leading-none">VITALITY</span>
+                        <span class="font-baloo font-extrabold text-xl text-[#1F3D20]">{{ $vitalityPercent }}%</span>
+                    </div>
+                </div>
             </div>
         </div>
 

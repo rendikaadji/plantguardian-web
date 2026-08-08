@@ -312,7 +312,13 @@
 
             const statusEl = document.querySelector('#view-conservation-status');
             if (statusEl) {
-                statusEl.textContent = (species.conservation_status || 'COMMON').toUpperCase();
+                const rawStatus = (species.conservation_status || 'Common').toLowerCase();
+                let statusText = t.status_common || 'UMUM';
+                if (rawStatus.includes('vulnerab') || rawStatus.includes('rentan')) statusText = t.status_vulnerable || 'RENTAN';
+                else if (rawStatus.includes('endanger') || rawStatus.includes('terancam')) statusText = t.status_endangered || 'TERANCAM PUNAH';
+                else if (rawStatus.includes('protect') || rawStatus.includes('lindung')) statusText = t.status_protected || 'DILINDUNGI';
+                else if (rawStatus.includes('least') || rawStatus.includes('rendah')) statusText = t.status_least_concern || 'RISIKO RENDAH';
+                statusEl.textContent = statusText.toUpperCase();
             }
 
             const imgEl = document.querySelector('#view-sighting-img');

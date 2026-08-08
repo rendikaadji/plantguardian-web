@@ -80,4 +80,12 @@ return [
     'modal_open_seedex' => '📖 Buka Album Seedex',
     'modal_no_description' => 'Deskripsi spesimen belum tersedia.',
     'modal_no_care' => 'Petunjuk perawatan belum tersedia dari Ranger.',
+
+    // Status / Risiko Konservasi
+    'status_common' => 'UMUM',
+    'status_vulnerable' => 'RENTAN',
+    'status_endangered' => 'TERANCAM PUNAH',
+    'status_protected' => 'DILINDUNGI',
+    'status_least_concern' => 'RISIKO RENDAH',
+    'locked_card_text' => 'Belum Ditemukan',
 ];

@@ -33,4 +33,12 @@ return [
     'close_modal' => 'Close Achievement',
     'cancel' => 'Cancel',
     'no_care_instructions' => 'No care instructions provided by Ranger yet.',
+
+    // Status / Conservation Risk
+    'status_common' => 'COMMON',
+    'status_vulnerable' => 'VULNERABLE',
+    'status_endangered' => 'ENDANGERED',
+    'status_protected' => 'PROTECTED',
+    'status_least_concern' => 'LEAST CONCERN',
+    'locked_card_text' => 'Locked / Undiscovered',
 ];

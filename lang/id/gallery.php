@@ -33,4 +33,12 @@ return [
     'close_modal' => 'Tutup Achievement',
     'cancel' => 'Batal',
     'no_care_instructions' => 'Belum ada petunjuk perawatan dari Ranger.',
+
+    // Status / Risiko Konservasi
+    'status_common' => 'UMUM',
+    'status_vulnerable' => 'RENTAN',
+    'status_endangered' => 'TERANCAM PUNAH',
+    'status_protected' => 'DILINDUNGI',
+    'status_least_concern' => 'RISIKO RENDAH',
+    'locked_card_text' => 'Belum Ditemukan',
 ];

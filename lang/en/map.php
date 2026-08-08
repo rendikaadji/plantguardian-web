@@ -80,4 +80,12 @@ return [
     'modal_open_seedex' => '📖 Open Seedex Album',
     'modal_no_description' => 'Specimen description is not yet available.',
     'modal_no_care' => 'Care instructions are not yet available from Ranger.',
+
+    // Status / Conservation Risk
+    'status_common' => 'COMMON',
+    'status_vulnerable' => 'VULNERABLE',
+    'status_endangered' => 'ENDANGERED',
+    'status_protected' => 'PROTECTED',
+    'status_least_concern' => 'LEAST CONCERN',
+    'locked_card_text' => 'Locked / Undiscovered',
 ];

@@ -106,6 +106,8 @@ export class GalleryModule {
 
     let cardsHtml = '<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">';
 
+    const t = window.translations || {};
+
     // 1. Render Discovered Cards / Ranger Sightings Cards
     this.items.forEach(item => {
       const sightingObj = item.sighting || item;
@@ -113,31 +115,33 @@ export class GalleryModule {
       const title = speciesObj?.common_name || 'Spesimen Flora';
       const sciName = speciesObj?.scientific_name || '';
       const photoUrl = sightingObj.photo_url || item.photo_url || speciesObj?.reference_image_url || '/images/logo-plantGuardian.jpeg';
-      const rarity = speciesObj?.conservation_status || 'Common';
+      const rarityRaw = speciesObj?.conservation_status || 'Common';
+      const rarityLabel = this.formatRarityBadge(rarityRaw);
 
       let rarityBadgeColor = '#9E9E8A';
-      if (rarity.toLowerCase().includes('rare')) rarityBadgeColor = '#7D5BA6';
-      else if (rarity.toLowerCase().includes('uncommon')) rarityBadgeColor = '#4C8C4A';
+      if (rarityRaw.toLowerCase().includes('rare') || rarityRaw.toLowerCase().includes('rentan')) rarityBadgeColor = '#7D5BA6';
+      else if (rarityRaw.toLowerCase().includes('uncommon') || rarityRaw.toLowerCase().includes('lindung')) rarityBadgeColor = '#4C8C4A';
 
       cardsHtml += `
         <div class="seedex-card card-gg card-gg-hover p-3 rounded-2xl overflow-hidden cursor-pointer group" data-id="${item.id}">
           <div class="h-36 rounded-xl bg-[#E2E1C4] overflow-hidden relative mb-2.5">
             <img src="${photoUrl}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
-            <span class="absolute top-2 right-2 text-[10px] font-baloo font-extrabold px-2 py-0.5 rounded-full text-[#FBFAF0]" style="background-color: ${rarityBadgeColor};">
-              ${rarity.toUpperCase()}
+            <span class="absolute top-2 right-2 text-[10px] font-baloo font-extrabold px-2 py-0.5 rounded-full text-[#FBFAF0] uppercase shadow-xs" style="background-color: ${rarityBadgeColor};">
+              ${rarityLabel}
             </span>
           </div>
           <div>
             <h4 class="font-baloo font-bold text-sm text-[#1F3D20] leading-tight truncate group-hover:text-[#4C8C4A] transition-colors">${title}</h4>
-            <p class="font-nunito text-[11px] text-[#6B6B55] italic truncate">${sciName || 'Ditemukan'}</p>
+            <p class="font-nunito text-[11px] text-[#6B6B55] italic truncate">${sciName || (t.discovered || 'Ditemukan')}</p>
           </div>
         </div>
       `;
     });
 
-    // 2. Render Locked Cards for remaining catalog items or placeholders ONLY for Viewers
+    // 2. Render Locked Cards for remaining catalog items ONLY for Viewers
     if (!isRangerOrAdmin) {
-      const lockedCount = Math.max(totalSpecies - discoveredCount, 4);
+      const lockedCount = Math.max(0, totalSpecies - discoveredCount);
+      const lockedLabel = t.locked_card_text || 'Belum Ditemukan';
       for (let i = 0; i < lockedCount; i++) {
         cardsHtml += `
           <div class="card-gg p-3 rounded-2xl opacity-60 bg-[#E2E1C4]/40 flex flex-col justify-between">
@@ -148,7 +152,7 @@ export class GalleryModule {
             </div>
             <div>
               <h4 class="font-baloo font-bold text-sm text-[#6B6B55]">???</h4>
-              <p class="font-nunito text-[11px] text-[#6B6B55]">Locked / Belum Ditemukan</p>
+              <p class="font-nunito text-[11px] text-[#6B6B55]">🔒 ${lockedLabel}</p>
             </div>
           </div>
         `;
@@ -165,6 +169,26 @@ export class GalleryModule {
         this.openDetail(id);
       });
     });
+  }
+
+  /**
+   * Format conservation status badge text based on active locale
+   */
+  formatRarityBadge(rarityRaw) {
+    const t = window.translations || {};
+    const rarity = (rarityRaw || 'Common').toLowerCase();
+
+    if (rarity.includes('vulnerab') || rarity.includes('rentan')) {
+      return t.status_vulnerable || 'RENTAN';
+    } else if (rarity.includes('endanger') || rarity.includes('terancam')) {
+      return t.status_endangered || 'TERANCAM PUNAH';
+    } else if (rarity.includes('protect') || rarity.includes('lindung')) {
+      return t.status_protected || 'DILINDUNGI';
+    } else if (rarity.includes('least') || rarity.includes('rendah')) {
+      return t.status_least_concern || 'RISIKO RENDAH';
+    } else {
+      return t.status_common || 'UMUM';
+    }
   }
 
   /**

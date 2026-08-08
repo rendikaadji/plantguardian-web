@@ -53,8 +53,8 @@ class ShopController extends Controller
                 'price' => 30,
                 'icon' => '🧪',
                 'description' => $isEn ? 'Accelerates plant growth in garden.' : 'Mempercepat pertumbuhan tanaman di kebun.',
-                'time_reduction_minutes' => 5,
-                'usage_label' => $isEn ? 'Speedup Growth 5m' : 'Potong Waktu Tumbuh 5m',
+                'time_reduction_minutes' => 10,
+                'usage_label' => $isEn ? 'Speedup Growth 10m' : 'Potong Waktu Tumbuh 10m',
             ],
             [
                 'item_code' => 'tool_watering_can',
@@ -63,8 +63,8 @@ class ShopController extends Controller
                 'price' => 100,
                 'icon' => '🚿',
                 'description' => $isEn ? 'Automatic watering tool to cut growth wait time.' : 'Alat siram otomatis untuk memotong waktu tunggu tumbuh.',
-                'time_reduction_minutes' => 10,
-                'usage_label' => $isEn ? 'Speedup Growth 10m' : 'Potong Waktu Tumbuh 10m',
+                'time_reduction_minutes' => 20,
+                'usage_label' => $isEn ? 'Speedup Growth 20m' : 'Potong Waktu Tumbuh 20m',
             ],
         ];
 

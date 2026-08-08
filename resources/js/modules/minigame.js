@@ -118,13 +118,13 @@ export class MiniGameModule {
   getSeedDetails(seedCode) {
     const isEn = (window.translations && window.translations.title && window.translations.title.includes('Virtual Garden')) || document.documentElement.lang === 'en';
     const seedMap = {
-      'seed_sunflower': { name: isEn ? 'Sunflower' : 'Bunga Matahari', icon: '🌻', duration: 6, exp: 50, coin: 70, price: 50 },
-      'seed_tomato': { name: isEn ? 'Organic Tomato' : 'Tomat Organik', icon: '🍅', duration: 12, exp: 90, coin: 110, price: 75 },
-      'seed_monstera': { name: isEn ? 'Monstera Deliciosa' : 'Monstera Deliciosa', icon: '🌿', duration: 21, exp: 160, coin: 180, price: 120 },
-      'seed_orchid': { name: isEn ? 'Black Orchid' : 'Anggrek Hitam', icon: '🪻', duration: 36, exp: 300, coin: 310, price: 200 },
-      'SEED_DEFAULT': { name: isEn ? 'Sunflower' : 'Bunga Matahari', icon: '🌻', duration: 6, exp: 50, coin: 70, price: 50 },
+      'seed_sunflower': { name: isEn ? 'Sunflower' : 'Bunga Matahari', icon: '🌻', duration: 30, exp: 50, coin: 70, price: 50 },
+      'seed_tomato': { name: isEn ? 'Organic Tomato' : 'Tomat Organik', icon: '🍅', duration: 60, exp: 90, coin: 110, price: 75 },
+      'seed_monstera': { name: isEn ? 'Monstera Deliciosa' : 'Monstera Deliciosa', icon: '🌿', duration: 105, exp: 160, coin: 180, price: 120 },
+      'seed_orchid': { name: isEn ? 'Black Orchid' : 'Anggrek Hitam', icon: '🪻', duration: 180, exp: 300, coin: 310, price: 200 },
+      'SEED_DEFAULT': { name: isEn ? 'Sunflower' : 'Bunga Matahari', icon: '🌻', duration: 30, exp: 50, coin: 70, price: 50 },
     };
-    return seedMap[seedCode] || { name: isEn ? 'Species Seed' : 'Benih Spesies', icon: '🌱', duration: 6, exp: 50, coin: 70, price: 50 };
+    return seedMap[seedCode] || { name: isEn ? 'Species Seed' : 'Benih Spesies', icon: '🌱', duration: 30, exp: 50, coin: 70, price: 50 };
   }
 
   formatTimeRemaining(seconds) {
@@ -596,7 +596,7 @@ export class MiniGameModule {
       const res = await apiClient.post('/minigame/fertilize', {
         planting_id: plantingId,
       });
-      this.showToast(res.message || 'Pupuk Organik Super digunakan! Pertumbuhan dipotong 5 menit 🧪', 'success');
+      this.showToast(res.message || 'Pupuk Organik Super digunakan! Pertumbuhan dipotong 10 menit 🧪', 'success');
       await this.loadPlots();
     } catch (err) {
       const msg = err.data?.message || err.response?.data?.message || err.message || 'Gagal menggunakan pupuk.';

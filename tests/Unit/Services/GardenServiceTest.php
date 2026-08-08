@@ -158,7 +158,7 @@ class GardenServiceTest extends TestCase
 
         $readyAt = Carbon::parse($planting->ready_at);
         $plantedAt = Carbon::parse($planting->planted_at);
-        $this->assertEquals(21, $plantedAt->diffInMinutes($readyAt));
+        $this->assertEquals(105, $plantedAt->diffInMinutes($readyAt));
 
         // Fast-forward time to mark ready and harvest
         $planting->update(['status' => 'ready']);

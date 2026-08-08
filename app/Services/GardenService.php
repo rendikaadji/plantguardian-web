@@ -57,7 +57,7 @@ class GardenService
             'seed_sunflower' => [
                 'name' => $isEn ? 'Sunflower Seed' : 'Benih Bunga Matahari',
                 'price' => 50,
-                'growth_duration_minutes' => 6,
+                'growth_duration_minutes' => 30,
                 'exp_reward' => 50,
                 'coin_reward' => 70,
                 'icon' => '🌻',
@@ -66,7 +66,7 @@ class GardenService
             'seed_tomato' => [
                 'name' => $isEn ? 'Organic Tomato Seed' : 'Benih Tomat Organik',
                 'price' => 75,
-                'growth_duration_minutes' => 12,
+                'growth_duration_minutes' => 60,
                 'exp_reward' => 90,
                 'coin_reward' => 110,
                 'icon' => '🍅',
@@ -75,7 +75,7 @@ class GardenService
             'seed_monstera' => [
                 'name' => $isEn ? 'Monstera Deliciosa Seed' : 'Benih Monstera Deliciosa',
                 'price' => 120,
-                'growth_duration_minutes' => 21,
+                'growth_duration_minutes' => 105,
                 'exp_reward' => 160,
                 'coin_reward' => 180,
                 'icon' => '🌿',
@@ -84,7 +84,7 @@ class GardenService
             'seed_orchid' => [
                 'name' => $isEn ? 'Black Orchid Seed' : 'Benih Anggrek Hitam',
                 'price' => 200,
-                'growth_duration_minutes' => 36,
+                'growth_duration_minutes' => 180,
                 'exp_reward' => 300,
                 'coin_reward' => 310,
                 'icon' => '🪻',
@@ -95,7 +95,7 @@ class GardenService
         return $seeds[$seedCode] ?? [
             'name' => $isEn ? 'Species Seed' : 'Benih Spesies',
             'price' => 50,
-            'growth_duration_minutes' => 6,
+            'growth_duration_minutes' => 30,
             'exp_reward' => 50,
             'coin_reward' => 70,
             'icon' => '🌱',
@@ -170,7 +170,7 @@ class GardenService
     /**
      * Water/care for a growing plant to reduce remaining growth time using Penyiram Otomatis (Consumable item).
      */
-    public function waterPlant(User $user, int $plantingId, int $timeBonusMinutes = 10): Planting
+    public function waterPlant(User $user, int $plantingId, int $timeBonusMinutes = 20): Planting
     {
         return DB::transaction(function () use ($user, $plantingId, $timeBonusMinutes) {
             $planting = $this->getScopedPlanting($user, $plantingId);
@@ -194,7 +194,7 @@ class GardenService
             // Deduct 1 watering can item
             $wateringCanItem->decrement('quantity');
 
-            // Update last watered and apply 10-minute time bonus
+            // Update last watered and apply 20-minute time bonus
             $newReadyAt = Carbon::parse($planting->ready_at)->subMinutes($timeBonusMinutes);
             if ($newReadyAt->isPast()) {
                 $newReadyAt = Carbon::now();
@@ -210,7 +210,7 @@ class GardenService
     }
 
     /**
-     * Apply Pupuk Organik Super (tool_fertilizer) to speed up plant growth (5 mins).
+     * Apply Pupuk Organik Super (tool_fertilizer) to speed up plant growth (10 mins).
      */
     public function applyFertilizer(User $user, int $plantingId): Planting
     {
@@ -234,8 +234,8 @@ class GardenService
 
             $fertilizerItem->decrement('quantity');
 
-            // Apply 5 minutes speedup
-            $newReadyAt = Carbon::parse($planting->ready_at)->subMinutes(5);
+            // Apply 10 minutes speedup
+            $newReadyAt = Carbon::parse($planting->ready_at)->subMinutes(10);
             if ($newReadyAt->isPast()) {
                 $newReadyAt = Carbon::now();
             }

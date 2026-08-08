@@ -150,9 +150,10 @@ export default class MapManager {
     this.isAutoFollow = enabled;
     const labelEl = document.getElementById('recenter-gps-label');
     const btnEl = document.getElementById('recenter-gps-btn');
+    const t = window.translations || {};
 
     if (labelEl) {
-      labelEl.textContent = enabled ? 'Auto-Follow On' : 'Ikuti Saya';
+      labelEl.textContent = enabled ? (t.auto_follow_on || 'Auto-Follow On') : (t.recenter_gps || 'Ikuti Saya');
     }
     if (btnEl) {
       if (enabled) {
@@ -296,6 +297,7 @@ export default class MapManager {
     if (this.userLocationCircle) {
       this.userLocationCircle.setLatLng(targetLatLng);
     } else {
+      const claimTitle = t.claim_radius_title || '🎯 Zona Jangkauan Klaim Spesies (50 Meter)';
       this.userLocationCircle = L.circle(targetLatLng, {
         radius: 50, // 50 meters claim radius
         color: '#10B981', // Vibrant Emerald Green Border
@@ -303,7 +305,7 @@ export default class MapManager {
         fillOpacity: 0.25, // Distinct overlay above map tiles
         weight: 3,
         dashArray: '5, 5'
-      }).bindPopup('<b style="font-family:Baloo 2,sans-serif;font-size:12px;color:#065F46;">🎯 Zona Jangkauan Klaim Spesies (50 Meter)</b>');
+      }).bindPopup(`<b style="font-family:'Baloo 2',sans-serif;font-size:12px;color:#065F46;">${claimTitle}</b>`);
 
       this.userLocationGroup.addLayer(this.userLocationCircle);
     }
@@ -422,17 +424,23 @@ export default class MapManager {
       let isClaimable = true;
       let buttonLabelText = discoverText;
 
+      const viewDetailText = t.view_detail || 'Detail';
+
       if (distanceMeters !== null) {
         const roundDist = Math.round(distanceMeters);
         if (roundDist > 50) {
           isClaimable = false;
-          distanceBadge = `<div style="font-size:10px;color:#DC2626;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#FEE2E2;padding:2px 6px;border-radius:9999px;">📍 Jarak: ${roundDist}m (Maks 50m)</div>`;
-          buttonLabelText = `🔒 Terlalu Jauh (${roundDist}m > 50m)`;
+          const distText = (t.distance_too_far || '📍 Jarak: :dist m (Maks 50m)').replace(':dist', roundDist);
+          const btnText = (t.distance_too_far_btn || '🔒 Terlalu Jauh (:dist m > 50m)').replace(':dist', roundDist);
+          distanceBadge = `<div style="font-size:10px;color:#DC2626;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#FEE2E2;padding:2px 6px;border-radius:9999px;">${distText}</div>`;
+          buttonLabelText = btnText;
         } else {
-          distanceBadge = `<div style="font-size:10px;color:#16A34A;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#DCFCE7;padding:2px 6px;border-radius:9999px;">📍 Jarak: ${roundDist}m (Dalam Jangkauan)</div>`;
+          const distText = (t.distance_in_range || '📍 Jarak: :dist m (Dalam Jangkauan)').replace(':dist', roundDist);
+          distanceBadge = `<div style="font-size:10px;color:#16A34A;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#DCFCE7;padding:2px 6px;border-radius:9999px;">${distText}</div>`;
         }
       } else {
-        distanceBadge = `<div style="font-size:10px;color:#D97706;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#FEF3C7;padding:2px 6px;border-radius:9999px;">📍 Aktifkan GPS untuk mengklaim (Maks 50m)</div>`;
+        const distText = t.distance_enable_gps || '📍 Aktifkan GPS untuk mengklaim (Maks 50m)';
+        distanceBadge = `<div style="font-size:10px;color:#D97706;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#FEF3C7;padding:2px 6px;border-radius:9999px;">${distText}</div>`;
       }
 
       // Viewer Popup with "Temukan!" action (Hides real species name until claimed)
@@ -459,7 +467,7 @@ export default class MapManager {
           ${!isDiscovered ? distanceBadge : ''}
 
           ${isDiscovered 
-            ? `<button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;gap:4px;"><span>📖</span> <span>${alreadyDiscoveredText} — Detail</span></button>`
+            ? `<button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;gap:4px;"><span>📖</span> <span>${alreadyDiscoveredText} — ${viewDetailText}</span></button>`
             : (!isClaimable
                 ? `<button disabled style="width:100%;background-color:#9CA3AF;color:#FFFFFF;font-family:Baloo 2;font-weight:bold;font-size:11px;padding:7px 0;border-radius:9999px;border:none;cursor:not-allowed;box-shadow:none;">${buttonLabelText}</button>`
                 : `<button id="discover-btn-${sighting.id}" onclick="window.discoverPlantFromMap(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:Baloo 2;font-weight:bold;font-size:12px;padding:7px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.2);">${discoverText}</button>`

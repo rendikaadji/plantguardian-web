@@ -33,7 +33,7 @@
         <!-- Floating Recenter / Auto-Follow GPS Button -->
         <button id="recenter-gps-btn" class="absolute top-4 right-4 z-20 px-3.5 py-2 bg-[#1F3D20] text-[#F5F4DA] backdrop-blur-md rounded-full border border-[#F5F4DA]/30 shadow-xl font-baloo font-bold text-xs flex items-center gap-1.5 hover:bg-[#2D4A2E] active:scale-95 transition-all cursor-pointer">
             <span class="animate-pulse text-sm">🎯</span>
-            <span id="recenter-gps-label">Auto-Follow On</span>
+            <span id="recenter-gps-label">{{ __('map.auto_follow_on') }}</span>
         </button>
 
         <!-- Floating Action Controls - FOR RANGER & ADMIN ROLES -->
@@ -271,18 +271,18 @@
         <!-- Details Content -->
         <div class="space-y-3 pt-1">
             <div class="p-3.5 bg-white border border-[#1F3D20]/10 rounded-2xl space-y-1 shadow-2xs">
-                <h4 class="font-baloo font-bold text-xs text-[#1F3D20] uppercase tracking-wider">📜 Deskripsi Tumbuhan</h4>
-                <p id="view-description" class="font-nunito text-xs text-[#6B6B55] leading-relaxed">Deskripsi tumbuhan...</p>
+                <h4 class="font-baloo font-bold text-xs text-[#1F3D20] uppercase tracking-wider">{{ __('map.modal_plant_description') }}</h4>
+                <p id="view-description" class="font-nunito text-xs text-[#6B6B55] leading-relaxed">...</p>
             </div>
 
             <div class="p-3.5 bg-[#E2E1C4]/40 border border-[#1F3D20]/10 rounded-2xl space-y-1 shadow-2xs">
-                <h4 class="font-baloo font-bold text-xs text-[#1F3D20] uppercase tracking-wider">🪴 Petunjuk Perawatan (Ranger Guide)</h4>
-                <p id="view-care-instructions" class="font-nunito text-xs text-[#1F3D20]/80 leading-relaxed font-medium">Petunjuk perawatan...</p>
+                <h4 class="font-baloo font-bold text-xs text-[#1F3D20] uppercase tracking-wider">{{ __('map.modal_care_instructions') }}</h4>
+                <p id="view-care-instructions" class="font-nunito text-xs text-[#1F3D20]/80 leading-relaxed font-medium">...</p>
             </div>
 
             <div class="pt-2 flex items-center gap-3">
                 <a href="/gallery" class="flex-1 btn-gg-primary py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md text-xs font-baloo font-bold text-center">
-                    <span>📖 Buka Album Seedex</span>
+                    <span>{{ __('map.modal_open_seedex') }}</span>
                 </a>
             </div>
         </div>
@@ -297,6 +297,7 @@
     window.openViewSightingModal = async function(sightingId) {
         const viewModal = document.querySelector('#view-sighting-modal');
         if (!viewModal) return;
+        const t = window.translations || {};
 
         try {
             const res = await window.apiClient.get(`/map/sightings/${sightingId}`);
@@ -321,10 +322,10 @@
             }
 
             const descEl = document.querySelector('#view-description');
-            if (descEl) descEl.textContent = species.description || 'Deskripsi spesimen belum tersedia.';
+            if (descEl) descEl.textContent = species.description || (t.modal_no_description || 'Deskripsi spesimen belum tersedia.');
 
             const careEl = document.querySelector('#view-care-instructions');
-            if (careEl) careEl.textContent = species.care_instructions || 'Petunjuk perawatan belum tersedia dari Ranger.';
+            if (careEl) careEl.textContent = species.care_instructions || (t.modal_no_care || 'Petunjuk perawatan belum tersedia dari Ranger.');
 
             viewModal.classList.remove('hidden');
         } catch (err) {

@@ -62,4 +62,22 @@ return [
     'mystery_plant' => 'Mysterious Plant',
     'edit_data_button' => '✏️ Edit Plant Data',
     'status_label' => 'Status',
+
+    // Auto-Follow & Claim Radar
+    'auto_follow_on' => 'Auto-Follow On',
+    'recenter_gps' => 'Follow Me',
+    'claim_radius_title' => '🎯 Species Claim Zone (50 Meters)',
+    'distance_too_far' => '📍 Distance: :dist m (Max 50m)',
+    'distance_too_far_btn' => '🔒 Too Far (:dist m > 50m)',
+    'distance_in_range' => '📍 Distance: :dist m (In Range)',
+    'distance_enable_gps' => '📍 Enable GPS to claim (Max 50m)',
+    'view_detail' => 'View Details',
+    'view_detail_button' => '📖 View Details',
+
+    // Modal View Detail
+    'modal_plant_description' => '📜 Plant Description',
+    'modal_care_instructions' => '🪴 Care Instructions (Ranger Guide)',
+    'modal_open_seedex' => '📖 Open Seedex Album',
+    'modal_no_description' => 'Specimen description is not yet available.',
+    'modal_no_care' => 'Care instructions are not yet available from Ranger.',
 ];

@@ -62,4 +62,22 @@ return [
     'mystery_plant' => 'Tanaman Misterius',
     'edit_data_button' => '✏️ Edit Data Tumbuhan',
     'status_label' => 'Status',
+
+    // Auto-Follow & Claim Radar
+    'auto_follow_on' => 'Auto-Follow Aktif',
+    'recenter_gps' => 'Ikuti Saya',
+    'claim_radius_title' => '🎯 Zona Jangkauan Klaim Spesies (50 Meter)',
+    'distance_too_far' => '📍 Jarak: :dist m (Maks 50m)',
+    'distance_too_far_btn' => '🔒 Terlalu Jauh (:dist m > 50m)',
+    'distance_in_range' => '📍 Jarak: :dist m (Dalam Jangkauan)',
+    'distance_enable_gps' => '📍 Aktifkan GPS untuk mengklaim (Maks 50m)',
+    'view_detail' => 'Lihat Detail',
+    'view_detail_button' => '📖 Lihat Detail',
+
+    // Modal View Detail
+    'modal_plant_description' => '📜 Deskripsi Tumbuhan',
+    'modal_care_instructions' => '🪴 Petunjuk Perawatan (Ranger Guide)',
+    'modal_open_seedex' => '📖 Buka Album Seedex',
+    'modal_no_description' => 'Deskripsi spesimen belum tersedia.',
+    'modal_no_care' => 'Petunjuk perawatan belum tersedia dari Ranger.',
 ];

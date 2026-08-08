@@ -53,12 +53,11 @@
                                         <span class="bg-[#FFD700] text-[#1F3D20] text-[9px] font-baloo font-extrabold px-2 py-0.5 rounded-full uppercase leading-none shadow-2xs">
                                             ADMIN
                                         </span>
-                                    @else
-                                        <!-- Level Badge Cleanly Beside Name (Never Covering Logo) -->
-                                        <span class="bg-[#1F3D20] text-[#F5F4DA] text-[9px] font-baloo font-extrabold px-2 py-0.5 rounded-full leading-none shadow-2xs border border-[#F5F4DA]/20">
-                                            LVL {{ auth()->user()->level ?? 1 }}
-                                        </span>
                                     @endif
+                                    <!-- Level Badge Cleanly Beside Name for all roles -->
+                                    <span class="bg-[#1F3D20] text-[#F5F4DA] text-[9px] font-baloo font-extrabold px-2 py-0.5 rounded-full leading-none shadow-2xs border border-[#F5F4DA]/20">
+                                        LVL {{ auth()->user()->level ?? 1 }}
+                                    </span>
                                 @endif
                             </div>
                         </div>

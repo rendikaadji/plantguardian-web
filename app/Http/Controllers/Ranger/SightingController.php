@@ -97,7 +97,17 @@ class SightingController extends Controller
             ], 403);
         }
 
+        $speciesId = $sighting->plant_species_id;
         $sighting->delete();
+
+        // Automatic orphan species cleanup: delete species catalog entry if no other sightings or plantings use it
+        if ($speciesId) {
+            $hasOtherSightings = PlantSighting::where('plant_species_id', $speciesId)->exists();
+            $hasPlantings = \App\Models\Planting::where('plant_species_id', $speciesId)->exists();
+            if (! $hasOtherSightings && ! $hasPlantings) {
+                \App\Models\PlantSpecies::where('id', $speciesId)->delete();
+            }
+        }
 
         return response()->json([
             'message' => 'Data temuan tumbuhan berhasil dihapus dari peta.',

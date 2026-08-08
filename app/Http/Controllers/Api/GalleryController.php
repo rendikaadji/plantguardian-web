@@ -86,7 +86,16 @@ class GalleryController extends Controller
                 ->where('id', $id)
                 ->firstOrFail();
 
+            $speciesId = $sighting->plant_species_id;
             $sighting->delete();
+
+            if ($speciesId) {
+                $hasOtherSightings = PlantSighting::where('plant_species_id', $speciesId)->exists();
+                $hasPlantings = \App\Models\Planting::where('plant_species_id', $speciesId)->exists();
+                if (! $hasOtherSightings && ! $hasPlantings) {
+                    \App\Models\PlantSpecies::where('id', $speciesId)->delete();
+                }
+            }
         } else {
             $discovery = PlantDiscovery::where('user_id', $user->id)
                 ->where('id', $id)

@@ -596,7 +596,7 @@ export class MiniGameModule {
       const res = await apiClient.post('/minigame/fertilize', {
         planting_id: plantingId,
       });
-      this.showToast(res.message || 'Pupuk Organik Super digunakan! Pertumbuhan dipotong 15 menit 🧪', 'success');
+      this.showToast(res.message || 'Pupuk Organik Super digunakan! Pertumbuhan dipotong 5 menit 🧪', 'success');
       await this.loadPlots();
     } catch (err) {
       const msg = err.data?.message || err.response?.data?.message || err.message || 'Gagal menggunakan pupuk.';

@@ -133,7 +133,7 @@ class MiniGameController extends Controller
             );
 
             return response()->json([
-                'message' => 'Pupuk Organik Super berhasil digunakan! Pertumbuhan dipercepat 15 menit 🧪',
+                'message' => 'Pupuk Organik Super berhasil digunakan! Pertumbuhan dipercepat 5 menit 🧪',
                 'data' => new PlantingResource($planting),
             ]);
         } catch (\Throwable $e) {

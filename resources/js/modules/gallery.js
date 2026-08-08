@@ -23,7 +23,8 @@ export class GalleryModule {
     try {
       const response = await apiClient.get('/gallery');
       this.items = response.data?.data || response.data || [];
-      this.role = response.data?.role || this.role;
+      this.role = response.data?.role || response.role || this.role;
+      this.totalSpeciesCount = response.data?.total_species || response.total_species || 0;
 
       // Fetch species catalog to render locked cards for undiscovered items
       try {
@@ -46,11 +47,14 @@ export class GalleryModule {
     if (!this.containerElement) return;
 
     const isRangerOrAdmin = ['ranger', 'admin'].includes(this.role);
-    const totalSpecies = isRangerOrAdmin ? this.items.length : Math.max(this.speciesCatalog.length, 12);
+    const catalogCount = this.speciesCatalog.length;
+    const totalSpecies = isRangerOrAdmin
+      ? this.items.length
+      : (catalogCount > 0 ? catalogCount : (this.totalSpeciesCount || this.items.length));
     const discoveredCount = this.items.length;
     const progressPercent = isRangerOrAdmin
       ? (discoveredCount > 0 ? 100 : 0)
-      : Math.min(Math.round((discoveredCount / totalSpecies) * 100), 100);
+      : (totalSpecies > 0 ? Math.min(Math.round((discoveredCount / totalSpecies) * 100), 100) : 0);
 
     // Update Progress Header
     if (this.progressTextElement) {

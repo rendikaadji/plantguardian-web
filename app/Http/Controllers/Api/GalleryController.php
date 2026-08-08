@@ -37,9 +37,12 @@ class GalleryController extends Controller
             ->latest()
             ->get();
 
+        $totalSpecies = \App\Models\PlantSpecies::count();
+
         return response()->json([
             'role' => 'viewer',
             'data' => PlantDiscoveryResource::collection($discoveries),
+            'total_species' => $totalSpecies,
         ]);
     }
 

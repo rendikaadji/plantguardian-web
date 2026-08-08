@@ -558,7 +558,7 @@ export class MiniGameModule {
       this.showToast(res.message || 'Lahan tanam berhasil dibuka!', 'success');
       await this.loadPlots();
     } catch (err) {
-      const msg = err.response?.data?.message || err.message || 'Gagal membuka lahan.';
+      const msg = err.data?.message || err.response?.data?.message || err.message || 'Gagal membuka lahan.';
       this.showToast(msg, 'error');
     }
   }
@@ -573,7 +573,7 @@ export class MiniGameModule {
       this.showToast(`Benih ${seedInfo.name} berhasil ditanam di tanah gembur!`, 'success');
       await this.loadPlots();
     } catch (err) {
-      const msg = err.response?.data?.message || err.message || 'Gagal menanam benih.';
+      const msg = err.data?.message || err.response?.data?.message || err.message || 'Gagal menanam benih.';
       this.showToast(msg, 'error');
     }
   }
@@ -586,7 +586,7 @@ export class MiniGameModule {
       this.showToast(res.message || 'Tanaman disiram! Pertumbuhan dipercepat 💧', 'success');
       await this.loadPlots();
     } catch (err) {
-      const msg = err.response?.data?.message || err.message || 'Gagal menyiram tanaman.';
+      const msg = err.data?.message || err.response?.data?.message || err.message || 'Gagal menyiram tanaman.';
       this.showToast(msg, 'error');
     }
   }
@@ -599,7 +599,7 @@ export class MiniGameModule {
       this.showToast(res.message || 'Pupuk Organik Super digunakan! Pertumbuhan dipotong 15 menit 🧪', 'success');
       await this.loadPlots();
     } catch (err) {
-      const msg = err.response?.data?.message || err.message || 'Gagal menggunakan pupuk.';
+      const msg = err.data?.message || err.response?.data?.message || err.message || 'Gagal menggunakan pupuk.';
       this.showToast(msg, 'error');
     }
   }
@@ -614,7 +614,7 @@ export class MiniGameModule {
       this.showToast(`🎉 Panen Berhasil! +${expEarned} EXP & ${typeof window.getNcIconSvg === 'function' ? window.getNcIconSvg('w-3.5 h-3.5') : '🪙'} +${coinEarned} NC!`, 'success');
       await this.loadPlots();
     } catch (err) {
-      const msg = err.response?.data?.message || err.message || 'Gagal memanen tanaman.';
+      const msg = err.data?.message || err.response?.data?.message || err.message || 'Gagal memanen tanaman.';
       this.showToast(msg, 'error');
     }
   }

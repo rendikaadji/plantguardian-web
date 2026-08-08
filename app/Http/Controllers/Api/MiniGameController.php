@@ -61,12 +61,18 @@ class MiniGameController extends Controller
      */
     public function unlockPlot(Request $request, int $plotId): JsonResponse
     {
-        $plot = $this->gardenService->unlockPlot($request->user(), $plotId);
+        try {
+            $plot = $this->gardenService->unlockPlot($request->user(), $plotId);
 
-        return response()->json([
-            'message' => 'Lahan tanam berhasil dibuka.',
-            'data' => $plot,
-        ]);
+            return response()->json([
+                'message' => 'Lahan tanam berhasil dibuka.',
+                'data' => $plot,
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => $e->getMessage() ?: 'Gagal membuka lahan tanam.',
+            ], 400);
+        }
     }
 
     /**
@@ -74,17 +80,23 @@ class MiniGameController extends Controller
      */
     public function plant(PlantingRequest $request): JsonResponse
     {
-        $planting = $this->gardenService->plantSeed(
-            $request->user(),
-            (int) $request->validated('garden_plot_id'),
-            (string) $request->validated('seed_code'),
-            $request->validated('plant_species_id') ? (int) $request->validated('plant_species_id') : null
-        );
+        try {
+            $planting = $this->gardenService->plantSeed(
+                $request->user(),
+                (int) $request->validated('garden_plot_id'),
+                (string) $request->validated('seed_code'),
+                $request->validated('plant_species_id') ? (int) $request->validated('plant_species_id') : null
+            );
 
-        return response()->json([
-            'message' => 'Benih berhasil ditanam.',
-            'data' => new PlantingResource($planting),
-        ], 201);
+            return response()->json([
+                'message' => 'Benih berhasil ditanam.',
+                'data' => new PlantingResource($planting),
+            ], 201);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => $e->getMessage() ?: 'Gagal menanam benih.',
+            ], 400);
+        }
     }
 
     /**
@@ -92,15 +104,21 @@ class MiniGameController extends Controller
      */
     public function water(PlantingRequest $request): JsonResponse
     {
-        $planting = $this->gardenService->waterPlant(
-            $request->user(),
-            (int) $request->validated('planting_id')
-        );
+        try {
+            $planting = $this->gardenService->waterPlant(
+                $request->user(),
+                (int) $request->validated('planting_id')
+            );
 
-        return response()->json([
-            'message' => 'Tanaman berhasil disiram.',
-            'data' => new PlantingResource($planting),
-        ]);
+            return response()->json([
+                'message' => 'Tanaman berhasil disiram.',
+                'data' => new PlantingResource($planting),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => $e->getMessage() ?: 'Gagal menyiram tanaman.',
+            ], 400);
+        }
     }
 
     /**
@@ -108,15 +126,21 @@ class MiniGameController extends Controller
      */
     public function fertilize(PlantingRequest $request): JsonResponse
     {
-        $planting = $this->gardenService->applyFertilizer(
-            $request->user(),
-            (int) $request->validated('planting_id')
-        );
+        try {
+            $planting = $this->gardenService->applyFertilizer(
+                $request->user(),
+                (int) $request->validated('planting_id')
+            );
 
-        return response()->json([
-            'message' => 'Pupuk Organik Super berhasil digunakan! Pertumbuhan dipercepat 15 menit 🧪',
-            'data' => new PlantingResource($planting),
-        ]);
+            return response()->json([
+                'message' => 'Pupuk Organik Super berhasil digunakan! Pertumbuhan dipercepat 15 menit 🧪',
+                'data' => new PlantingResource($planting),
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => $e->getMessage() ?: 'Gagal menggunakan pupuk.',
+            ], 400);
+        }
     }
 
     /**
@@ -124,18 +148,24 @@ class MiniGameController extends Controller
      */
     public function harvest(PlantingRequest $request): JsonResponse
     {
-        $result = $this->gardenService->harvestPlant(
-            $request->user(),
-            (int) $request->validated('planting_id')
-        );
+        try {
+            $result = $this->gardenService->harvestPlant(
+                $request->user(),
+                (int) $request->validated('planting_id')
+            );
 
-        return response()->json([
-            'message' => 'Tanaman berhasil dipanen.',
-            'data' => [
-                'planting' => new PlantingResource($result['planting']),
-                'exp_earned' => $result['exp_reward'],
-                'coin_earned' => $result['coin_reward'],
-            ],
-        ]);
+            return response()->json([
+                'message' => 'Tanaman berhasil dipanen.',
+                'data' => [
+                    'planting' => new PlantingResource($result['planting']),
+                    'exp_earned' => $result['exp_reward'],
+                    'coin_earned' => $result['coin_reward'],
+                ],
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'message' => $e->getMessage() ?: 'Gagal memanen tanaman.',
+            ], 400);
+        }
     }
 }

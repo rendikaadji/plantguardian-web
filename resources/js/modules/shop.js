@@ -105,7 +105,7 @@ export class ShopModule {
       this.showToast(response.message || 'Pembelian berhasil!', 'success');
       this.render();
     } catch (error) {
-      const errorMsg = error.response?.data?.message || error.message || 'Gagal membeli item.';
+      const errorMsg = error.data?.message || error.response?.data?.message || error.message || 'Gagal membeli item.';
       this.showToast(errorMsg, 'error');
       buttonElement.disabled = false;
       buttonElement.innerHTML = originalText;
@@ -125,7 +125,7 @@ export class ShopModule {
       this.showToast(response.message || 'Foto profil diperbarui!', 'success');
       this.render();
     } catch (error) {
-      const errorMsg = error.response?.data?.message || error.message || 'Gagal memperbarui foto profil.';
+      const errorMsg = error.data?.message || error.response?.data?.message || error.message || 'Gagal memperbarui foto profil.';
       this.showToast(errorMsg, 'error');
       buttonElement.disabled = false;
       buttonElement.innerHTML = originalText;

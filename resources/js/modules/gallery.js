@@ -108,7 +108,7 @@ export class GalleryModule {
       const speciesObj = sightingObj.species || item.plant_species;
       const title = speciesObj?.common_name || 'Spesimen Flora';
       const sciName = speciesObj?.scientific_name || '';
-      const photoUrl = sightingObj.photo_url || item.photo_url || '';
+      const photoUrl = sightingObj.photo_url || item.photo_url || speciesObj?.reference_image_url || '/images/logo-plantGuardian.jpeg';
       const rarity = speciesObj?.conservation_status || 'Common';
 
       let rarityBadgeColor = '#9E9E8A';
@@ -118,7 +118,7 @@ export class GalleryModule {
       cardsHtml += `
         <div class="seedex-card card-gg card-gg-hover p-3 rounded-2xl overflow-hidden cursor-pointer group" data-id="${item.id}">
           <div class="h-36 rounded-xl bg-[#E2E1C4] overflow-hidden relative mb-2.5">
-            <img src="${photoUrl}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+            <img src="${photoUrl}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
             <span class="absolute top-2 right-2 text-[10px] font-baloo font-extrabold px-2 py-0.5 rounded-full text-[#FBFAF0]" style="background-color: ${rarityBadgeColor};">
               ${rarity.toUpperCase()}
             </span>
@@ -179,12 +179,16 @@ export class GalleryModule {
       const sciName = speciesObj?.scientific_name || '';
       const desc = speciesObj?.description || 'Deskripsi tanaman belum tersedia.';
       const careInstructions = speciesObj?.care_instructions || '';
-      const photoUrl = sightingObj.photo_url || item.photo_url;
+      const photoUrl = sightingObj.photo_url || item.photo_url || speciesObj?.reference_image_url || '/images/logo-plantGuardian.jpeg';
 
       if (this.modalElement) {
         this.modalElement.querySelector('#modal-title').textContent = title;
         this.modalElement.querySelector('#modal-scientific').textContent = sciName;
-        this.modalElement.querySelector('#modal-img').src = photoUrl;
+        const modalImg = this.modalElement.querySelector('#modal-img');
+        if (modalImg) {
+          modalImg.onerror = function() { this.onerror = null; this.src = '/images/logo-plantGuardian.jpeg'; };
+          modalImg.src = photoUrl;
+        }
         this.modalElement.querySelector('#modal-desc').textContent = desc;
 
         // Care instructions text

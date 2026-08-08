@@ -374,7 +374,7 @@ export default class MapManager {
     const t = window.translations || {};
     const speciesName = sighting.species ? sighting.species.common_name : 'Tumbuhan Nyata';
     const speciesCode = sighting.species ? sighting.species.species_code : 'FLORA';
-    const photoUrl = sighting.photo_url || '';
+    const photoUrl = sighting.photo_url || (sighting.species && sighting.species.reference_image_url) || (sighting.photo_path ? `/storage/${sighting.photo_path.replace(/^\//, '')}` : '');
     const isDiscovered = sighting.sudah_ditemukan;
 
     const isRangerOrAdmin = ['ranger', 'admin'].includes(this.userRole);
@@ -445,7 +445,9 @@ export default class MapManager {
           </h4>
 
           ${isDiscovered 
-            ? (photoUrl ? `<img src="${photoUrl}" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:8px;border:1.5px solid rgba(31,61,32,0.15);"/>` : '')
+            ? (photoUrl 
+                ? `<img src="${photoUrl}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:8px;border:1.5px solid rgba(31,61,32,0.15);"/>` 
+                : `<img src="/images/logo-plantGuardian.jpeg" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:8px;border:1.5px solid rgba(31,61,32,0.15);"/>`)
             : `<div style="background-color:rgba(226,225,196,0.4);border:1.5px dashed #8B6A4C;border-radius:12px;padding:10px 12px;text-align:center;margin-bottom:8px;font-size:11px;color:#6B6B55;font-style:italic;word-break:break-word;overflow-wrap:break-word;box-sizing:border-box;">
                 ${unclaimedTreeText}
                </div>`
@@ -471,7 +473,9 @@ export default class MapManager {
         <div style="font-family:Nunito,sans-serif;max-width:210px;color:#2A2A22;padding:4px;box-sizing:border-box;">
           <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:Baloo 2;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;">${this.userRole.toUpperCase()} SIGHTING</span>
           <h4 style="font-family:Baloo 2,sans-serif;font-weight:800;font-size:15px;margin:4px 0;color:#1F3D20;word-break:break-word;">${speciesName}</h4>
-          ${photoUrl ? `<img src="${photoUrl}" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:6px;"/>` : ''}
+          ${photoUrl 
+            ? `<img src="${photoUrl}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:6px;"/>` 
+            : `<img src="/images/logo-plantGuardian.jpeg" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:6px;"/>`}
           <p style="font-size:11px;color:#6B6B55;margin:0 0 6px 0;">${statusLabelText}: <strong>${sighting.verification_status}</strong></p>
           <button onclick="window.openEditSightingModal(${sighting.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:Baloo 2,sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);">
             ${editDataBtnText}

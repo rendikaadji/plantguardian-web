@@ -302,7 +302,7 @@
                         <div class="p-4 border border-[#1F3D20]/15 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white shadow-xs">
                             <div class="flex items-start gap-3">
                                 <div class="w-16 h-16 bg-[#E2E1C4] rounded-xl overflow-hidden shrink-0 flex items-center justify-center border border-[#1F3D20]/10">
-                                    ${item.photo_path ? `<img src="/storage/${item.photo_path}" class="w-full h-full object-cover" />` : `<span class="text-[10px] text-[#6B6B55]">NO FOTO</span>`}
+                                    ${(item.photo_url || item.photo_path) ? `<img src="${item.photo_url || '/storage/' + item.photo_path.replace(/^\//, '')}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" class="w-full h-full object-cover" />` : `<span class="text-[10px] text-[#6B6B55]">NO FOTO</span>`}
                                 </div>
                                 <div class="space-y-0.5">
                                     <span class="text-[10px] font-baloo font-bold text-[#8B6A4C] uppercase block">Pengguna: ${item.user?.name || 'Viewer'}</span>
@@ -572,8 +572,11 @@
             const res = await window.apiClient.get(`/ranger/sightings/${sightingId}`);
             const sighting = res.data?.data || res.data || res;
 
-            document.querySelector('#edit-sighting-id').value = sighting.id;
-            document.querySelector('#edit-sighting-img').src = sighting.photo_url || '';
+            const editImgEl = document.querySelector('#edit-sighting-img');
+            if (editImgEl) {
+                editImgEl.onerror = function() { this.onerror = null; this.src = '/images/logo-plantGuardian.jpeg'; };
+                editImgEl.src = sighting.photo_url || (sighting.species && sighting.species.reference_image_url) || '/images/logo-plantGuardian.jpeg';
+            }
             document.querySelector('#edit-common-name').value = sighting.species ? sighting.species.common_name : '';
             document.querySelector('#edit-scientific-name').value = sighting.species ? sighting.species.scientific_name : '';
             document.querySelector('#edit-conservation-status').value = (sighting.species && sighting.species.conservation_status) ? sighting.species.conservation_status : 'Common';

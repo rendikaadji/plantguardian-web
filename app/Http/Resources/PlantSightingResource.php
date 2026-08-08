@@ -19,6 +19,11 @@ class PlantSightingResource extends JsonResource
             'ranger_id' => $this->ranger_id,
             'plant_species_id' => $this->plant_species_id,
             'species' => $this->whenLoaded('plantSpecies', function () {
+                $refPath = $this->plantSpecies->reference_image_path;
+                $refUrl = $refPath
+                    ? (str_starts_with($refPath, 'http') ? $refPath : asset('storage/' . ltrim($refPath, '/')))
+                    : null;
+
                 return [
                     'id' => $this->plantSpecies->id,
                     'species_code' => $this->plantSpecies->species_code,
@@ -27,12 +32,11 @@ class PlantSightingResource extends JsonResource
                     'description' => $this->plantSpecies->description,
                     'care_instructions' => $this->plantSpecies->care_instructions,
                     'conservation_status' => $this->plantSpecies->conservation_status,
-                    'reference_image_path' => $this->plantSpecies->reference_image_path,
+                    'reference_image_path' => $refPath,
+                    'reference_image_url' => $refUrl,
                 ];
             }),
-            'photo_url' => $this->photo_path
-                ? (str_starts_with($this->photo_path, 'http') ? $this->photo_path : asset('storage/' . ltrim($this->photo_path, '/')))
-                : null,
+            'photo_url' => $this->resolvePhotoUrl(),
             'photo_path' => $this->photo_path,
             'confidence_score' => $this->confidence_score,
             'latitude' => $this->latitude,
@@ -43,5 +47,23 @@ class PlantSightingResource extends JsonResource
             'created_at' => $this->created_at?->toIso8601String(),
             'updated_at' => $this->updated_at?->toIso8601String(),
         ];
+    }
+
+    private function resolvePhotoUrl(): ?string
+    {
+        if ($this->photo_path) {
+            return str_starts_with($this->photo_path, 'http')
+                ? $this->photo_path
+                : asset('storage/' . ltrim($this->photo_path, '/'));
+        }
+
+        if ($this->relationLoaded('plantSpecies') && $this->plantSpecies?->reference_image_path) {
+            $refPath = $this->plantSpecies->reference_image_path;
+            return str_starts_with($refPath, 'http')
+                ? $refPath
+                : asset('storage/' . ltrim($refPath, '/'));
+        }
+
+        return null;
     }
 }

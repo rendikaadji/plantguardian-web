@@ -14,7 +14,7 @@ class PlantScanService
      */
     public function scan(User $user, array $validatedData): PlantSighting
     {
-        $photoPath = 'sightings/default.jpg';
+        $photoPath = null;
 
         // Process uploaded image file
         if (isset($validatedData['image']) && is_object($validatedData['image'])) {

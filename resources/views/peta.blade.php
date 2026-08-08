@@ -655,6 +655,17 @@
             const res = await window.apiClient.get(`/ranger/sightings/${sightingId}`);
             const sighting = res.data?.data || res.data || res;
 
+            document.querySelector('#edit-sighting-id').value = sighting.id;
+
+            const currentUserId = Number("{{ auth()->id() }}");
+            const currentUserRole = "{{ auth()->user()->role }}";
+            const canModify = currentUserRole === 'admin' || sighting.ranger_id === currentUserId;
+
+            const deleteBtn = document.querySelector('#delete-sighting-btn');
+            if (deleteBtn) {
+                deleteBtn.style.display = canModify ? 'inline-flex' : 'none';
+            }
+
             const editImgEl = document.querySelector('#edit-sighting-img');
             if (editImgEl) {
                 editImgEl.onerror = function() { this.onerror = null; this.src = '/images/logo-plantGuardian.jpeg'; };

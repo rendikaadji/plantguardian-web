@@ -7,6 +7,7 @@ use App\Http\Requests\Ranger\SightingUpdateRequest;
 use App\Http\Resources\PlantSightingResource;
 use App\Models\PlantSighting;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 class SightingController extends Controller
@@ -85,9 +86,17 @@ class SightingController extends Controller
     /**
      * Remove the specified plant sighting.
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(Request $request, int $id): JsonResponse
     {
+        $user = $request->user();
         $sighting = PlantSighting::findOrFail($id);
+
+        if ($user && $user->role !== 'admin' && $sighting->ranger_id !== $user->id) {
+            return response()->json([
+                'message' => 'Anda hanya dapat menghapus temuan tumbuhan yang Anda buat sendiri.',
+            ], 403);
+        }
+
         $sighting->delete();
 
         return response()->json([

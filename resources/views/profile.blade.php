@@ -52,6 +52,36 @@
             </div>
         </div>
 
+        <!-- Alliance Friends Section for Ranger -->
+        <div class="space-y-3 pt-2">
+            <div class="flex items-center justify-between">
+                <h2 class="font-baloo font-extrabold text-xl text-[#1F3D20]">
+                    Alliance Friends
+                </h2>
+                <span id="incoming-requests-count" class="px-2.5 py-0.5 rounded-full bg-amber-500 text-white font-baloo font-extrabold text-xs shadow-xs hidden" title="Permintaan pertemanan masuk">
+                    0
+                </span>
+            </div>
+
+            <!-- Incoming Item Requests Notification Box -->
+            <div id="incoming-item-requests-container"></div>
+
+            <!-- Dynamic Friends List Container -->
+            <div id="friends-list-container" class="space-y-2.5">
+                <div class="text-center py-4 text-[#6B6B55] font-nunito text-xs italic">
+                    Memuat daftar aliansi...
+                </div>
+            </div>
+
+            <!-- Expand Alliance Button -->
+            <button id="open-add-friend-modal-btn" onclick="document.querySelector('#add-friend-modal').classList.remove('hidden')" class="w-full py-3.5 rounded-2xl border-2 border-dashed border-[#1F3D20]/30 text-[#1F3D20] font-baloo font-extrabold text-sm flex items-center justify-center gap-2 hover:bg-[#1F3D20]/5 transition-colors cursor-pointer shadow-xs">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                </svg>
+                <span>Expand Alliance (Tambah Aliansi)</span>
+            </button>
+        </div>
+
         <!-- Account Settings & Change Password Card for Ranger -->
         <div class="card-gg p-6 space-y-5 bg-[#FBFAF0]">
             <!-- Header -->

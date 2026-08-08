@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth:sanctum,web', 'viewer'])->group(function () {
     Route::post('/plant-discoveries', [DiscoveryController::class, 'store']);
     Route::post('/map/sightings/{id}/claim', [DiscoveryController::class, 'claimFromMap']);
+    Route::get('/map/sightings/{id}', [MapController::class, 'show']);
     Route::get('/plant-sightings/nearby', [MapController::class, 'nearby']);
 
     // Gallery Routes

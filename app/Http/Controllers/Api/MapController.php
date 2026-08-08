@@ -78,4 +78,25 @@ class MapController extends Controller
             'data' => PlantSightingResource::collection($sightings),
         ]);
     }
+
+    /**
+     * Get detail of a specific plant sighting for map view.
+     */
+    public function show(Request $request, int $id): JsonResponse
+    {
+        $user = $request->user();
+        $sighting = PlantSighting::with(['plantSpecies', 'ranger:id,name'])->findOrFail($id);
+
+        if ($user) {
+            $isDiscovered = PlantDiscovery::where('user_id', $user->id)
+                ->where('plant_sighting_id', $sighting->id)
+                ->exists();
+            $sighting->sudah_ditemukan = $isDiscovered;
+        }
+
+        return response()->json([
+            'message' => 'Detail temuan berhasil dimuat.',
+            'data' => new PlantSightingResource($sighting),
+        ]);
+    }
 }

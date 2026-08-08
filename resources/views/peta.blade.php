@@ -250,13 +250,95 @@
         </div>
     </div>
 @endif
+
+<!-- View Discovered Plant Detail Modal (For Viewers & All Roles viewing plant details directly from map) -->
+<div id="view-sighting-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden overflow-y-auto">
+    <div class="card-gg max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
+            <div>
+                <span id="view-conservation-status" class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">COMMON</span>
+                <h3 id="view-common-name" class="font-baloo font-extrabold text-2xl text-[#1F3D20] mt-1">Nama Tumbuhan</h3>
+                <p id="view-scientific-name" class="font-nunito text-xs text-[#6B6B55] italic">Scientific Name</p>
+            </div>
+            <button id="close-view-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors">&times;</button>
+        </div>
+
+        <!-- Preview Photo -->
+        <div class="h-48 rounded-2xl overflow-hidden bg-[#1F3D20] relative border border-[#1F3D20]/20 shadow-xs">
+            <img id="view-sighting-img" src="" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" />
+        </div>
+
+        <!-- Details Content -->
+        <div class="space-y-3 pt-1">
+            <div class="p-3.5 bg-white border border-[#1F3D20]/10 rounded-2xl space-y-1 shadow-2xs">
+                <h4 class="font-baloo font-bold text-xs text-[#1F3D20] uppercase tracking-wider">📜 Deskripsi Tumbuhan</h4>
+                <p id="view-description" class="font-nunito text-xs text-[#6B6B55] leading-relaxed">Deskripsi tumbuhan...</p>
+            </div>
+
+            <div class="p-3.5 bg-[#E2E1C4]/40 border border-[#1F3D20]/10 rounded-2xl space-y-1 shadow-2xs">
+                <h4 class="font-baloo font-bold text-xs text-[#1F3D20] uppercase tracking-wider">🪴 Petunjuk Perawatan (Ranger Guide)</h4>
+                <p id="view-care-instructions" class="font-nunito text-xs text-[#1F3D20]/80 leading-relaxed font-medium">Petunjuk perawatan...</p>
+            </div>
+
+            <div class="pt-2 flex items-center gap-3">
+                <a href="/gallery" class="flex-1 btn-gg-primary py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md text-xs font-baloo font-bold text-center">
+                    <span>📖 Buka Album Seedex</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
 <script>
     window.USER_ROLE = "{{ auth()->user()->role ?? 'viewer' }}";
 
+    window.openViewSightingModal = async function(sightingId) {
+        const viewModal = document.querySelector('#view-sighting-modal');
+        if (!viewModal) return;
+
+        try {
+            const res = await window.apiClient.get(`/map/sightings/${sightingId}`);
+            const sighting = res.data?.data || res.data || res;
+            const species = sighting.species || sighting.plant_species || {};
+
+            const commonNameEl = document.querySelector('#view-common-name');
+            if (commonNameEl) commonNameEl.textContent = species.common_name || 'Tumbuhan Spesimen';
+
+            const sciNameEl = document.querySelector('#view-scientific-name');
+            if (sciNameEl) sciNameEl.textContent = species.scientific_name || '';
+
+            const statusEl = document.querySelector('#view-conservation-status');
+            if (statusEl) {
+                statusEl.textContent = (species.conservation_status || 'COMMON').toUpperCase();
+            }
+
+            const imgEl = document.querySelector('#view-sighting-img');
+            if (imgEl) {
+                imgEl.onerror = function() { this.onerror = null; this.src = '/images/logo-plantGuardian.jpeg'; };
+                imgEl.src = sighting.photo_url || species.reference_image_url || '/images/logo-plantGuardian.jpeg';
+            }
+
+            const descEl = document.querySelector('#view-description');
+            if (descEl) descEl.textContent = species.description || 'Deskripsi spesimen belum tersedia.';
+
+            const careEl = document.querySelector('#view-care-instructions');
+            if (careEl) careEl.textContent = species.care_instructions || 'Petunjuk perawatan belum tersedia dari Ranger.';
+
+            viewModal.classList.remove('hidden');
+        } catch (err) {
+            alert('Gagal memuat detail tumbuhan: ' + (err.response?.data?.message || err.message));
+        }
+    };
+
     document.addEventListener('DOMContentLoaded', async () => {
+        const closeViewModalBtn = document.querySelector('#close-view-modal-btn');
+        if (closeViewModalBtn) {
+            closeViewModalBtn.addEventListener('click', () => {
+                document.querySelector('#view-sighting-modal')?.classList.add('hidden');
+            });
+        }
         let mapManager = null;
 
         if (window.MapManager) {

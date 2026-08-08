@@ -24,6 +24,8 @@ export default class MapManager {
     const defaultLat = -6.1754;
     const defaultLng = 106.8272;
 
+    this.defaultZoom = 19.5;
+
     // 60FPS Hardware Accelerated Leaflet Map Config with Canvas & Atomic Layer Grouping
     this.map = L.map(this.mapContainerId, {
       preferCanvas: true,
@@ -35,11 +37,12 @@ export default class MapManager {
       inertia: true,
       inertiaDeceleration: 3000,
       easeLinearity: 0.25
-    }).setView([defaultLat, defaultLng], 17);
+    }).setView([defaultLat, defaultLng], this.defaultZoom);
 
-    // High quality OpenStreetMap vector tile layer
+    // High quality OpenStreetMap vector tile layer with maxZoom 22
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
+      maxZoom: 22,
+      maxNativeZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     }).addTo(this.map);
 
@@ -165,7 +168,7 @@ export default class MapManager {
   recenterUser() {
     this.setAutoFollow(true);
     if (this.userLat != null && this.userLng != null && this.map) {
-      this.map.flyTo([this.userLat, this.userLng], 17, {
+      this.map.flyTo([this.userLat, this.userLng], 19.5, {
         animate: true,
         duration: 0.8
       });
@@ -215,7 +218,7 @@ export default class MapManager {
       this.userLng = lng;
 
       if (!hasCentered && this.map) {
-        this.map.setView([lat, lng], 17);
+        this.map.setView([lat, lng], 19.5);
         hasCentered = true;
       }
 
@@ -484,7 +487,7 @@ export default class MapManager {
       `;
     }
 
-    L.marker([sighting.latitude, sighting.longitude], { icon: customTagIcon })
+    L.marker([sighting.latitude, sighting.longitude], { icon: customTagIcon, riseOnHover: true })
       .addTo(this.markersGroup)
       .bindPopup(popupHtml);
   }

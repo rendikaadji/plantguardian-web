@@ -446,7 +446,9 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
             ${a?n:`❓ `+s}
           </h4>
 
-          ${a?i?`<img src="${i}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:8px;border:1.5px solid rgba(31,61,32,0.15);"/>`:`<img src="/images/logo-plantGuardian.jpeg" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:8px;border:1.5px solid rgba(31,61,32,0.15);"/>`:`<div style="background-color:rgba(226,225,196,0.4);border:1.5px dashed #8B6A4C;border-radius:12px;padding:10px 12px;text-align:center;margin-bottom:8px;font-size:11px;color:#6B6B55;font-style:italic;word-break:break-word;overflow-wrap:break-word;box-sizing:border-box;">
+          ${a?`<div style="width:100%;height:110px;border-radius:12px;overflow:hidden;margin-bottom:8px;background-color:#1F3D20;border:1.5px solid rgba(31,61,32,0.15);">
+                <img src="${i||`/images/logo-plantGuardian.jpeg`}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:100%;object-fit:cover;display:block;"/>
+               </div>`:`<div style="background-color:rgba(226,225,196,0.4);border:1.5px dashed #8B6A4C;border-radius:12px;padding:10px 12px;text-align:center;margin-bottom:8px;font-size:11px;color:#6B6B55;font-style:italic;word-break:break-word;overflow-wrap:break-word;box-sizing:border-box;">
                 ${d}
                </div>`}
 
@@ -463,7 +465,9 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
 
           <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:15px;margin:2px 0 4px 0;color:#1F3D20;word-break:break-word;">${n}</h4>
           
-          ${i?`<img src="${i}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:6px;"/>`:`<img src="/images/logo-plantGuardian.jpeg" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:6px;"/>`}
+          <div style="width:100%;height:110px;border-radius:12px;overflow:hidden;margin-bottom:6px;background-color:#1F3D20;border:1px solid rgba(31,61,32,0.15);">
+            <img src="${i||`/images/logo-plantGuardian.jpeg`}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:100%;object-fit:cover;display:block;" />
+          </div>
           
           <div style="font-size:10.5px;color:#6B6B55;margin:0 0 6px 0;line-height:1.3;">
             <span style="display:block;">${y}: <strong style="color:#1F3D20;">${e.verification_status}</strong></span>

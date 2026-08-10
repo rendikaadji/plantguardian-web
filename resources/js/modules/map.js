@@ -482,17 +482,19 @@ export default class MapManager {
           }
         </div>
       `;
+    } else {
       // Ranger / Admin Popup with Edit Action & Uploader Info
       const editDataBtnText = t.edit_data_button || '✏️ Edit Data Tumbuhan';
       const statusLabelText = t.status_label || 'Status';
       const uploaderName = sighting.ranger?.name || sighting.ranger_name || 'Ranger';
       const currentUserId = window.CURRENT_USER_ID;
+      const roleUpper = (this.userRole || 'RANGER').toUpperCase();
       const isOwnerOrAdmin = this.userRole === 'admin' || (currentUserId && sighting.ranger_id == currentUserId);
 
       popupHtml = `
         <div style="font-family:Nunito,sans-serif;max-width:215px;color:#2A2A22;padding:4px;box-sizing:border-box;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:4px;">
-            <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;white-space:nowrap;">${this.userRole.toUpperCase()} SIGHTING</span>
+            <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;white-space:nowrap;">${roleUpper} SIGHTING</span>
             <span style="font-size:10px;color:#6B6B55;font-weight:bold;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px;" title="Pengunggah: ${uploaderName}">👤 ${uploaderName}</span>
           </div>
 

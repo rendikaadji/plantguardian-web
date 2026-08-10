@@ -49,6 +49,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/users/{user}/details', [\App\Http\Controllers\AdminController::class, 'userDetails'])->name('users.details');
     Route::post('/users/{user}/role', [\App\Http\Controllers\AdminController::class, 'updateRole'])->name('users.update-role');
+    Route::post('/reports/{report}/resolve', [\App\Http\Controllers\AdminController::class, 'resolveReport'])->name('reports.resolve');
 });
 
 // Viewer Web Views (Protected by 'viewer' middleware)

@@ -43,7 +43,7 @@
     @endif
 
     <!-- System High-Visibility Metric Cards Grid -->
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-3 sm:gap-4">
 
         <!-- Metric 1: Total Users -->
         <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#1F3D20]">
@@ -78,12 +78,23 @@
             <div class="flex items-baseline justify-between">
                 <span class="font-baloo font-extrabold text-2xl text-[#D96C63]">{{ number_format($stats['total_sightings']) }}</span>
                 <span class="text-[10px] font-baloo font-extrabold px-1.5 py-0.5 rounded-full bg-[#D96C63]/15 text-[#D96C63]">
-                    {{ $stats['pending_verifications'] }} Pending
+                    {{ $stats['pending_verifications'] }} Verifikasi
                 </span>
             </div>
         </div>
 
-        <!-- Metric 5: Total Species Catalog -->
+        <!-- Metric 5: Pending Sighting Reports -->
+        <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#C0392B]">
+            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">Laporan Peta</span>
+            <div class="flex items-baseline justify-between">
+                <span class="font-baloo font-extrabold text-2xl text-[#C0392B]">{{ number_format($stats['pending_reports']) }}</span>
+                <span class="text-[10px] font-baloo font-extrabold px-1.5 py-0.5 rounded-full bg-[#C0392B]/15 text-[#C0392B]">
+                    Pending
+                </span>
+            </div>
+        </div>
+
+        <!-- Metric 6: Total Species Catalog -->
         <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#27AE60]">
             <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">Katalog Spesies</span>
             <div class="flex items-baseline justify-between">
@@ -92,7 +103,7 @@
             </div>
         </div>
 
-        <!-- Metric 6: Total EXP Issued -->
+        <!-- Metric 7: Total EXP Issued -->
         <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#7D5BA6]">
             <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">Total EXP System</span>
             <div class="flex items-baseline justify-between">
@@ -223,6 +234,134 @@
         <div class="pt-2">
             {{ $users->links() }}
         </div>
+    </div>
+
+    <!-- Section: Sighting Reports Moderation Queue -->
+    <div class="card-gg p-6 space-y-5 border-l-4 border-l-[#C0392B]">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1F3D20]/10 pb-4">
+            <div>
+                <div class="flex items-center gap-2">
+                    <h2 class="font-baloo font-extrabold text-xl text-[#1F3D20] flex items-center gap-2">
+                        <span>🚩</span>
+                        <span>Moderasi Laporan Temuan Peta</span>
+                    </h2>
+                    @if(count($reports) > 0)
+                        <span class="px-2.5 py-0.5 rounded-full bg-[#C0392B] text-white font-baloo font-extrabold text-xs shadow-xs animate-pulse">
+                            {{ count($reports) }} Laporan Pending
+                        </span>
+                    @endif
+                </div>
+                <p class="font-nunito text-xs text-[#6B6B55]">Laporan dari pengguna mengenai keaslian, keberadaan, atau perubahan tumbuhan di lokasi nyata.</p>
+            </div>
+        </div>
+
+        @if(count($reports) > 0)
+            <div class="overflow-x-auto rounded-2xl border border-[#1F3D20]/10 shadow-xs">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs tracking-wider">
+                            <th class="py-3.5 px-4">Tumbuhan Dilaporkan</th>
+                            <th class="py-3.5 px-4">Pelapor</th>
+                            <th class="py-3.5 px-4">Alasan Pelaporan</th>
+                            <th class="py-3.5 px-4">Catatan Pelapor</th>
+                            <th class="py-3.5 px-4">Waktu Report</th>
+                            <th class="py-3.5 px-4 text-right">Aksi Admin</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-[#1F3D20]/10 font-nunito text-xs bg-white">
+                        @foreach($reports as $report)
+                            <tr class="hover:bg-[#FBFAF0] transition-colors">
+                                <!-- Reported Sighting -->
+                                <td class="py-3.5 px-4">
+                                    @if($report->sighting)
+                                        <div class="flex items-center gap-3">
+                                            <img src="{{ $report->sighting->photo_url }}" class="w-11 h-11 object-cover rounded-xl border border-[#1F3D20]/20 shrink-0" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" />
+                                            <div>
+                                                <div class="font-baloo font-bold text-sm text-[#1F3D20]">
+                                                    {{ $report->sighting->species ? $report->sighting->species->common_name : 'Spesies Tumbuhan' }}
+                                                </div>
+                                                <div class="text-[10px] text-[#6B6B55] italic">
+                                                    {{ $report->sighting->species ? $report->sighting->species->scientific_name : '-' }}
+                                                </div>
+                                                <div class="text-[10px] text-[#8B6A4C] font-semibold mt-0.5">
+                                                    👤 Ranger: {{ $report->sighting->ranger ? $report->sighting->ranger->name : 'System' }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @else
+                                        <span class="text-gray-400 italic">Marker Sudah Dihapus</span>
+                                    @endif
+                                </td>
+
+                                <!-- Reporter User -->
+                                <td class="py-3.5 px-4">
+                                    <div class="font-baloo font-bold text-xs text-[#1F3D20]">
+                                        {{ $report->user ? $report->user->name : 'User' }}
+                                    </div>
+                                    <div class="text-[10px] text-[#6B6B55]">
+                                        {{ $report->user ? $report->user->email : '-' }}
+                                    </div>
+                                </td>
+
+                                <!-- Reason -->
+                                <td class="py-3.5 px-4">
+                                    @php
+                                        $reasonBadge = match($report->reason) {
+                                            'fake_specimen' => ['bg-red-100 text-red-700 border-red-300', '🚫 Tumbuhan Palsu / Hoaks'],
+                                            'plant_missing_or_dead' => ['bg-amber-100 text-amber-800 border-amber-300', '🗑️ Tumbuhan Mati / Hilang'],
+                                            'species_mismatch_or_replaced' => ['bg-purple-100 text-purple-700 border-purple-300', '🔄 Tumbuhan Diganti / Jenis Berbeda'],
+                                            default => ['bg-gray-100 text-gray-700 border-gray-300', '💬 Alasan Lainnya'],
+                                        };
+                                    @endphp
+                                    <span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-baloo font-bold border {{ $reasonBadge[0] }}">
+                                        {{ $reasonBadge[1] }}
+                                    </span>
+                                </td>
+
+                                <!-- Notes -->
+                                <td class="py-3.5 px-4 max-w-xs">
+                                    <p class="text-xs text-[#2A2A22] italic leading-relaxed">
+                                        {{ $report->notes ? '"' . $report->notes . '"' : '-' }}
+                                    </p>
+                                </td>
+
+                                <!-- Date -->
+                                <td class="py-3.5 px-4 font-mono-code text-[10.5px] text-[#6B6B55]">
+                                    {{ $report->created_at ? $report->created_at->diffForHumans() : '-' }}
+                                </td>
+
+                                <!-- Admin Actions -->
+                                <td class="py-3.5 px-4 text-right">
+                                    <div class="flex items-center justify-end gap-2">
+                                        <!-- Action 1: Delete Sighting Marker -->
+                                        <form method="POST" action="{{ route('admin.reports.resolve', $report->id) }}" onsubmit="return confirm('Apakah Anda yakin ingin MENGHAPUS marker temuan tumbuhan ini dari peta?');">
+                                            @csrf
+                                            <input type="hidden" name="action" value="delete_sighting">
+                                            <button type="submit" class="px-3 py-1.5 rounded-full bg-[#C0392B] text-white font-baloo font-bold text-xs hover:bg-red-700 transition-colors shadow-2xs cursor-pointer">
+                                                🗑️ Hapus Marker Peta
+                                            </button>
+                                        </form>
+
+                                        <!-- Action 2: Dismiss Report -->
+                                        <form method="POST" action="{{ route('admin.reports.resolve', $report->id) }}">
+                                            @csrf
+                                            <input type="hidden" name="action" value="dismiss">
+                                            <button type="submit" class="px-3 py-1.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs hover:bg-[#1F3D20]/15 transition-colors cursor-pointer">
+                                                🛑 Abaikan Laporan
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @else
+            <div class="text-center py-6 text-[#6B6B55] font-baloo font-bold text-xs bg-white rounded-2xl border border-[#1F3D20]/10 p-4">
+                ✨ Tidak ada laporan temuan tumbuhan yang pending. Semua marker di lokasi dalam keadaan valid.
+            </div>
+        @endif
     </div>
 
     <!-- Section: Monitoring Log Activity (Recent Plant Sightings) -->

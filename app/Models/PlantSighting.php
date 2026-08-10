@@ -50,6 +50,14 @@ class PlantSighting extends Model
     }
 
     /**
+     * Reports submitted by Viewers or Rangers regarding this sighting.
+     */
+    public function reports(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(SightingReport::class, 'plant_sighting_id');
+    }
+
+    /**
      * Matched plant species catalog item (nullable if unrecognized).
      */
     public function plantSpecies(): BelongsTo

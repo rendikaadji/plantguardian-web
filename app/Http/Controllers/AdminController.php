@@ -26,8 +26,9 @@ class AdminController extends Controller
         $stats = $this->adminService->getDashboardStats();
         $users = $this->adminService->getUsersList($search);
         $recentSightings = $this->adminService->getRecentSightings();
+        $reports = $this->adminService->getPendingReports();
 
-        return view('admin.dashboard', compact('stats', 'users', 'recentSightings', 'search'));
+        return view('admin.dashboard', compact('stats', 'users', 'recentSightings', 'reports', 'search'));
     }
 
     /**
@@ -69,6 +70,27 @@ class AdminController extends Controller
             return redirect()->back()->with('success', "Role pengguna {$user->name} berhasil diperbarui menjadi " . strtoupper($validated['role']) . '.');
         } catch (Exception $e) {
             return redirect()->back()->withErrors(['role' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Resolve a reported plant sighting (Delete marker sighting or Dismiss report).
+     */
+    public function resolveReport(Request $request, int $reportId): RedirectResponse
+    {
+        $validated = $request->validate([
+            'action' => 'required|in:delete_sighting,dismiss',
+        ]);
+
+        try {
+            $this->adminService->resolveReport($reportId, $validated['action'], $request->user());
+            $msg = $validated['action'] === 'delete_sighting'
+                ? 'Marker temuan tumbuhan berhasil dihapus dan laporan diselesaikan.'
+                : 'Laporan temuan berhasil diabaikan/diarsipkan.';
+
+            return redirect()->back()->with('success', $msg);
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(['report' => $e->getMessage()]);
         }
     }
 }

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\PlantDiscovery;
 use App\Models\PlantSighting;
 use App\Models\PlantSpecies;
+use App\Models\SightingReport;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
@@ -24,6 +25,7 @@ class AdminService
             'total_admins' => User::where('role', 'admin')->count(),
             'total_sightings' => PlantSighting::count(),
             'pending_verifications' => PlantSighting::where('verification_status', 'pending')->count(),
+            'pending_reports' => SightingReport::where('status', 'pending')->count(),
             'total_species_catalog' => PlantSpecies::count(),
             'total_exp_issued' => User::sum('exp'),
             'total_coin_issued' => User::sum('coin'),
@@ -128,6 +130,49 @@ class AdminService
                 'items' => $discoveries,
                 'total_count' => $discoveries->count(),
             ];
+        }
+    }
+
+    /**
+     * Get pending plant sighting reports for Admin review.
+     */
+    public function getPendingReports(int $limit = 15): Collection
+    {
+        return SightingReport::with(['user:id,name,email', 'sighting.plantSpecies', 'sighting.ranger:id,name'])
+            ->where('status', 'pending')
+            ->orderBy('created_at', 'desc')
+            ->take($limit)
+            ->get();
+    }
+
+    /**
+     * Resolve a sighting report (Delete marker sighting or Dismiss report).
+     */
+    public function resolveReport(int $reportId, string $action, User $adminUser): void
+    {
+        $report = SightingReport::with('sighting')->findOrFail($reportId);
+
+        if ($action === 'delete_sighting') {
+            if ($report->sighting) {
+                // Delete the reported sighting marker from the database
+                $report->sighting->delete();
+            }
+
+            // Update report status
+            $report->update([
+                'status' => 'resolved_deleted',
+                'resolved_by' => $adminUser->id,
+                'resolved_at' => now(),
+            ]);
+        } elseif ($action === 'dismiss') {
+            // Dismiss the report (keep the sighting intact)
+            $report->update([
+                'status' => 'dismissed',
+                'resolved_by' => $adminUser->id,
+                'resolved_at' => now(),
+            ]);
+        } else {
+            throw new Exception('Aksi penanganan laporan tidak valid.');
         }
     }
 }

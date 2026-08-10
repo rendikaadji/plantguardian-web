@@ -265,12 +265,74 @@
                 <p id="view-care-instructions" class="font-nunito text-xs text-[#1F3D20]/80 leading-relaxed font-medium">...</p>
             </div>
 
-            <div class="pt-2 flex items-center gap-3">
-                <a href="/gallery" class="flex-1 btn-gg-primary py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md text-xs font-baloo font-bold text-center">
+            <div class="pt-2 flex flex-col gap-2">
+                <a href="/gallery" class="w-full btn-gg-primary py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md text-xs font-baloo font-bold text-center">
                     <span>{{ __('map.modal_open_seedex') }}</span>
                 </a>
+
+                <button type="button" id="modal-report-trigger-btn" class="w-full py-2.5 rounded-full bg-red-100/80 hover:bg-red-200/80 text-[#C0392B] font-baloo font-bold text-xs flex items-center justify-center gap-1.5 transition-colors border border-red-300/40 cursor-pointer">
+                    <span>{{ __('map.report_sighting') }}</span>
+                </button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- Report Plant Sighting Modal View -->
+<div id="report-sighting-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[110] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
+    <div class="card-gg max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[85vh] overflow-y-auto">
+        <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
+            <div>
+                <span class="text-[10px] font-baloo font-bold text-white bg-[#C0392B] px-2.5 py-0.5 rounded-full uppercase tracking-wider">MODERASI LAPANGAN</span>
+                <h3 class="font-baloo font-extrabold text-2xl text-[#1F3D20] mt-1">{{ __('map.report_sighting_title') }}</h3>
+                <p class="font-nunito text-xs text-[#6B6B55] mt-0.5 leading-relaxed">{{ __('map.report_sighting_subtitle') }}</p>
+            </div>
+            <button id="close-report-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer hover:bg-[#C0392B] hover:text-white transition-colors">&times;</button>
+        </div>
+
+        <form id="report-sighting-form" class="space-y-3.5 pt-1">
+            <input type="hidden" id="report-sighting-id" value="" />
+
+            <div>
+                <label class="block text-xs font-baloo font-bold text-[#1F3D20] mb-2 uppercase tracking-wider">PILIH ALASAN PELAPORAN <span class="text-red-600">*</span></label>
+                
+                <div class="space-y-2">
+                    <label class="flex items-start gap-3 p-3 rounded-xl border border-[#1F3D20]/15 bg-white cursor-pointer hover:border-[#C0392B] transition-colors shadow-2xs">
+                        <input type="radio" name="report_reason" value="fake_specimen" required class="mt-0.5 accent-[#C0392B]" />
+                        <span class="text-xs font-nunito font-bold text-[#1F3D20] leading-snug">{{ __('map.reason_fake_specimen') }}</span>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 rounded-xl border border-[#1F3D20]/15 bg-white cursor-pointer hover:border-[#C0392B] transition-colors shadow-2xs">
+                        <input type="radio" name="report_reason" value="plant_missing_or_dead" class="mt-0.5 accent-[#C0392B]" />
+                        <span class="text-xs font-nunito font-bold text-[#1F3D20] leading-snug">{{ __('map.reason_plant_missing_or_dead') }}</span>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 rounded-xl border border-[#1F3D20]/15 bg-white cursor-pointer hover:border-[#C0392B] transition-colors shadow-2xs">
+                        <input type="radio" name="report_reason" value="species_mismatch_or_replaced" class="mt-0.5 accent-[#C0392B]" />
+                        <span class="text-xs font-nunito font-bold text-[#1F3D20] leading-snug">{{ __('map.reason_species_mismatch_or_replaced') }}</span>
+                    </label>
+
+                    <label class="flex items-start gap-3 p-3 rounded-xl border border-[#1F3D20]/15 bg-white cursor-pointer hover:border-[#C0392B] transition-colors shadow-2xs">
+                        <input type="radio" name="report_reason" value="other" class="mt-0.5 accent-[#C0392B]" />
+                        <span class="text-xs font-nunito font-bold text-[#1F3D20] leading-snug">{{ __('map.reason_other') }}</span>
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-xs font-baloo font-bold text-[#1F3D20] mb-1 uppercase tracking-wider">CATATAN TAMBAHAN (OPSIONAL)</label>
+                <textarea id="report-notes" rows="2" class="w-full text-xs font-nunito p-3 rounded-xl border border-[#1F3D20]/20 bg-white focus:outline-none focus:border-[#C0392B]" placeholder="{{ __('map.notes_placeholder') }}"></textarea>
+            </div>
+
+            <div class="pt-2 flex items-center justify-between gap-3">
+                <button type="button" id="cancel-report-btn" class="px-4 py-2.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs cursor-pointer hover:bg-[#d5d4b3] transition-colors">
+                    {{ __('map.cancel') }}
+                </button>
+                <button type="submit" id="submit-report-btn" class="flex-1 py-2.5 rounded-full bg-[#C0392B] text-white font-baloo font-bold text-xs hover:bg-[#a93224] transition-colors cursor-pointer shadow-md flex items-center justify-center gap-1.5">
+                    <span>{{ __('map.submit_report') }}</span>
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection
@@ -326,10 +388,33 @@
             const careEl = document.querySelector('#view-care-instructions');
             if (careEl) careEl.textContent = species.care_instructions || (t.modal_no_care || 'Petunjuk perawatan belum tersedia dari Ranger.');
 
+            const reportTriggerBtn = document.querySelector('#modal-report-trigger-btn');
+            if (reportTriggerBtn) {
+                reportTriggerBtn.onclick = function() {
+                    viewModal.classList.add('hidden');
+                    window.openReportSightingModal(sightingId);
+                };
+            }
+
             viewModal.classList.remove('hidden');
         } catch (err) {
             alert('Gagal memuat detail tumbuhan: ' + (err.response?.data?.message || err.message));
         }
+    };
+
+    window.openReportSightingModal = function(sightingId) {
+        const reportModal = document.querySelector('#report-sighting-modal');
+        const sightingIdInput = document.querySelector('#report-sighting-id');
+        if (!reportModal || !sightingIdInput) return;
+
+        sightingIdInput.value = sightingId;
+        const notesEl = document.querySelector('#report-notes');
+        if (notesEl) notesEl.value = '';
+
+        const radios = document.querySelectorAll('input[name="report_reason"]');
+        radios.forEach(r => r.checked = false);
+
+        reportModal.classList.remove('hidden');
     };
 
     document.addEventListener('DOMContentLoaded', async () => {
@@ -337,6 +422,48 @@
         if (closeViewModalBtn) {
             closeViewModalBtn.addEventListener('click', () => {
                 document.querySelector('#view-sighting-modal')?.classList.add('hidden');
+            });
+        }
+
+        const reportModal = document.querySelector('#report-sighting-modal');
+        const closeReportBtn = document.querySelector('#close-report-modal-btn');
+        const cancelReportBtn = document.querySelector('#cancel-report-btn');
+        const reportForm = document.querySelector('#report-sighting-form');
+
+        if (closeReportBtn) {
+            closeReportBtn.addEventListener('click', () => reportModal?.classList.add('hidden'));
+        }
+        if (cancelReportBtn) {
+            cancelReportBtn.addEventListener('click', () => reportModal?.classList.add('hidden'));
+        }
+
+        if (reportForm) {
+            reportForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const sightingId = document.querySelector('#report-sighting-id').value;
+                const selectedReason = document.querySelector('input[name="report_reason"]:checked')?.value;
+                const notes = document.querySelector('#report-notes')?.value;
+
+                if (!selectedReason) {
+                    alert('Silakan pilih alasan pelaporan terlebih dahulu.');
+                    return;
+                }
+
+                try {
+                    const res = await window.apiClient.post(`/map/sightings/${sightingId}/report`, {
+                        reason: selectedReason,
+                        notes: notes
+                    });
+                    const msg = res.data?.message || res.message || 'Laporan berhasil dikirim ke Admin.';
+                    if (window.showToast) {
+                        window.showToast(msg, 'success');
+                    } else {
+                        alert(msg);
+                    }
+                    reportModal.classList.add('hidden');
+                } catch (err) {
+                    alert('Gagal mengirim laporan: ' + (err.response?.data?.message || err.message));
+                }
             });
         }
         let mapManager = null;

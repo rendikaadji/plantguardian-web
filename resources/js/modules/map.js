@@ -494,6 +494,11 @@ export default class MapManager {
                 : `<button id="discover-btn-${sighting.id}" onclick="window.discoverPlantFromMap(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);transition:transform 0.15s ease;">${discoverText}</button>`
               )
           }
+
+          <!-- Report Button -->
+          <button onclick="window.openReportSightingModal(${sighting.id})" style="width:100%;margin-top:6px;background-color:rgba(192,57,43,0.08);color:#C0392B;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:11.5px;padding:5.5px 0;border-radius:9999px;border:1px solid rgba(192,57,43,0.25);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:all 0.2s;" onmouseover="this.style.backgroundColor='rgba(192,57,43,0.18)'" onmouseout="this.style.backgroundColor='rgba(192,57,43,0.08)'">
+            <span>🚩 ${t.report_sighting || 'Laporkan Tumbuhan'}</span>
+          </button>
         </div>
       `;
     } else {

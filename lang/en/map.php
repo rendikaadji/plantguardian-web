@@ -93,4 +93,17 @@ return [
     'status_protected' => 'PROTECTED',
     'status_least_concern' => 'LEAST CONCERN',
     'locked_card_text' => 'Locked / Undiscovered',
+
+    // Report Sighting System
+    'report_sighting' => '🚩 Report Plant Sighting',
+    'report_sighting_title' => 'Report Plant Sighting',
+    'report_sighting_subtitle' => 'Help Admins verify the authenticity and existence of this plant specimen at the real location.',
+    'reason_fake_specimen' => '🚫 Fake / Invalid Plant (Specimen is not a real plant)',
+    'reason_plant_missing_or_dead' => '🗑️ Plant No Longer Exists / Dead / Missing',
+    'reason_species_mismatch_or_replaced' => '🔄 Plant Replaced / Different Species at Location',
+    'reason_other' => '💬 Other Reason',
+    'notes_placeholder' => 'Add notes or additional reason details...',
+    'submit_report' => '🚩 SUBMIT REPORT TO ADMIN',
+    'cancel' => 'Cancel',
+    'report_sent_success' => 'Plant sighting report has been submitted to Admin.',
 ];

@@ -93,4 +93,17 @@ return [
     'status_protected' => 'DILINDUNGI',
     'status_least_concern' => 'RISIKO RENDAH',
     'locked_card_text' => 'Belum Ditemukan',
+
+    // Pelaporan Temuan Tumbuhan
+    'report_sighting' => '🚩 Laporkan Tumbuhan',
+    'report_sighting_title' => 'Laporkan Temuan Tumbuhan',
+    'report_sighting_subtitle' => 'Bantu Admin memverifikasi keaslian dan keberadaan spesimen tumbuhan ini di lokasi nyata.',
+    'reason_fake_specimen' => '🚫 Tumbuhan Palsu / Hoaks (Spesimen bukan tumbuhan nyata)',
+    'reason_plant_missing_or_dead' => '🗑️ Tumbuhan Sudah Tidak Ada / Mati / Hilang',
+    'reason_species_mismatch_or_replaced' => '🔄 Tumbuhan Diganti / Jenis Berbeda di Lokasi',
+    'reason_other' => '💬 Alasan Lainnya',
+    'notes_placeholder' => 'Tambahkan catatan atau detail alasan pelaporan...',
+    'submit_report' => '🚩 KIRIM LAPORAN KE ADMIN',
+    'cancel' => 'Batal',
+    'report_sent_success' => 'Laporan temuan tumbuhan berhasil dikirim ke Admin.',
 ];

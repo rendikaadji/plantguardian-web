@@ -14,6 +14,8 @@ use App\Http\Controllers\Ranger\VerificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\Api\SightingReportController;
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
@@ -24,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth:sanctum,web', 'viewer'])->group(function () {
     Route::post('/plant-discoveries', [DiscoveryController::class, 'store']);
     Route::post('/map/sightings/{id}/claim', [DiscoveryController::class, 'claimFromMap']);
+    Route::post('/map/sightings/{id}/report', [SightingReportController::class, 'store']);
     Route::get('/map/sightings/{id}', [MapController::class, 'show']);
     Route::get('/plant-sightings/nearby', [MapController::class, 'nearby']);
 

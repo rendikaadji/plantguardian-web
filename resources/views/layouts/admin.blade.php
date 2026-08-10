@@ -26,6 +26,7 @@
             color: #FFD700 !important;
             border-left: 4px solid #FFD700 !important;
             box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            font-weight: 800 !important;
         }
     </style>
 
@@ -60,29 +61,29 @@
                     NAVIGASI KONTROL
                 </div>
 
-                <a href="#overview" data-section="overview" class="admin-sidebar-link sidebar-link-active flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
+                <a href="{{ route('admin.dashboard') }}" class="admin-sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all {{ request()->routeIs('admin.dashboard') ? 'sidebar-link-active' : 'text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10' }}">
                     <span class="text-base">📊</span>
                     <span>{{ __('admin.sidebar.overview') }}</span>
                 </a>
 
-                <a href="#section-users" data-section="section-users" class="admin-sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
+                <a href="{{ route('admin.users') }}" class="admin-sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all {{ request()->routeIs('admin.users*') ? 'sidebar-link-active' : 'text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10' }}">
                     <span class="text-base">👥</span>
                     <span>{{ __('admin.sidebar.users') }}</span>
                 </a>
 
-                <a href="#section-reports" data-section="section-reports" class="admin-sidebar-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
+                <a href="{{ route('admin.reports') }}" class="admin-sidebar-link flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all {{ request()->routeIs('admin.reports*') ? 'sidebar-link-active' : 'text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10' }}">
                     <div class="flex items-center gap-3">
                         <span class="text-base">🚩</span>
                         <span>{{ __('admin.sidebar.reports') }}</span>
                     </div>
-                    @if(isset($reports) && count($reports) > 0)
+                    @if(isset($stats['pending_reports']) && $stats['pending_reports'] > 0)
                         <span class="px-2 py-0.5 rounded-full bg-[#C0392B] text-white text-[10px] font-extrabold">
-                            {{ count($reports) }}
+                            {{ $stats['pending_reports'] }}
                         </span>
                     @endif
                 </a>
 
-                <a href="#section-monitoring" data-section="section-monitoring" class="admin-sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
+                <a href="{{ route('admin.monitoring') }}" class="admin-sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl transition-all {{ request()->routeIs('admin.monitoring*') ? 'sidebar-link-active' : 'text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10' }}">
                     <span class="text-base">📍</span>
                     <span>{{ __('admin.sidebar.monitoring') }}</span>
                 </a>
@@ -136,16 +137,16 @@
                 </div>
 
                 <div class="flex-1 py-4 px-3 space-y-2 overflow-y-auto font-baloo text-xs font-bold">
-                    <a href="#overview" onclick="toggleAdminDrawer()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-[#FBFAF0]/10 text-[#FFD700]">
+                    <a href="{{ route('admin.dashboard') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl {{ request()->routeIs('admin.dashboard') ? 'bg-[#FBFAF0]/15 text-[#FFD700]' : 'text-[#F5F4DA]' }}">
                         <span>📊</span> <span>{{ __('admin.sidebar.overview') }}</span>
                     </a>
-                    <a href="#section-users" onclick="toggleAdminDrawer()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80">
+                    <a href="{{ route('admin.users') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl {{ request()->routeIs('admin.users*') ? 'bg-[#FBFAF0]/15 text-[#FFD700]' : 'text-[#F5F4DA]' }}">
                         <span>👥</span> <span>{{ __('admin.sidebar.users') }}</span>
                     </a>
-                    <a href="#section-reports" onclick="toggleAdminDrawer()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80">
+                    <a href="{{ route('admin.reports') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl {{ request()->routeIs('admin.reports*') ? 'bg-[#FBFAF0]/15 text-[#FFD700]' : 'text-[#F5F4DA]' }}">
                         <span>🚩</span> <span>{{ __('admin.sidebar.reports') }}</span>
                     </a>
-                    <a href="#section-monitoring" onclick="toggleAdminDrawer()" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80">
+                    <a href="{{ route('admin.monitoring') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl {{ request()->routeIs('admin.monitoring*') ? 'bg-[#FBFAF0]/15 text-[#FFD700]' : 'text-[#F5F4DA]' }}">
                         <span>📍</span> <span>{{ __('admin.sidebar.monitoring') }}</span>
                     </a>
                     <a href="{{ route('peta') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80">
@@ -171,7 +172,7 @@
                         <div class="flex items-center gap-2">
                             <span class="text-xs font-baloo font-bold text-[#6B6B55] hidden sm:inline">Pusat Kontrol /</span>
                             <span class="font-baloo font-extrabold text-base sm:text-lg text-[#1F3D20]">
-                                {{ __('admin.dashboard_title') }}
+                                @yield('header_title', __('admin.dashboard_title'))
                             </span>
                         </div>
                     </div>
@@ -226,42 +227,6 @@
 
         if (openBtn) openBtn.addEventListener('click', toggleAdminDrawer);
         if (closeBtn) closeBtn.addEventListener('click', toggleAdminDrawer);
-
-        // Sidebar active link highlighting & smooth scroll
-        document.addEventListener('DOMContentLoaded', () => {
-            const sidebarLinks = document.querySelectorAll('.admin-sidebar-link');
-            
-            function setActiveLink(sectionId) {
-                sidebarLinks.forEach(link => {
-                    if (link.getAttribute('data-section') === sectionId) {
-                        link.classList.add('sidebar-link-active');
-                    } else {
-                        link.classList.remove('sidebar-link-active');
-                    }
-                });
-            }
-
-            sidebarLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
-                    const secId = this.getAttribute('data-section');
-                    if (secId) {
-                        setActiveLink(secId);
-                    }
-                });
-            });
-
-            // IntersectionObserver for auto-highlighting during scroll
-            const sections = document.querySelectorAll('#overview, #section-users, #section-reports, #section-monitoring');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        setActiveLink(entry.target.id);
-                    }
-                });
-            }, { threshold: 0.25 });
-
-            sections.forEach(sec => observer.observe(sec));
-        });
     </script>
 </body>
 </html>

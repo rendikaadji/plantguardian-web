@@ -17,18 +17,49 @@ class AdminController extends Controller
     ) {}
 
     /**
-     * Display the Admin Control Dashboard.
+     * Display the Admin Executive Dashboard.
      */
-    public function dashboard(Request $request): View
+    public function dashboard(): View
+    {
+        $stats = $this->adminService->getDashboardStats();
+        $recentSightings = $this->adminService->getRecentSightings(6);
+        $reports = $this->adminService->getPendingReports(5);
+
+        return view('admin.dashboard', compact('stats', 'recentSightings', 'reports'));
+    }
+
+    /**
+     * Display dedicated User Management & Control Page.
+     */
+    public function users(Request $request): View
     {
         $search = $request->input('search');
-
-        $stats = $this->adminService->getDashboardStats();
         $users = $this->adminService->getUsersList($search);
-        $recentSightings = $this->adminService->getRecentSightings();
-        $reports = $this->adminService->getPendingReports();
+        $stats = $this->adminService->getDashboardStats();
 
-        return view('admin.dashboard', compact('stats', 'users', 'recentSightings', 'reports', 'search'));
+        return view('admin.users', compact('users', 'stats', 'search'));
+    }
+
+    /**
+     * Display dedicated Sighting Reports Moderation Page.
+     */
+    public function reports(): View
+    {
+        $reports = $this->adminService->getPaginatedReports(15);
+        $stats = $this->adminService->getDashboardStats();
+
+        return view('admin.reports', compact('reports', 'stats'));
+    }
+
+    /**
+     * Display dedicated Sightings & Scan Monitoring Page.
+     */
+    public function monitoring(): View
+    {
+        $sightings = $this->adminService->getPaginatedSightings(12);
+        $stats = $this->adminService->getDashboardStats();
+
+        return view('admin.monitoring', compact('sightings', 'stats'));
     }
 
     /**

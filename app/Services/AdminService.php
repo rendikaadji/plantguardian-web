@@ -152,6 +152,26 @@ class AdminService
     }
 
     /**
+     * Get paginated reports for dedicated Reports Management Page.
+     */
+    public function getPaginatedReports(int $perPage = 15): LengthAwarePaginator
+    {
+        return SightingReport::with(['user:id,name,email', 'sighting.plantSpecies', 'sighting.ranger:id,name'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
+     * Get paginated sightings for dedicated Sightings Monitoring Page.
+     */
+    public function getPaginatedSightings(int $perPage = 12): LengthAwarePaginator
+    {
+        return PlantSighting::with(['plantSpecies', 'ranger:id,name'])
+            ->orderBy('created_at', 'desc')
+            ->paginate($perPage);
+    }
+
+    /**
      * Resolve a sighting report (Delete marker sighting or Dismiss report).
      */
     public function resolveReport(int $reportId, string $action, User $adminUser): void

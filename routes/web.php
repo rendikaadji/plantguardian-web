@@ -47,9 +47,12 @@ Route::middleware('auth')->group(function () {
 // Admin Control Routes (Protected by 'admin' middleware)
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [\App\Http\Controllers\AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('users');
     Route::get('/users/{user}/details', [\App\Http\Controllers\AdminController::class, 'userDetails'])->name('users.details');
     Route::post('/users/{user}/role', [\App\Http\Controllers\AdminController::class, 'updateRole'])->name('users.update-role');
+    Route::get('/reports', [\App\Http\Controllers\AdminController::class, 'reports'])->name('reports');
     Route::post('/reports/{report}/resolve', [\App\Http\Controllers\AdminController::class, 'resolveReport'])->name('reports.resolve');
+    Route::get('/monitoring', [\App\Http\Controllers\AdminController::class, 'monitoring'])->name('monitoring');
 });
 
 // Viewer Web Views (Protected by 'viewer' middleware)

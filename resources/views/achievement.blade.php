@@ -12,20 +12,25 @@
 <div class="space-y-6 max-w-4xl mx-auto py-2">
 
     <!-- Top Banner (Trophy & Achievement Overview) -->
+@php
+    $isRanger = auth()->check() && in_array(auth()->user()->role, ['ranger', 'admin']);
+@endphp
+
+    <!-- Top Banner (Trophy & Achievement Overview) -->
     <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#1F3D20] via-[#2D4A2E] to-[#152B16] text-[#F5F4DA] p-6 sm:p-8 shadow-xl border border-[#E2E1C4]/20">
         <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div class="space-y-2">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFD700]/20 text-[#FFD700] text-xs font-baloo font-bold backdrop-blur-md border border-[#FFD700]/30">
                     <span>🏆</span>
-                    <span>{{ __('achievement.badge_header') }}</span>
+                    <span>{{ $isRanger ? __('achievement.ranger_badge_header') : __('achievement.badge_header') }}</span>
                 </div>
 
                 <h1 class="font-baloo font-extrabold text-3xl sm:text-4xl text-[#F5F4DA] tracking-tight">
-                    {{ __('achievement.heading') }}
+                    {{ $isRanger ? __('achievement.ranger_heading') : __('achievement.heading') }}
                 </h1>
 
                 <p class="text-xs sm:text-sm text-[#F5F4DA]/80 font-nunito max-w-xl leading-relaxed">
-                    {{ __('achievement.subtitle') }}
+                    {{ $isRanger ? __('achievement.ranger_subtitle') : __('achievement.subtitle') }}
                 </p>
             </div>
 
@@ -43,19 +48,19 @@
     <!-- Category Filter Tabs -->
     <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
         <button onclick="filterAchievements('all')" class="ach-tab-btn px-4 py-2 rounded-full font-baloo font-bold text-xs bg-[#1F3D20] text-[#F5F4DA] cursor-pointer shadow-xs transition-all shrink-0 active-tab" data-cat="all">
-            {{ __('achievement.tabs.all') }}
+            {{ $isRanger ? __('achievement.ranger_tabs.all') : __('achievement.tabs.all') }}
         </button>
         <button onclick="filterAchievements('exploration')" class="ach-tab-btn px-4 py-2 rounded-full font-baloo font-bold text-xs bg-[#E2E1C4] text-[#1F3D20] hover:bg-[#1F3D20] hover:text-[#F5F4DA] cursor-pointer transition-all shrink-0" data-cat="exploration">
-            {{ __('achievement.tabs.exploration') }}
+            {{ $isRanger ? __('achievement.ranger_tabs.exploration') : __('achievement.tabs.exploration') }}
         </button>
         <button onclick="filterAchievements('garden')" class="ach-tab-btn px-4 py-2 rounded-full font-baloo font-bold text-xs bg-[#E2E1C4] text-[#1F3D20] hover:bg-[#1F3D20] hover:text-[#F5F4DA] cursor-pointer transition-all shrink-0" data-cat="garden">
-            {{ __('achievement.tabs.garden') }}
+            {{ $isRanger ? __('achievement.ranger_tabs.garden') : __('achievement.tabs.garden') }}
         </button>
         <button onclick="filterAchievements('shop')" class="ach-tab-btn px-4 py-2 rounded-full font-baloo font-bold text-xs bg-[#E2E1C4] text-[#1F3D20] hover:bg-[#1F3D20] hover:text-[#F5F4DA] cursor-pointer transition-all shrink-0" data-cat="shop">
-            {{ __('achievement.tabs.shop') }}
+            {{ $isRanger ? __('achievement.ranger_tabs.shop') : __('achievement.tabs.shop') }}
         </button>
         <button onclick="filterAchievements('social')" class="ach-tab-btn px-4 py-2 rounded-full font-baloo font-bold text-xs bg-[#E2E1C4] text-[#1F3D20] hover:bg-[#1F3D20] hover:text-[#F5F4DA] cursor-pointer transition-all shrink-0" data-cat="social">
-            {{ __('achievement.tabs.social') }}
+            {{ $isRanger ? __('achievement.ranger_tabs.social') : __('achievement.tabs.social') }}
         </button>
     </div>
 
@@ -64,7 +69,7 @@
         <div class="flex items-center justify-between">
             <h2 class="font-baloo font-extrabold text-xl text-[#1F3D20] flex items-center gap-2">
                 <span>🏅</span>
-                <span>{{ __('achievement.heading') }}</span>
+                <span>{{ $isRanger ? __('achievement.ranger_heading') : __('achievement.heading') }}</span>
             </h2>
             <span class="text-xs text-[#6B6B55] font-baloo font-bold">{{ __('achievement.live_update') }}</span>
         </div>
@@ -72,39 +77,75 @@
         <div id="achievements-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             @php
-                $items = [
-                    // Category 1: Exploration
-                    ['code' => 'flora_explorer', 'cat' => 'exploration', 'icon' => '🌱', 'exp' => 150, 'coin' => 75],
-                    ['code' => 'region_mapper', 'cat' => 'exploration', 'icon' => '🗺️', 'exp' => 300, 'coin' => 150],
-                    ['code' => 'seedex_expert', 'cat' => 'exploration', 'icon' => '📚', 'exp' => 500, 'coin' => 250],
-                    ['code' => 'master_botanist', 'cat' => 'exploration', 'icon' => '🔬', 'exp' => 1000, 'coin' => 500],
-                    ['code' => 'ranger_pioneer', 'cat' => 'exploration', 'icon' => '📡', 'exp' => 400, 'coin' => 200],
-                    ['code' => 'legendary_explorer', 'cat' => 'exploration', 'icon' => '🧭', 'exp' => 2000, 'coin' => 1000],
+                if ($isRanger) {
+                    $items = [
+                        // Category 1: Field Mapping
+                        ['code' => 'ranger_first_scan', 'cat' => 'exploration', 'icon' => '📷', 'exp' => 200, 'coin' => 100],
+                        ['code' => 'ranger_field_mapper', 'cat' => 'exploration', 'icon' => '🗺️', 'exp' => 400, 'coin' => 200],
+                        ['code' => 'ranger_master_mapper', 'cat' => 'exploration', 'icon' => '📡', 'exp' => 800, 'coin' => 400],
+                        ['code' => 'ranger_ar_specialist', 'cat' => 'exploration', 'icon' => '👁️', 'exp' => 500, 'coin' => 250],
+                        ['code' => 'ranger_survey_veteran', 'cat' => 'exploration', 'icon' => '🧭', 'exp' => 1200, 'coin' => 600],
+                        ['code' => 'ranger_legendary_mapper', 'cat' => 'exploration', 'icon' => '🌐', 'exp' => 2500, 'coin' => 1250],
 
-                    // Category 2: Garden
-                    ['code' => 'digital_farmer', 'cat' => 'garden', 'icon' => '🌻', 'exp' => 200, 'coin' => 100],
-                    ['code' => 'harvest_master', 'cat' => 'garden', 'icon' => '🌾', 'exp' => 600, 'coin' => 300],
-                    ['code' => 'hydrator_master', 'cat' => 'garden', 'icon' => '🚿', 'exp' => 300, 'coin' => 150],
-                    ['code' => 'super_fertilizer', 'cat' => 'garden', 'icon' => '🧪', 'exp' => 400, 'coin' => 200],
-                    ['code' => 'green_thumb', 'cat' => 'garden', 'icon' => '🏡', 'exp' => 800, 'coin' => 400],
-                    ['code' => 'agrarian_legend', 'cat' => 'garden', 'icon' => '🚜', 'exp' => 2500, 'coin' => 1250],
+                        // Category 2: Care & Education
+                        ['code' => 'ranger_care_guide', 'cat' => 'garden', 'icon' => '🌱', 'exp' => 300, 'coin' => 150],
+                        ['code' => 'ranger_botanical_educator', 'cat' => 'garden', 'icon' => '📖', 'exp' => 600, 'coin' => 300],
+                        ['code' => 'ranger_conservation_guardian', 'cat' => 'garden', 'icon' => '🛡️', 'exp' => 750, 'coin' => 375],
+                        ['code' => 'ranger_herbarium_curator', 'cat' => 'garden', 'icon' => '🔬', 'exp' => 1000, 'coin' => 500],
+                        ['code' => 'ranger_species_sentinel', 'cat' => 'garden', 'icon' => '🌳', 'exp' => 1500, 'coin' => 750],
+                        ['code' => 'ranger_master_taxonomist', 'cat' => 'garden', 'icon' => '🎓', 'exp' => 3000, 'coin' => 1500],
 
-                    // Category 3: Shop & Items
-                    ['code' => 'loyal_shopper', 'cat' => 'shop', 'icon' => '🛒', 'exp' => 350, 'coin' => 175],
-                    ['code' => 'rare_seed_collector', 'cat' => 'shop', 'icon' => '🌸', 'exp' => 500, 'coin' => 250],
-                    ['code' => 'botanical_investor', 'cat' => 'shop', 'icon' => '💰', 'exp' => 750, 'coin' => 375],
-                    ['code' => 'shop_tycoon', 'cat' => 'shop', 'icon' => '🏬', 'exp' => 1500, 'coin' => 750],
-                    ['code' => 'seed_hoarder', 'cat' => 'shop', 'icon' => '💎', 'exp' => 1200, 'coin' => 600],
-                    ['code' => 'equipment_master', 'cat' => 'shop', 'icon' => '🛠️', 'exp' => 3000, 'coin' => 1500],
+                        // Category 3: Field Logistics
+                        ['code' => 'ranger_logistics_master', 'cat' => 'shop', 'icon' => '📦', 'exp' => 350, 'coin' => 175],
+                        ['code' => 'ranger_seed_collector', 'cat' => 'shop', 'icon' => '🌸', 'exp' => 500, 'coin' => 250],
+                        ['code' => 'ranger_equipment_expert', 'cat' => 'shop', 'icon' => '🛠️', 'exp' => 750, 'coin' => 375],
+                        ['code' => 'ranger_supplies_master', 'cat' => 'shop', 'icon' => '🏬', 'exp' => 1500, 'coin' => 750],
+                        ['code' => 'ranger_seed_vault_keeper', 'cat' => 'shop', 'icon' => '💎', 'exp' => 1200, 'coin' => 600],
+                        ['code' => 'ranger_field_quartermaster', 'cat' => 'shop', 'icon' => '🚜', 'exp' => 3000, 'coin' => 1500],
 
-                    // Category 4: Social & Guardian Titles
-                    ['code' => 'alliance_guardian', 'cat' => 'social', 'icon' => '🤝', 'exp' => 350, 'coin' => 175],
-                    ['code' => 'alliance_veteran', 'cat' => 'social', 'icon' => '🛡️', 'exp' => 800, 'coin' => 400],
-                    ['code' => 'alliance_courier', 'cat' => 'social', 'icon' => '🎁', 'exp' => 450, 'coin' => 225],
-                    ['code' => 'social_philanthropist', 'cat' => 'social', 'icon' => '💖', 'exp' => 1000, 'coin' => 500],
-                    ['code' => 'ecosystem_master', 'cat' => 'social', 'icon' => '👑', 'exp' => 1200, 'coin' => 600],
-                    ['code' => 'ancient_legend', 'cat' => 'social', 'icon' => '🏆', 'exp' => 5000, 'coin' => 2500],
-                ];
+                        // Category 4: Ranger Prestige
+                        ['code' => 'ranger_alliance_leader', 'cat' => 'social', 'icon' => '🤝', 'exp' => 350, 'coin' => 175],
+                        ['code' => 'ranger_field_dispatcher', 'cat' => 'social', 'icon' => '🎁', 'exp' => 450, 'coin' => 225],
+                        ['code' => 'ranger_patrol_officer', 'cat' => 'social', 'icon' => '🎖️', 'exp' => 600, 'coin' => 300],
+                        ['code' => 'ranger_senior_officer', 'cat' => 'social', 'icon' => '🏅', 'exp' => 1200, 'coin' => 600],
+                        ['code' => 'ranger_master_synergy', 'cat' => 'social', 'icon' => '💖', 'exp' => 1000, 'coin' => 500],
+                        ['code' => 'ranger_supreme_sentinel', 'cat' => 'social', 'icon' => '👑', 'exp' => 5000, 'coin' => 2500],
+                    ];
+                } else {
+                    $items = [
+                        // Category 1: Exploration
+                        ['code' => 'flora_explorer', 'cat' => 'exploration', 'icon' => '🌱', 'exp' => 150, 'coin' => 75],
+                        ['code' => 'region_mapper', 'cat' => 'exploration', 'icon' => '🗺️', 'exp' => 300, 'coin' => 150],
+                        ['code' => 'seedex_expert', 'cat' => 'exploration', 'icon' => '📚', 'exp' => 500, 'coin' => 250],
+                        ['code' => 'master_botanist', 'cat' => 'exploration', 'icon' => '🔬', 'exp' => 1000, 'coin' => 500],
+                        ['code' => 'ranger_pioneer', 'cat' => 'exploration', 'icon' => '📡', 'exp' => 400, 'coin' => 200],
+                        ['code' => 'legendary_explorer', 'cat' => 'exploration', 'icon' => '🧭', 'exp' => 2000, 'coin' => 1000],
+
+                        // Category 2: Garden
+                        ['code' => 'digital_farmer', 'cat' => 'garden', 'icon' => '🌻', 'exp' => 200, 'coin' => 100],
+                        ['code' => 'harvest_master', 'cat' => 'garden', 'icon' => '🌾', 'exp' => 600, 'coin' => 300],
+                        ['code' => 'hydrator_master', 'cat' => 'garden', 'icon' => '🚿', 'exp' => 300, 'coin' => 150],
+                        ['code' => 'super_fertilizer', 'cat' => 'garden', 'icon' => '🧪', 'exp' => 400, 'coin' => 200],
+                        ['code' => 'green_thumb', 'cat' => 'garden', 'icon' => '🏡', 'exp' => 800, 'coin' => 400],
+                        ['code' => 'agrarian_legend', 'cat' => 'garden', 'icon' => '🚜', 'exp' => 2500, 'coin' => 1250],
+
+                        // Category 3: Shop & Items
+                        ['code' => 'loyal_shopper', 'cat' => 'shop', 'icon' => '🛒', 'exp' => 350, 'coin' => 175],
+                        ['code' => 'rare_seed_collector', 'cat' => 'shop', 'icon' => '🌸', 'exp' => 500, 'coin' => 250],
+                        ['code' => 'botanical_investor', 'cat' => 'shop', 'icon' => '💰', 'exp' => 750, 'coin' => 375],
+                        ['code' => 'shop_tycoon', 'cat' => 'shop', 'icon' => '🏬', 'exp' => 1500, 'coin' => 750],
+                        ['code' => 'seed_hoarder', 'cat' => 'shop', 'icon' => '💎', 'exp' => 1200, 'coin' => 600],
+                        ['code' => 'equipment_master', 'cat' => 'shop', 'icon' => '🛠️', 'exp' => 3000, 'coin' => 1500],
+
+                        // Category 4: Social & Guardian Titles
+                        ['code' => 'alliance_guardian', 'cat' => 'social', 'icon' => '🤝', 'exp' => 350, 'coin' => 175],
+                        ['code' => 'alliance_veteran', 'cat' => 'social', 'icon' => '🛡️', 'exp' => 800, 'coin' => 400],
+                        ['code' => 'alliance_courier', 'cat' => 'social', 'icon' => '🎁', 'exp' => 450, 'coin' => 225],
+                        ['code' => 'social_philanthropist', 'cat' => 'social', 'icon' => '💖', 'exp' => 1000, 'coin' => 500],
+                        ['code' => 'ecosystem_master', 'cat' => 'social', 'icon' => '👑', 'exp' => 1200, 'coin' => 600],
+                        ['code' => 'ancient_legend', 'cat' => 'social', 'icon' => '🏆', 'exp' => 5000, 'coin' => 2500],
+                    ];
+                }
             @endphp
 
             @foreach($items as $item)

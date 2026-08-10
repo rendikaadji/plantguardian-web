@@ -9,6 +9,17 @@ return [
     'completed' => 'Completed',
     'live_update' => '24 Total Achievements',
 
+    'ranger_badge_header' => 'BADGE GALLERY & FIELD RANGER PRESTIGE',
+    'ranger_heading' => 'Ranger Achievements & Missions',
+    'ranger_subtitle' => 'Complete field survey missions, taxonomy documentation, flora care education, and Ranger alliance leadership!',
+    'ranger_tabs' => [
+        'all' => '🌟 All (24)',
+        'exploration' => '🗺️ Field Mapping (6)',
+        'garden' => '🌱 Care & Education (6)',
+        'shop' => '🛠️ Field Logistics (6)',
+        'social' => '🏅 Ranger Prestige (6)',
+    ],
+
     'tabs' => [
         'all' => '🌟 All (24)',
         'exploration' => '🗺️ Map Exploration (6)',
@@ -30,7 +41,108 @@ return [
     'claim_success' => 'Congratulations! Successfully claimed +:exp EXP & 🪙 :coin NC!',
 
     'cards' => [
-        // Category 1: Exploration
+        // Ranger Achievements
+        'ranger_first_scan' => [
+            'title' => 'AR Field Scan Pioneer',
+            'desc' => 'Perform your first plant specimen mapping or scan using the Ranger AR Camera.',
+        ],
+        'ranger_field_mapper' => [
+            'title' => 'Field Area Mapper',
+            'desc' => 'Map and add 5 new tree/flora locations to the radar map.',
+        ],
+        'ranger_master_mapper' => [
+            'title' => 'Master Field Mapper',
+            'desc' => 'Add 15 verified plant specimen locations to the field map.',
+        ],
+        'ranger_ar_specialist' => [
+            'title' => 'AR Computer Vision Specialist',
+            'desc' => 'Perform 10 flora specimen scans using AR artificial intelligence.',
+        ],
+        'ranger_survey_veteran' => [
+            'title' => 'Field Botanical Survey Veteran',
+            'desc' => 'Map a total of 25 flora discovery locations across conservation zones.',
+        ],
+        'ranger_legendary_mapper' => [
+            'title' => 'Forest Ecosystem Mapping Legend',
+            'desc' => 'Complete 50 plant location mapping activities on the field map.',
+        ],
+
+        'ranger_care_guide' => [
+            'title' => 'Tree Care Guide Specialist',
+            'desc' => 'Write and update tree care instructions for 3 plant specimens.',
+        ],
+        'ranger_botanical_educator' => [
+            'title' => 'Field Botanical Educator',
+            'desc' => 'Document complete educational descriptions for 10 flora species.',
+        ],
+        'ranger_conservation_guardian' => [
+            'title' => 'Flora Conservation Guardian',
+            'desc' => 'Map 5 flora species with Vulnerable, Endangered, or Protected status.',
+        ],
+        'ranger_herbarium_curator' => [
+            'title' => 'Field Herbarium Curator',
+            'desc' => 'Complete data for 15 unique flora specimens in the Seedex Herbarium.',
+        ],
+        'ranger_species_sentinel' => [
+            'title' => 'Biodiversity Sentinel',
+            'desc' => 'Document 25 high-quality flora specimen discoveries in the field.',
+        ],
+        'ranger_master_taxonomist' => [
+            'title' => 'Botanical Taxonomy Master',
+            'desc' => 'Complete taxonomy and care data for 40 plant specimens.',
+        ],
+
+        'ranger_logistics_master' => [
+            'title' => 'Field Logistics Manager',
+            'desc' => 'Own 10 field gear and conservation seed items in your inventory.',
+        ],
+        'ranger_seed_collector' => [
+            'title' => 'Germplasm Collector',
+            'desc' => 'Collect 5 rare flora seeds for field re-planting and nursery care.',
+        ],
+        'ranger_equipment_expert' => [
+            'title' => 'Field Tool Specialist',
+            'desc' => 'Collect 25 plant care and fertilization tools in your inventory.',
+        ],
+        'ranger_supplies_master' => [
+            'title' => 'Field Supply Master',
+            'desc' => 'Manage 50 flora conservation logistics items in storage vault.',
+        ],
+        'ranger_seed_vault_keeper' => [
+            'title' => 'Conservation Seed Bank Keeper',
+            'desc' => 'Store 15 rare and premium seed stocks in logistics storage.',
+        ],
+        'ranger_field_quartermaster' => [
+            'title' => 'Chief Field Quartermaster',
+            'desc' => 'Manage a total of 100 flora conservation supply items in inventory.',
+        ],
+
+        'ranger_alliance_leader' => [
+            'title' => 'Ranger Alliance Leader',
+            'desc' => 'Connect 3 fellow Rangers/Explorers into your alliance network.',
+        ],
+        'ranger_field_dispatcher' => [
+            'title' => 'Field Logistics Dispatcher',
+            'desc' => 'Assist and send 5 logistics supplies to alliance members.',
+        ],
+        'ranger_patrol_officer' => [
+            'title' => 'Field Patrol Officer',
+            'desc' => 'Level up your character to reach Ranger Level 5.',
+        ],
+        'ranger_senior_officer' => [
+            'title' => 'Senior Field Ranger',
+            'desc' => 'Reach Ranger Level 10 through field mapping and botanical contributions.',
+        ],
+        'ranger_master_synergy' => [
+            'title' => 'Ranger Ecosystem Synergy',
+            'desc' => 'Connect 10 fellow Rangers and Explorers in your alliance network.',
+        ],
+        'ranger_supreme_sentinel' => [
+            'title' => 'Supreme Conservation Sentinel',
+            'desc' => 'Reach Ranger Level 25 and lead ancient forest ecosystem conservation.',
+        ],
+
+        // Category 1: Exploration (Viewer)
         'flora_explorer' => [
             'title' => 'Flora Explorer',
             'desc' => 'Discover & claim 5 plant species on the Exploration Radar Map.',

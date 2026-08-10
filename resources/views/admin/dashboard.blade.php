@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Admin Dashboard & Control Panel — Plant Guardian')
+@section('title', __('admin.dashboard_title') . ' — Plant Guardian')
 
 @section('content')
 <div class="space-y-8 max-w-7xl mx-auto py-2">
@@ -10,22 +10,22 @@
         <div class="relative z-10 space-y-3">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFD700]/20 text-[#FFD700] text-xs font-baloo font-bold backdrop-blur-md border border-[#FFD700]/30">
                 <span>👑</span>
-                <span>SYSTEM CONTROL PANEL & MONITORING</span>
+                <span>{{ __('admin.system_control_title') }}</span>
             </div>
 
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 class="font-baloo font-extrabold text-3xl sm:text-4xl text-[#F5F4DA] tracking-tight">
-                        Dashboard Administrator
+                        {{ __('admin.dashboard_title') }}
                     </h1>
                     <p class="text-xs sm:text-sm text-[#F5F4DA]/80 font-nunito max-w-2xl leading-relaxed mt-1">
-                        Pusat kendali utama untuk memantau aktivitas platform, mengelola statistik pengguna (Viewer & Ranger), meninjau temuan flora, serta mengontrol peran akun secara terpusat.
+                        {{ __('admin.dashboard_subtitle') }}
                     </p>
                 </div>
 
                 <div class="flex items-center gap-3">
                     <span class="px-3.5 py-1.5 rounded-full bg-[#FBFAF0]/10 text-[#F5F4DA] font-baloo font-bold text-xs border border-[#F5F4DA]/20">
-                        Admin: {{ auth()->user()->name }}
+                        {{ __('admin.admin_label') }}: {{ auth()->user()->name }}
                     </span>
                 </div>
             </div>
@@ -47,7 +47,7 @@
 
         <!-- Metric 1: Total Users -->
         <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#1F3D20]">
-            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">Total User</span>
+            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('admin.total_users') }}</span>
             <div class="flex items-baseline justify-between">
                 <span class="font-baloo font-extrabold text-2xl text-[#1F3D20]">{{ number_format($stats['total_users']) }}</span>
                 <span class="text-xs text-[#1F3D20] font-bold">👤</span>
@@ -56,7 +56,7 @@
 
         <!-- Metric 2: Total Viewers -->
         <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#4C8C4A]">
-            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">Viewer</span>
+            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('admin.viewers') }}</span>
             <div class="flex items-baseline justify-between">
                 <span class="font-baloo font-extrabold text-2xl text-[#4C8C4A]">{{ number_format($stats['total_viewers']) }}</span>
                 <span class="text-xs text-[#4C8C4A] font-bold">🎒</span>
@@ -65,7 +65,7 @@
 
         <!-- Metric 3: Total Rangers -->
         <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#8B6A4C]">
-            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">Ranger</span>
+            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('admin.rangers') }}</span>
             <div class="flex items-baseline justify-between">
                 <span class="font-baloo font-extrabold text-2xl text-[#8B6A4C]">{{ number_format($stats['total_rangers']) }}</span>
                 <span class="text-xs text-[#8B6A4C] font-bold">🌿</span>
@@ -74,29 +74,29 @@
 
         <!-- Metric 4: Sightings & Verifications -->
         <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#D96C63]">
-            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">Temuan Peta</span>
+            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('admin.sightings') }}</span>
             <div class="flex items-baseline justify-between">
                 <span class="font-baloo font-extrabold text-2xl text-[#D96C63]">{{ number_format($stats['total_sightings']) }}</span>
                 <span class="text-[10px] font-baloo font-extrabold px-1.5 py-0.5 rounded-full bg-[#D96C63]/15 text-[#D96C63]">
-                    {{ $stats['pending_verifications'] }} Verifikasi
+                    {{ $stats['pending_verifications'] }} {{ __('admin.verifications') }}
                 </span>
             </div>
         </div>
 
         <!-- Metric 5: Pending Sighting Reports -->
         <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#C0392B]">
-            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">Laporan Peta</span>
+            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('admin.sighting_reports') }}</span>
             <div class="flex items-baseline justify-between">
                 <span class="font-baloo font-extrabold text-2xl text-[#C0392B]">{{ number_format($stats['pending_reports']) }}</span>
                 <span class="text-[10px] font-baloo font-extrabold px-1.5 py-0.5 rounded-full bg-[#C0392B]/15 text-[#C0392B]">
-                    Pending
+                    {{ __('admin.pending') }}
                 </span>
             </div>
         </div>
 
         <!-- Metric 6: Total Species Catalog -->
         <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#27AE60]">
-            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">Katalog Spesies</span>
+            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('admin.species_catalog') }}</span>
             <div class="flex items-baseline justify-between">
                 <span class="font-baloo font-extrabold text-2xl text-[#27AE60]">{{ number_format($stats['total_species_catalog']) }}</span>
                 <span class="text-xs text-[#27AE60] font-bold">📚</span>
@@ -105,7 +105,7 @@
 
         <!-- Metric 7: Total EXP Issued -->
         <div class="card-gg p-4 flex flex-col justify-between space-y-2 bg-[#FBFAF0] border-l-4 border-l-[#7D5BA6]">
-            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">Total EXP System</span>
+            <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('admin.total_exp') }}</span>
             <div class="flex items-baseline justify-between">
                 <span class="font-baloo font-extrabold text-xl text-[#7D5BA6]">{{ number_format($stats['total_exp_issued']) }}</span>
                 <span class="text-xs text-[#7D5BA6] font-bold">⭐</span>
@@ -120,19 +120,19 @@
             <div>
                 <h2 class="font-baloo font-extrabold text-xl text-[#1F3D20] flex items-center gap-2">
                     <span>👥</span>
-                    <span>Manajemen & Kontrol Pengguna</span>
+                    <span>{{ __('admin.user_management_title') }}</span>
                 </h2>
-                <p class="font-nunito text-xs text-[#6B6B55]">Kelola daftar akun terdaftar, tinjau level/saldo, dan ubah role pengguna.</p>
+                <p class="font-nunito text-xs text-[#6B6B55]">{{ __('admin.user_management_subtitle') }}</p>
             </div>
 
             <!-- Search Form -->
             <form method="GET" action="{{ route('admin.dashboard') }}" class="flex items-center gap-2">
-                <input type="text" name="search" value="{{ $search }}" placeholder="Cari nama / email / role..." class="px-4 py-2 rounded-xl border border-[#1F3D20]/20 bg-white font-nunito text-xs text-[#1F3D20] focus:outline-none focus:border-[#1F3D20] w-64 shadow-xs" />
+                <input type="text" name="search" value="{{ $search }}" placeholder="{{ __('admin.search_placeholder') }}" class="px-4 py-2 rounded-xl border border-[#1F3D20]/20 bg-white font-nunito text-xs text-[#1F3D20] focus:outline-none focus:border-[#1F3D20] w-64 shadow-xs" />
                 <button type="submit" class="px-4 py-2 rounded-xl bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs hover:bg-[#2D4A2E] transition-colors cursor-pointer">
-                    Cari
+                    {{ __('admin.search_btn') }}
                 </button>
                 @if($search)
-                    <a href="{{ route('admin.dashboard') }}" class="px-3 py-2 rounded-xl bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs hover:bg-[#1F3D20]/10">Reset</a>
+                    <a href="{{ route('admin.dashboard') }}" class="px-3 py-2 rounded-xl bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs hover:bg-[#1F3D20]/10">{{ __('admin.reset_btn') }}</a>
                 @endif
             </form>
         </div>
@@ -142,12 +142,12 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs tracking-wider">
-                        <th class="py-3.5 px-4">User</th>
-                        <th class="py-3.5 px-4">Role Saat Ini</th>
-                        <th class="py-3.5 px-4 text-center">Level / EXP</th>
-                        <th class="py-3.5 px-4 text-center">Coin (NC)</th>
-                        <th class="py-3.5 px-4">Terdaftar</th>
-                        <th class="py-3.5 px-4 text-right">Aksi Kontrol Role</th>
+                        <th class="py-3.5 px-4">{{ __('admin.col_user') }}</th>
+                        <th class="py-3.5 px-4">{{ __('admin.col_current_role') }}</th>
+                        <th class="py-3.5 px-4 text-center">{{ __('admin.col_level_exp') }}</th>
+                        <th class="py-3.5 px-4 text-center">{{ __('admin.col_coin') }}</th>
+                        <th class="py-3.5 px-4">{{ __('admin.col_joined') }}</th>
+                        <th class="py-3.5 px-4 text-right">{{ __('admin.col_role_action') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[#1F3D20]/10 font-nunito text-xs bg-white">
@@ -203,7 +203,7 @@
                             <td class="py-3.5 px-4 text-right">
                                 <div class="inline-flex items-center gap-2">
                                     <button type="button" onclick='openUserDetailModal(@json($userItem))' class="px-2.5 py-1 rounded-lg bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors cursor-pointer shadow-xs">
-                                        🔍 Detail
+                                        {{ __('admin.detail_btn') }}
                                     </button>
                                     <form method="POST" action="{{ route('admin.users.update-role', $userItem->id) }}" class="inline-flex items-center gap-1.5">
                                         @csrf
@@ -213,7 +213,7 @@
                                             <option value="admin" {{ $userItem->role === 'admin' ? 'selected' : '' }}>Admin</option>
                                         </select>
                                         <button type="submit" class="px-3 py-1 rounded-lg bg-[#1F3D20] hover:bg-[#2D4A2E] text-[#F5F4DA] font-baloo font-bold text-xs transition-colors cursor-pointer shadow-xs">
-                                            Simpan
+                                            {{ __('admin.save_btn') }}
                                         </button>
                                     </form>
                                 </div>
@@ -222,7 +222,7 @@
                     @empty
                         <tr>
                             <td colspan="6" class="py-8 text-center text-[#6B6B55] font-baloo font-bold">
-                                Tidak ada pengguna yang ditemukan.
+                                {{ __('admin.no_users_found') }}
                             </td>
                         </tr>
                     @endforelse
@@ -243,15 +243,15 @@
                 <div class="flex items-center gap-2">
                     <h2 class="font-baloo font-extrabold text-xl text-[#1F3D20] flex items-center gap-2">
                         <span>🚩</span>
-                        <span>Moderasi Laporan Temuan Peta</span>
+                        <span>{{ __('admin.reports_title') }}</span>
                     </h2>
                     @if(count($reports) > 0)
                         <span class="px-2.5 py-0.5 rounded-full bg-[#C0392B] text-white font-baloo font-extrabold text-xs shadow-xs animate-pulse">
-                            {{ count($reports) }} Laporan Pending
+                            {{ __('admin.pending_reports_badge', ['count' => count($reports)]) }}
                         </span>
                     @endif
                 </div>
-                <p class="font-nunito text-xs text-[#6B6B55]">Laporan dari pengguna mengenai keaslian, keberadaan, atau perubahan tumbuhan di lokasi nyata.</p>
+                <p class="font-nunito text-xs text-[#6B6B55]">{{ __('admin.reports_subtitle') }}</p>
             </div>
         </div>
 
@@ -260,12 +260,12 @@
                 <table class="w-full text-left border-collapse">
                     <thead>
                         <tr class="bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs tracking-wider">
-                            <th class="py-3.5 px-4">Tumbuhan Dilaporkan</th>
-                            <th class="py-3.5 px-4">Pelapor</th>
-                            <th class="py-3.5 px-4">Alasan Pelaporan</th>
-                            <th class="py-3.5 px-4">Catatan Pelapor</th>
-                            <th class="py-3.5 px-4">Waktu Report</th>
-                            <th class="py-3.5 px-4 text-right">Aksi Admin</th>
+                            <th class="py-3.5 px-4">{{ __('admin.col_reported_plant') }}</th>
+                            <th class="py-3.5 px-4">{{ __('admin.col_reporter') }}</th>
+                            <th class="py-3.5 px-4">{{ __('admin.col_report_reason') }}</th>
+                            <th class="py-3.5 px-4">{{ __('admin.col_report_notes') }}</th>
+                            <th class="py-3.5 px-4">{{ __('admin.col_report_time') }}</th>
+                            <th class="py-3.5 px-4 text-right">{{ __('admin.col_admin_action') }}</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-[#1F3D20]/10 font-nunito text-xs bg-white">
@@ -289,7 +289,7 @@
                                             </div>
                                         </div>
                                     @else
-                                        <span class="text-gray-400 italic">Marker Sudah Dihapus</span>
+                                        <span class="text-gray-400 italic">{{ __('admin.deleted_marker_label') }}</span>
                                     @endif
                                 </td>
 
@@ -307,10 +307,10 @@
                                 <td class="py-3.5 px-4">
                                     @php
                                         $reasonBadge = match($report->reason) {
-                                            'fake_specimen' => ['bg-red-100 text-red-700 border-red-300', '🚫 Tumbuhan Palsu / Hoaks'],
-                                            'plant_missing_or_dead' => ['bg-amber-100 text-amber-800 border-amber-300', '🗑️ Tumbuhan Mati / Hilang'],
-                                            'species_mismatch_or_replaced' => ['bg-purple-100 text-purple-700 border-purple-300', '🔄 Tumbuhan Diganti / Jenis Berbeda'],
-                                            default => ['bg-gray-100 text-gray-700 border-gray-300', '💬 Alasan Lainnya'],
+                                            'fake_specimen' => ['bg-red-100 text-red-700 border-red-300', __('map.reason_fake_specimen')],
+                                            'plant_missing_or_dead' => ['bg-amber-100 text-amber-800 border-amber-300', __('map.reason_plant_missing_or_dead')],
+                                            'species_mismatch_or_replaced' => ['bg-purple-100 text-purple-700 border-purple-300', __('map.reason_species_mismatch_or_replaced')],
+                                            default => ['bg-gray-100 text-gray-700 border-gray-300', __('map.reason_other')],
                                         };
                                     @endphp
                                     <span class="inline-block px-2.5 py-1 rounded-full text-[10.5px] font-baloo font-bold border {{ $reasonBadge[0] }}">
@@ -334,11 +334,11 @@
                                 <td class="py-3.5 px-4 text-right">
                                     <div class="flex items-center justify-end gap-2">
                                         <!-- Action 1: Delete Sighting Marker -->
-                                        <form method="POST" action="{{ route('admin.reports.resolve', $report->id) }}" onsubmit="return confirm('Apakah Anda yakin ingin MENGHAPUS marker temuan tumbuhan ini dari peta?');">
+                                        <form method="POST" action="{{ route('admin.reports.resolve', $report->id) }}" onsubmit="return confirm('{{ __('admin.delete_confirm') }}');">
                                             @csrf
                                             <input type="hidden" name="action" value="delete_sighting">
                                             <button type="submit" class="px-3 py-1.5 rounded-full bg-[#C0392B] text-white font-baloo font-bold text-xs hover:bg-red-700 transition-colors shadow-2xs cursor-pointer">
-                                                🗑️ Hapus Marker Peta
+                                                {{ __('admin.action_delete_sighting') }}
                                             </button>
                                         </form>
 
@@ -347,7 +347,7 @@
                                             @csrf
                                             <input type="hidden" name="action" value="dismiss">
                                             <button type="submit" class="px-3 py-1.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs hover:bg-[#1F3D20]/15 transition-colors cursor-pointer">
-                                                🛑 Abaikan Laporan
+                                                {{ __('admin.action_dismiss_report') }}
                                             </button>
                                         </form>
                                     </div>
@@ -359,7 +359,7 @@
             </div>
         @else
             <div class="text-center py-6 text-[#6B6B55] font-baloo font-bold text-xs bg-white rounded-2xl border border-[#1F3D20]/10 p-4">
-                ✨ Tidak ada laporan temuan tumbuhan yang pending. Semua marker di lokasi dalam keadaan valid.
+                {{ __('admin.no_pending_reports') }}
             </div>
         @endif
     </div>
@@ -370,12 +370,12 @@
             <div>
                 <h2 class="font-baloo font-extrabold text-xl text-[#1F3D20] flex items-center gap-2">
                     <span>📍</span>
-                    <span>Monitoring Aktivitas Pemindaian & Verifikasi Temuan</span>
+                    <span>{{ __('admin.monitoring_title') }}</span>
                 </h2>
-                <p class="font-nunito text-xs text-[#6B6B55]">Log temuan spesies terbaru dari Ranger & Viewer seluruh platform.</p>
+                <p class="font-nunito text-xs text-[#6B6B55]">{{ __('admin.monitoring_subtitle') }}</p>
             </div>
             <span class="px-3 py-1 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-extrabold text-xs">
-                Real-Time Stream Log
+                {{ __('admin.realtime_streaming') }}
             </span>
         </div>
 
@@ -386,8 +386,15 @@
                         <span class="text-[10px] font-baloo font-extrabold px-2 py-0.5 rounded-full bg-[#1F3D20] text-[#F5F4DA]">
                             {{ $sighting->species ? $sighting->species->species_code : 'SPESIES' }}
                         </span>
+                        @php
+                            $statusLabel = match($sighting->verification_status) {
+                                'verified' => __('admin.status_verified'),
+                                'rejected' => __('admin.status_rejected'),
+                                default => __('admin.status_pending'),
+                            };
+                        @endphp
                         <span class="text-[10px] font-baloo font-extrabold px-2 py-0.5 rounded-full {{ $sighting->verification_status === 'verified' ? 'bg-[#27AE60]/20 text-[#27AE60]' : ($sighting->verification_status === 'rejected' ? 'bg-red-100 text-red-600' : 'bg-amber-100 text-amber-700') }}">
-                            {{ strtoupper($sighting->verification_status) }}
+                            {{ $statusLabel }}
                         </span>
                     </div>
 
@@ -405,7 +412,7 @@
                                 {{ $sighting->species ? $sighting->species->scientific_name : '-' }}
                             </p>
                             <p class="text-[10px] text-[#6B6B55] mt-0.5">
-                                Dipindai: {{ $sighting->ranger ? $sighting->ranger->name : 'System' }}
+                                {{ __('admin.scanned_by') }}: {{ $sighting->ranger ? $sighting->ranger->name : 'System' }}
                             </p>
                         </div>
                     </div>
@@ -417,7 +424,7 @@
                 </div>
             @empty
                 <div class="col-span-full text-center py-8 text-[#6B6B55] font-baloo font-bold text-sm">
-                    Belum ada log temuan spesies tercatat.
+                    {{ __('admin.no_sightings_log') }}
                 </div>
             @endforelse
         </div>

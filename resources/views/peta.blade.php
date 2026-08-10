@@ -296,7 +296,8 @@
             const uploaderEl = document.querySelector('#view-uploader-badge');
             if (uploaderEl) {
                 const uploaderName = sighting.ranger?.name || sighting.ranger_name || 'Ranger';
-                uploaderEl.textContent = `👤 Pengunggah: Ranger ${uploaderName}`;
+                const uploaderLabelText = t.uploader_label || 'Ranger Pengunggah';
+                uploaderEl.textContent = `👤 ${uploaderLabelText}: ${uploaderName}`;
             }
 
             const statusEl = document.querySelector('#view-conservation-status');

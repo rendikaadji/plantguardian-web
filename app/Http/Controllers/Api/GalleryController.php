@@ -20,7 +20,7 @@ class GalleryController extends Controller
         $user = $request->user();
 
         if ($user->role === 'ranger') {
-            $sightings = PlantSighting::with('plantSpecies')
+            $sightings = PlantSighting::with(['plantSpecies', 'ranger:id,name'])
                 ->where('ranger_id', $user->id)
                 ->latest()
                 ->get();
@@ -32,7 +32,7 @@ class GalleryController extends Controller
         }
 
         // Default for Viewer: return user's catches from plant_discoveries
-        $discoveries = PlantDiscovery::with('plantSighting.plantSpecies')
+        $discoveries = PlantDiscovery::with(['plantSighting.plantSpecies', 'plantSighting.ranger:id,name'])
             ->where('user_id', $user->id)
             ->latest()
             ->get();
@@ -54,7 +54,7 @@ class GalleryController extends Controller
         $user = $request->user();
 
         if ($user->role === 'ranger') {
-            $sighting = PlantSighting::with('plantSpecies')
+            $sighting = PlantSighting::with(['plantSpecies', 'ranger:id,name'])
                 ->where('ranger_id', $user->id)
                 ->where('id', $id)
                 ->firstOrFail();

@@ -384,6 +384,9 @@ export default class MapManager {
     const photoUrl = sighting.photo_url || (sighting.species && sighting.species.reference_image_url) || (sighting.photo_path ? `/storage/${sighting.photo_path.replace(/^\//, '')}` : '');
     const isDiscovered = sighting.sudah_ditemukan;
 
+    const uploaderName = sighting.ranger?.name || sighting.ranger_name || 'Ranger';
+    const uploaderLabelText = t.uploader_label || 'Ranger Pengunggah';
+
     const isRangerOrAdmin = ['ranger', 'admin'].includes(this.userRole);
     const rawMystery = t.mystery_plant || 'Tanaman Misterius';
     const mysteryPlantName = rawMystery.replace(/^❓\s*/, '');
@@ -453,14 +456,19 @@ export default class MapManager {
       // Viewer Popup with "Temukan!" action (Hides real species name until claimed)
       popupHtml = `
         <div style="font-family:Nunito,sans-serif;max-width:220px;color:#2A2A22;padding:4px;box-sizing:border-box;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-            <span style="background-color:#E2E1C4;color:#1F3D20;font-family:Baloo 2;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;">${isDiscovered ? speciesCode : 'MYSTERY'}</span>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:4px;">
+            <span style="background-color:#E2E1C4;color:#1F3D20;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;">${isDiscovered ? speciesCode : 'MYSTERY'}</span>
             <span style="font-size:10px;color:#6B6B55;font-weight:bold;">${isDiscovered ? '✓ ' + verifiedText : unclaimedBadge}</span>
           </div>
 
-          <h4 style="font-family:Baloo 2,sans-serif;font-weight:800;font-size:15px;margin:2px 0 6px 0;color:#1F3D20;line-height:1.2;word-break:break-word;">
+          <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:15px;margin:2px 0 2px 0;color:#1F3D20;line-height:1.2;word-break:break-word;">
             ${isDiscovered ? speciesName : '❓ ' + mysteryPlantName}
           </h4>
+
+          <div style="font-size:10.5px;color:#6B6B55;margin:0 0 6px 0;line-height:1.3;display:flex;align-items:center;gap:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${uploaderLabelText}: ${uploaderName}">
+            <span style="font-size:11px;">👤</span>
+            <span style="font-weight:bold;color:#8B6A4C;">${uploaderLabelText}: ${uploaderName}</span>
+          </div>
 
           ${isDiscovered 
             ? `<div style="width:100%;height:110px;border-radius:12px;overflow:hidden;margin-bottom:8px;background-color:#1F3D20;border:1.5px solid rgba(31,61,32,0.15);">

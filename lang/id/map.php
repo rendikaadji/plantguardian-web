@@ -64,9 +64,9 @@ return [
     'status_label' => 'Status',
 
     // Auto-Follow & Claim Radar
-    'auto_follow_on' => 'Auto-Follow Aktif',
-    'auto_follow_off' => 'Aktifkan Auto-Follow',
-    'recenter_gps' => 'Aktifkan Auto-Follow',
+    'auto_follow_on' => 'Pelacakan Otomatis Aktif',
+    'auto_follow_off' => 'Aktifkan Pelacakan Otomatis',
+    'recenter_gps' => 'Aktifkan Pelacakan Otomatis',
     'claim_radius_title' => '🎯 Zona Jangkauan Klaim Spesies (50 Meter)',
     'distance_too_far' => '📍 Jarak: :dist m (Maks 50m)',
     'distance_too_far_btn' => '🔒 Terlalu Jauh (:dist m > 50m)',

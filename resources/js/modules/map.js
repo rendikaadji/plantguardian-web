@@ -153,7 +153,7 @@ export default class MapManager {
     const t = window.translations || {};
 
     if (labelEl) {
-      labelEl.textContent = enabled ? (t.auto_follow_on || 'Auto-Follow On') : (t.auto_follow_off || t.recenter_gps || 'Enable Auto-Follow');
+      labelEl.textContent = enabled ? (t.auto_follow_on || 'Pelacakan Otomatis Aktif') : (t.auto_follow_off || t.recenter_gps || 'Aktifkan Pelacakan Otomatis');
     }
     if (btnEl) {
       if (enabled) {

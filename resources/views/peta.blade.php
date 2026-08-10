@@ -274,6 +274,7 @@
 @push('scripts')
 <script>
     window.USER_ROLE = "{{ auth()->user()->role ?? 'viewer' }}";
+    window.CURRENT_USER_ID = Number("{{ auth()->id() ?? 0 }}");
 
     window.openViewSightingModal = async function(sightingId) {
         const viewModal = document.querySelector('#view-sighting-modal');
@@ -572,16 +573,16 @@
             const res = await window.apiClient.get(`/ranger/sightings/${sightingId}`);
             const sighting = res.data?.data || res.data || res;
 
-            document.querySelector('#edit-sighting-id').value = sighting.id;
-
             const currentUserId = Number("{{ auth()->id() }}");
             const currentUserRole = "{{ auth()->user()->role }}";
             const canModify = currentUserRole === 'admin' || sighting.ranger_id === currentUserId;
 
-            const deleteBtn = document.querySelector('#delete-sighting-btn');
-            if (deleteBtn) {
-                deleteBtn.style.display = canModify ? 'inline-flex' : 'none';
+            if (!canModify) {
+                alert('Anda hanya dapat mengedit temuan tumbuhan yang Anda buat sendiri. Hanya Admin yang dapat mengedit milik Ranger lain.');
+                return;
             }
+
+            document.querySelector('#edit-sighting-id').value = sighting.id;
 
             const editImgEl = document.querySelector('#edit-sighting-img');
             if (editImgEl) {

@@ -11,7 +11,7 @@ class SightingUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user() && $this->user()->role === 'ranger';
+        return $this->user() && in_array($this->user()->role, ['ranger', 'admin']);
     }
 
     /**

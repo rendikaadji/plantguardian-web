@@ -61,6 +61,11 @@
                 const lat = item.latitude ? parseFloat(item.latitude).toFixed(5) : '-';
                 const lng = item.longitude ? parseFloat(item.longitude).toFixed(5) : '-';
 
+                const uploaderName = item.ranger_name || (item.ranger && item.ranger.name) || 'Ranger';
+                const currentUserId = Number("{{ auth()->id() ?? 0 }}");
+                const currentUserRole = "{{ auth()->user()->role ?? 'viewer' }}";
+                const isOwnerOrAdmin = currentUserRole === 'admin' || (currentUserId && item.ranger_id == currentUserId);
+
                 return `
                     <div class="p-4 border border-[#5C574C]/30 rounded-xs flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-xs" style="background-color: #EDE6D3 !important;">
                         <div class="flex items-start gap-4">
@@ -78,7 +83,8 @@
                                     </span>
                                 </div>
                                 <p class="text-xs italic text-[#5C574C]">${scientificName}</p>
-                                <div class="text-[11px] text-[#5C574C] font-mono-code flex items-center gap-3 pt-1" style="font-family: 'IBM Plex Mono', monospace;">
+                                <div class="text-[11px] text-[#5C574C] font-mono-code flex flex-wrap items-center gap-3 pt-1" style="font-family: 'IBM Plex Mono', monospace;">
+                                    <span>👤 Pengunggah: <strong>${uploaderName}</strong></span>
                                     <span>📍 ${lat}, ${lng}</span>
                                     <span>🕒 ${dateStr}</span>
                                 </div>
@@ -86,12 +92,17 @@
                         </div>
 
                         <div class="flex items-center gap-2 self-end md:self-auto">
-                            <a href="/ranger/sightings/${item.id}/edit" class="px-3 py-1.5 border border-[#8B6A4C] text-[#8B6A4C] font-mono-code text-xs font-bold rounded-xs hover:bg-[#8B6A4C] hover:text-[#EDE6D3] transition-all" style="font-family: 'IBM Plex Mono', monospace;">
-                                ✏️ EDIT SPESIES / DATA
-                            </a>
-                            <button data-delete-id="${item.id}" class="delete-btn px-3 py-1.5 border border-red-700 text-red-700 font-mono-code text-xs font-bold rounded-xs hover:bg-red-700 hover:text-white transition-all cursor-pointer" style="font-family: 'IBM Plex Mono', monospace;">
-                                🗑️ HAPUS
-                            </button>
+                            ${isOwnerOrAdmin 
+                                ? `<a href="/ranger/sightings/${item.id}/edit" class="px-3 py-1.5 border border-[#8B6A4C] text-[#8B6A4C] font-mono-code text-xs font-bold rounded-xs hover:bg-[#8B6A4C] hover:text-[#EDE6D3] transition-all" style="font-family: 'IBM Plex Mono', monospace;">
+                                    ✏️ EDIT SPESIES / DATA
+                                   </a>
+                                   <button data-delete-id="${item.id}" class="delete-btn px-3 py-1.5 border border-red-700 text-red-700 font-mono-code text-xs font-bold rounded-xs hover:bg-red-700 hover:text-white transition-all cursor-pointer" style="font-family: 'IBM Plex Mono', monospace;">
+                                    🗑️ HAPUS
+                                   </button>`
+                                : `<span class="px-3 py-1.5 border border-[#5C574C]/30 text-[#5C574C] font-mono-code text-xs rounded-xs" style="font-family: 'IBM Plex Mono', monospace;">
+                                    🔒 Hak Edit: Pembuat / Admin
+                                   </span>`
+                            }
                         </div>
                     </div>
                 `;

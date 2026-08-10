@@ -36,6 +36,13 @@ class PlantSightingResource extends JsonResource
                     'reference_image_url' => $refUrl,
                 ];
             }),
+            'ranger_name' => $this->ranger?->name ?? ($this->relationLoaded('ranger') ? $this->ranger?->name : null),
+            'ranger' => $this->whenLoaded('ranger', function () {
+                return [
+                    'id' => $this->ranger->id,
+                    'name' => $this->ranger->name,
+                ];
+            }),
             'photo_url' => $this->resolvePhotoUrl(),
             'photo_path' => $this->photo_path,
             'confidence_score' => $this->confidence_score,

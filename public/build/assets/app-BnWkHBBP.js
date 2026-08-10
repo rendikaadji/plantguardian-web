@@ -454,15 +454,27 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
 
           ${a?`<button onclick="window.openViewSightingModal(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;gap:4px;"><span>📖</span> <span>${l} — ${_}</span></button>`:h?`<button id="discover-btn-${e.id}" onclick="window.discoverPlantFromMap(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:Baloo 2;font-weight:bold;font-size:12px;padding:7px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.2);">${c}</button>`:`<button disabled style="width:100%;background-color:#9CA3AF;color:#FFFFFF;font-family:Baloo 2;font-weight:bold;font-size:11px;padding:7px 0;border-radius:9999px;border:none;cursor:not-allowed;box-shadow:none;">${g}</button>`}
         </div>
-      `}else{let r=t.edit_data_button||`✏️ Edit Data Tumbuhan`,a=t.status_label||`Status`;f=`
-        <div style="font-family:Nunito,sans-serif;max-width:210px;color:#2A2A22;padding:4px;box-sizing:border-box;">
-          <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:Baloo 2;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;">${this.userRole.toUpperCase()} SIGHTING</span>
-          <h4 style="font-family:Baloo 2,sans-serif;font-weight:800;font-size:15px;margin:4px 0;color:#1F3D20;word-break:break-word;">${n}</h4>
+      `;let v=t.edit_data_button||`✏️ Edit Data Tumbuhan`,y=t.status_label||`Status`,b=e.ranger?.name||e.ranger_name||`Ranger`,x=window.CURRENT_USER_ID,S=this.userRole===`admin`||x&&e.ranger_id==x;f=`
+        <div style="font-family:Nunito,sans-serif;max-width:215px;color:#2A2A22;padding:4px;box-sizing:border-box;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:4px;">
+            <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;white-space:nowrap;">${this.userRole.toUpperCase()} SIGHTING</span>
+            <span style="font-size:10px;color:#6B6B55;font-weight:bold;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px;" title="Pengunggah: ${b}">👤 ${b}</span>
+          </div>
+
+          <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:15px;margin:2px 0 4px 0;color:#1F3D20;word-break:break-word;">${n}</h4>
+          
           ${i?`<img src="${i}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:6px;"/>`:`<img src="/images/logo-plantGuardian.jpeg" style="width:100%;height:105px;object-fit:cover;border-radius:12px;margin-bottom:6px;"/>`}
-          <p style="font-size:11px;color:#6B6B55;margin:0 0 6px 0;">${a}: <strong>${e.verification_status}</strong></p>
-          <button onclick="window.openEditSightingModal(${e.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:Baloo 2,sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);">
-            ${r}
-          </button>
+          
+          <div style="font-size:10.5px;color:#6B6B55;margin:0 0 6px 0;line-height:1.3;">
+            <span style="display:block;">${y}: <strong style="color:#1F3D20;">${e.verification_status}</strong></span>
+            <span style="display:block;">Ranger Pengunggah: <strong style="color:#8B6A4C;">${b}</strong></span>
+          </div>
+
+          ${S?`<button onclick="window.openEditSightingModal(${e.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);">
+                ${v}
+               </button>`:`<div style="width:100%;background-color:#E2E1C4;color:#6B6B55;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:10px;padding:5.5px 6px;border-radius:9999px;text-align:center;border:1px solid rgba(31,61,32,0.15);box-sizing:border-box;">
+                🔒 Hak Edit: Pembuat / Admin
+               </div>`}
         </div>
       `}L.marker([e.latitude,e.longitude],{icon:d,riseOnHover:!0}).addTo(this.markersGroup).bindPopup(f)}},c=class{constructor(e={}){this.containerElement=e.containerElement||document.querySelector(`#shop-container`),this.catalog=[],this.inventory=[],this.userCoin=0,this.activeCategory=`all`,this.currentAvatar=`default`}async init(){await this.loadShopData(),this.bindEvents()}async loadShopData(){try{let t=await e.get(`/shop`);this.catalog=t.catalog||[],this.inventory=t.inventory||[],this.userCoin=t.user_coin||0,this.currentAvatar=t.current_avatar||`default`,typeof window.updateUserCoin==`function`&&window.updateUserCoin(this.userCoin),this.render()}catch(e){console.error(`Gagal memuat data Shop:`,e),this.containerElement&&(this.containerElement.innerHTML=`
           <div class="text-center py-12 text-[#6B6B55]">

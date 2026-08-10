@@ -41,7 +41,15 @@ class SightingController extends Controller
      */
     public function update(SightingUpdateRequest $request, int $id): JsonResponse
     {
+        $user = $request->user();
         $sighting = PlantSighting::with('plantSpecies')->findOrFail($id);
+
+        if ($user && $user->role !== 'admin' && $sighting->ranger_id !== $user->id) {
+            return response()->json([
+                'message' => 'Anda hanya dapat mengedit temuan tumbuhan yang Anda buat sendiri. Hanya Admin yang dapat mengedit milik Ranger lain.',
+            ], 403);
+        }
+
         $data = $request->validated();
 
         // Update species attributes if provided

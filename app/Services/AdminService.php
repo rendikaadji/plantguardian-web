@@ -10,6 +10,7 @@ use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Schema;
 
 class AdminService
 {
@@ -18,23 +19,26 @@ class AdminService
      */
     public function getDashboardStats(): array
     {
+        $hasVerificationStatus = Schema::hasColumn('plant_sightings', 'verification_status');
+        $hasSightingReportsTable = Schema::hasTable('sighting_reports');
+
         return [
             'total_users' => User::count(),
             'total_viewers' => User::where('role', 'viewer')->count(),
             'total_rangers' => User::where('role', 'ranger')->count(),
             'total_admins' => User::where('role', 'admin')->count(),
             'total_sightings' => PlantSighting::count(),
-            'verified_sightings' => PlantSighting::where('verification_status', 'verified')->count(),
-            'pending_verifications' => PlantSighting::where('verification_status', 'pending')->count(),
-            'rejected_sightings' => PlantSighting::where('verification_status', 'rejected')->count(),
-            'pending_reports' => SightingReport::where('status', 'pending')->count(),
-            'reports_fake' => SightingReport::where('reason', 'fake_specimen')->where('status', 'pending')->count(),
-            'reports_missing' => SightingReport::where('reason', 'plant_missing_or_dead')->where('status', 'pending')->count(),
-            'reports_replaced' => SightingReport::where('reason', 'species_mismatch_or_replaced')->where('status', 'pending')->count(),
-            'reports_other' => SightingReport::where('reason', 'other')->where('status', 'pending')->count(),
+            'verified_sightings' => $hasVerificationStatus ? PlantSighting::where('verification_status', 'verified')->count() : 0,
+            'pending_verifications' => $hasVerificationStatus ? PlantSighting::where('verification_status', 'pending')->count() : 0,
+            'rejected_sightings' => $hasVerificationStatus ? PlantSighting::where('verification_status', 'rejected')->count() : 0,
+            'pending_reports' => $hasSightingReportsTable ? SightingReport::where('status', 'pending')->count() : 0,
+            'reports_fake' => $hasSightingReportsTable ? SightingReport::where('reason', 'fake_specimen')->where('status', 'pending')->count() : 0,
+            'reports_missing' => $hasSightingReportsTable ? SightingReport::where('reason', 'plant_missing_or_dead')->where('status', 'pending')->count() : 0,
+            'reports_replaced' => $hasSightingReportsTable ? SightingReport::where('reason', 'species_mismatch_or_replaced')->where('status', 'pending')->count() : 0,
+            'reports_other' => $hasSightingReportsTable ? SightingReport::where('reason', 'other')->where('status', 'pending')->count() : 0,
             'total_species_catalog' => PlantSpecies::count(),
-            'total_exp_issued' => User::sum('exp'),
-            'total_coin_issued' => User::sum('coin'),
+            'total_exp_issued' => User::sum('exp') ?? 0,
+            'total_coin_issued' => User::sum('coin') ?? 0,
         ];
     }
 
@@ -144,6 +148,10 @@ class AdminService
      */
     public function getPendingReports(int $limit = 15): Collection
     {
+        if (!Schema::hasTable('sighting_reports')) {
+            return collect();
+        }
+
         return SightingReport::with(['user:id,name,email', 'sighting.plantSpecies', 'sighting.ranger:id,name'])
             ->where('status', 'pending')
             ->orderBy('created_at', 'desc')
@@ -156,6 +164,10 @@ class AdminService
      */
     public function getPaginatedReports(int $perPage = 15): LengthAwarePaginator
     {
+        if (!Schema::hasTable('sighting_reports')) {
+            return new LengthAwarePaginator([], 0, $perPage);
+        }
+
         return SightingReport::with(['user:id,name,email', 'sighting.plantSpecies', 'sighting.ranger:id,name'])
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);

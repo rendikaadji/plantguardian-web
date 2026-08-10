@@ -391,9 +391,14 @@ export default class MapManager {
     const iconColor = isDiscovered ? '#1F3D20' : (isRangerOrAdmin ? '#8B6A4C' : '#D96C63');
     const iconLabel = isDiscovered ? '🌿' : (isRangerOrAdmin ? '📍' : '❓');
 
+    const showPhotoThumb = photoUrl && (isRangerOrAdmin || isDiscovered);
+    const thumbHtml = showPhotoThumb
+      ? `<img src="${photoUrl}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:20px;height:20px;border-radius:9999px;object-fit:cover;flex-shrink:0;border:1px solid ${iconColor};" />`
+      : `<span style="flex-shrink:0;">${iconLabel}</span>`;
+
     const markerHtml = `
-      <div style="background-color:#FBFAF0;border:2px solid ${iconColor};padding:4px 10px;border-radius:9999px;font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:bold;color:${iconColor};box-shadow:0 3px 8px rgba(0,0,0,0.2);white-space:nowrap;display:inline-flex;align-items:center;gap:4px;max-width:200px;box-sizing:border-box;">
-        <span style="flex-shrink:0;">${iconLabel}</span>
+      <div style="background-color:#FBFAF0;border:2px solid ${iconColor};padding:3px 10px 3px 6px;border-radius:9999px;font-family:'Baloo 2',sans-serif;font-size:11px;font-weight:bold;color:${iconColor};box-shadow:0 3px 8px rgba(0,0,0,0.2);white-space:nowrap;display:inline-flex;align-items:center;gap:5px;max-width:210px;box-sizing:border-box;cursor:pointer;">
+        ${thumbHtml}
         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px;display:inline-block;">${displayName}</span>
       </div>
     `;
@@ -520,8 +525,8 @@ export default class MapManager {
       `;
     }
 
-    L.marker([sighting.latitude, sighting.longitude], { icon: customTagIcon, riseOnHover: true })
+    L.marker([sighting.latitude, sighting.longitude], { icon: customTagIcon, riseOnHover: true, interactive: true })
       .addTo(this.markersGroup)
-      .bindPopup(popupHtml);
+      .bindPopup(popupHtml, { maxWidth: 240, minWidth: 200, autoPan: true });
   }
 }

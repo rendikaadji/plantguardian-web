@@ -84,6 +84,13 @@ return [
     'scanned_by' => 'Dipindai',
     'no_sightings_log' => 'Belum ada log temuan spesies tercatat.',
 
+    // Leaderboard Section
+    'leaderboard_title' => 'Leaderboard Mingguan',
+    'leaderboard_subtitle' => 'Peringkat perolehan EXP pemain (Ranger & Viewer) minggu ini.',
+    'rank' => 'Peringkat',
+    'exp_earned' => 'EXP Minggu Ini',
+    'no_leaderboard_data' => 'Belum ada data peringkat untuk minggu ini.',
+
     // Sidebar Navigation
     'sidebar' => [
         'overview' => 'Dashboard Utama',
@@ -92,7 +99,6 @@ return [
         'monitoring' => 'Monitoring Temuan',
         'mode_explorer' => 'MODE PENJELAJAH',
         'peta' => 'Peta Spesies',
-        'home' => 'Beranda Kebun',
         'system_active' => 'Sistem Aktif',
     ],
 ];

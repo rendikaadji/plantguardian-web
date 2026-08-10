@@ -26,9 +26,15 @@
                 </h1>
             </div>
         </div>
-        <div class="px-3.5 py-1 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-extrabold text-xs self-start sm:self-auto shadow-sm border border-[#F5F4DA]/20">
-            {{ auth()->user()->role === 'admin' ? __('map.mode_admin') : (auth()->user()->role === 'ranger' ? __('map.mode_ranger') : __('map.mode_viewer')) }}
-        </div>
+        @if(auth()->user()->role === 'admin')
+            <a href="{{ route('admin.dashboard') }}" class="px-3.5 py-1 rounded-full bg-[#FFD700] text-[#1F3D20] font-baloo font-extrabold text-xs self-start sm:self-auto shadow-sm border border-[#1F3D20]/20 hover:bg-[#FFD700]/90 transition-colors">
+                👑 {{ __('app.mode_admin') }}
+            </a>
+        @else
+            <div class="px-3.5 py-1 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-extrabold text-xs self-start sm:self-auto shadow-sm border border-[#F5F4DA]/20">
+                {{ auth()->user()->role === 'ranger' ? __('map.mode_ranger') : __('map.mode_viewer') }}
+            </div>
+        @endif
     </div>
 
     <!-- Map Container Container (Responsive Full-Width & Dynamic Screen Height) -->

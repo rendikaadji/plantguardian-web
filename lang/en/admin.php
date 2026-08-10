@@ -84,6 +84,13 @@ return [
     'scanned_by' => 'Scanned by',
     'no_sightings_log' => 'No species sighting logs recorded yet.',
 
+    // Leaderboard Section
+    'leaderboard_title' => 'Weekly Leaderboard',
+    'leaderboard_subtitle' => 'Player EXP rankings (Ranger & Viewer) for the current week.',
+    'rank' => 'Rank',
+    'exp_earned' => 'EXP This Week',
+    'no_leaderboard_data' => 'No ranking data recorded for this week yet.',
+
     // Sidebar Navigation
     'sidebar' => [
         'overview' => 'Overview Dashboard',
@@ -92,7 +99,6 @@ return [
         'monitoring' => 'Sightings Monitoring',
         'mode_explorer' => 'EXPLORER MODE',
         'peta' => 'Species Map',
-        'home' => 'Garden Home',
         'system_active' => 'System Active',
     ],
 ];

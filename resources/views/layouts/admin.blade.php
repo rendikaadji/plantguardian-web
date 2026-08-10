@@ -96,11 +96,6 @@
                     <span class="text-base">🗺️</span>
                     <span>{{ __('admin.sidebar.peta') }}</span>
                 </a>
-
-                <a href="{{ route('home') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
-                    <span class="text-base">🏠</span>
-                    <span>{{ __('admin.sidebar.home') }}</span>
-                </a>
             </div>
 
             <!-- Sidebar User Profile Footer -->

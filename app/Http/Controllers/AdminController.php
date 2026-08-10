@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Services\AdminService;
+use App\Services\LeaderboardService;
 use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -13,7 +14,8 @@ use Illuminate\View\View;
 class AdminController extends Controller
 {
     public function __construct(
-        protected AdminService $adminService
+        protected AdminService $adminService,
+        protected LeaderboardService $leaderboardService
     ) {}
 
     /**
@@ -24,8 +26,9 @@ class AdminController extends Controller
         $stats = $this->adminService->getDashboardStats();
         $recentSightings = $this->adminService->getRecentSightings(6);
         $reports = $this->adminService->getPendingReports(5);
+        $leaderboard = $this->leaderboardService->getCurrentLeaderboard()->take(10);
 
-        return view('admin.dashboard', compact('stats', 'recentSightings', 'reports'));
+        return view('admin.dashboard', compact('stats', 'recentSightings', 'reports', 'leaderboard'));
     }
 
     /**

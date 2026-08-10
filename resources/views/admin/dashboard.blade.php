@@ -189,63 +189,110 @@
 
     </div>
 
-    <!-- Section Preview: Recent Sighting Activity Feed -->
-    <div class="card-gg p-6 space-y-5 bg-[#FBFAF0] border border-[#1F3D20]/15 shadow-sm">
-        <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-4">
+    <!-- Section: Weekly Leaderboard & Recent Activity Feed -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Weekly Leaderboard Widget (1 Col on lg) -->
+        <div class="lg:col-span-1 card-gg p-6 space-y-4 bg-[#FBFAF0] border border-[#1F3D20]/15 shadow-sm flex flex-col justify-between">
             <div>
-                <h2 class="font-baloo font-extrabold text-xl text-[#1F3D20] flex items-center gap-2">
-                    <span>📍</span>
-                    <span>{{ __('admin.recent_sightings_title') }}</span>
-                </h2>
-                <p class="font-nunito text-xs text-[#6B6B55]">{{ __('admin.recent_sightings_sub') }}</p>
+                <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3">
+                    <div>
+                        <h3 class="font-baloo font-extrabold text-lg text-[#1F3D20] flex items-center gap-2">
+                            <span>🏆</span>
+                            <span>{{ __('admin.leaderboard_title') }}</span>
+                        </h3>
+                        <p class="text-[11px] text-[#6B6B55] font-nunito mt-0.5">{{ __('admin.leaderboard_subtitle') }}</p>
+                    </div>
+                </div>
+
+                <div class="space-y-2 mt-4">
+                    @forelse($leaderboard as $entry)
+                        <div class="p-2.5 rounded-xl border border-[#1F3D20]/10 bg-white flex items-center justify-between hover:bg-[#FBFAF0] transition-colors">
+                            <div class="flex items-center gap-2.5 overflow-hidden">
+                                <div class="w-7 h-7 rounded-full flex items-center justify-center font-baloo font-extrabold text-xs shrink-0
+                                    {{ $loop->iteration == 1 ? 'bg-[#FFD700] text-[#1F3D20] shadow-2xs border border-[#FFD700]' : ($loop->iteration == 2 ? 'bg-slate-300 text-slate-800' : ($loop->iteration == 3 ? 'bg-amber-600 text-white' : 'bg-[#E2E1C4] text-[#1F3D20]')) }}">
+                                    {{ $loop->iteration }}
+                                </div>
+                                <div class="overflow-hidden">
+                                    <div class="font-baloo font-bold text-xs text-[#1F3D20] truncate">{{ $entry['user_name'] }}</div>
+                                    <span class="text-[9px] font-baloo font-extrabold uppercase px-1.5 py-0.2 rounded-full inline-block {{ $entry['user_role'] === 'ranger' ? 'bg-[#8B6A4C]/15 text-[#8B6A4C]' : 'bg-[#4C8C4A]/15 text-[#4C8C4A]' }}">
+                                        {{ strtoupper($entry['user_role']) }}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="text-right shrink-0">
+                                <span class="font-baloo font-extrabold text-xs text-[#7D5BA6] block">+{{ number_format($entry['exp_earned']) }}</span>
+                                <span class="text-[9px] text-[#6B6B55] block font-nunito">{{ __('admin.exp_earned') }}</span>
+                            </div>
+                        </div>
+                    @empty
+                        <div class="text-center py-6 text-[#6B6B55] font-baloo font-bold text-xs bg-white rounded-xl border border-[#1F3D20]/10 p-3">
+                            {{ __('admin.no_leaderboard_data') }}
+                        </div>
+                    @endforelse
+                </div>
             </div>
-            <a href="{{ route('admin.monitoring') }}" class="px-3.5 py-1.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs hover:bg-[#2D4A2E] transition-colors shadow-2xs">
-                {!! __('admin.view_all') !!}
-            </a>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            @forelse($recentSightings as $sighting)
-                <div class="card-gg p-4 space-y-3 bg-white border border-[#1F3D20]/10 shadow-2xs">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[10px] font-baloo font-extrabold px-2.5 py-0.5 rounded-full bg-[#1F3D20] text-[#F5F4DA]">
-                            {{ $sighting->species ? $sighting->species->species_code : 'SPESIES' }}
-                        </span>
-                        <span class="text-[10px] font-mono-code font-bold text-[#6B6B55]">
-                            #{{ $sighting->id }}
-                        </span>
-                    </div>
+        <!-- Section Preview: Recent Sighting Activity Feed (2 Cols on lg) -->
+        <div class="lg:col-span-2 card-gg p-6 space-y-4 bg-[#FBFAF0] border border-[#1F3D20]/15 shadow-sm">
+            <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3">
+                <div>
+                    <h3 class="font-baloo font-extrabold text-lg text-[#1F3D20] flex items-center gap-2">
+                        <span>📍</span>
+                        <span>{{ __('admin.recent_sightings_title') }}</span>
+                    </h3>
+                    <p class="font-nunito text-xs text-[#6B6B55]">{{ __('admin.recent_sightings_sub') }}</p>
+                </div>
+                <a href="{{ route('admin.monitoring') }}" class="px-3.5 py-1.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs hover:bg-[#2D4A2E] transition-colors shadow-2xs">
+                    {!! __('admin.view_all') !!}
+                </a>
+            </div>
 
-                    <div class="flex items-center gap-3">
-                        @if($sighting->photo_url)
-                            <img src="{{ $sighting->photo_url }}" class="w-14 h-14 object-cover rounded-xl border border-[#1F3D20]/20 shrink-0" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" />
-                        @else
-                            <div class="w-14 h-14 rounded-xl bg-[#E2E1C4] flex items-center justify-center text-xl shrink-0">🌿</div>
-                        @endif
-                        <div class="overflow-hidden">
-                            <h4 class="font-baloo font-bold text-sm text-[#1F3D20] truncate">
-                                {{ $sighting->species ? $sighting->species->common_name : 'Tumbuhan Tanpa Nama' }}
-                            </h4>
-                            <p class="text-[11px] text-[#6B6B55] truncate font-nunito italic">
-                                {{ $sighting->species ? $sighting->species->scientific_name : '-' }}
-                            </p>
-                            <p class="text-[10px] text-[#8B6A4C] font-semibold mt-0.5">
-                                {{ __('admin.scanned_by') }}: {{ $sighting->ranger ? $sighting->ranger->name : 'System' }}
-                            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                @forelse($recentSightings as $sighting)
+                    <div class="card-gg p-3.5 space-y-2.5 bg-white border border-[#1F3D20]/10 shadow-2xs">
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] font-baloo font-extrabold px-2.5 py-0.5 rounded-full bg-[#1F3D20] text-[#F5F4DA]">
+                                {{ $sighting->species ? $sighting->species->species_code : 'SPESIES' }}
+                            </span>
+                            <span class="text-[10px] font-mono-code font-bold text-[#6B6B55]">
+                                #{{ $sighting->id }}
+                            </span>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            @if($sighting->photo_url)
+                                <img src="{{ $sighting->photo_url }}" class="w-12 h-12 object-cover rounded-xl border border-[#1F3D20]/20 shrink-0" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" />
+                            @else
+                                <div class="w-12 h-12 rounded-xl bg-[#E2E1C4] flex items-center justify-center text-lg shrink-0">🌿</div>
+                            @endif
+                            <div class="overflow-hidden">
+                                <h4 class="font-baloo font-bold text-xs text-[#1F3D20] truncate">
+                                    {{ $sighting->species ? $sighting->species->common_name : 'Tumbuhan Tanpa Nama' }}
+                                </h4>
+                                <p class="text-[10px] text-[#6B6B55] truncate font-nunito italic">
+                                    {{ $sighting->species ? $sighting->species->scientific_name : '-' }}
+                                </p>
+                                <p class="text-[10px] text-[#8B6A4C] font-semibold mt-0.5">
+                                    {{ __('admin.scanned_by') }}: {{ $sighting->ranger ? $sighting->ranger->name : 'System' }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="pt-2 border-t border-[#1F3D20]/10 flex items-center justify-between text-[9.5px] font-mono-code text-[#6B6B55]">
+                            <span>GPS: {{ $sighting->latitude ? number_format($sighting->latitude, 4) . ', ' . number_format($sighting->longitude, 4) : 'Tanpa Lokasi' }}</span>
+                            <span>{{ $sighting->created_at ? $sighting->created_at->diffForHumans() : '' }}</span>
                         </div>
                     </div>
-
-                    <div class="pt-2 border-t border-[#1F3D20]/10 flex items-center justify-between text-[10px] font-mono-code text-[#6B6B55]">
-                        <span>GPS: {{ $sighting->latitude ? number_format($sighting->latitude, 4) . ', ' . number_format($sighting->longitude, 4) : 'Tanpa Lokasi' }}</span>
-                        <span>{{ $sighting->created_at ? $sighting->created_at->diffForHumans() : '' }}</span>
+                @empty
+                    <div class="col-span-full text-center py-8 text-[#6B6B55] font-baloo font-bold text-sm bg-white rounded-2xl border border-[#1F3D20]/10 p-4">
+                        {{ __('admin.no_sightings_log') }}
                     </div>
-                </div>
-            @empty
-                <div class="col-span-full text-center py-8 text-[#6B6B55] font-baloo font-bold text-sm bg-white rounded-2xl border border-[#1F3D20]/10 p-4">
-                    {{ __('admin.no_sightings_log') }}
-                </div>
-            @endforelse
+                @endforelse
+            </div>
         </div>
+
     </div>
 </div>
 

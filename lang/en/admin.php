@@ -59,4 +59,16 @@ return [
     'status_rejected' => 'REJECTED',
     'scanned_by' => 'Scanned by',
     'no_sightings_log' => 'No species sighting logs recorded yet.',
+
+    // Sidebar Navigation
+    'sidebar' => [
+        'overview' => 'Overview Dashboard',
+        'users' => 'User Management',
+        'reports' => 'Reports Moderation',
+        'monitoring' => 'Sightings Monitoring',
+        'mode_explorer' => 'EXPLORER MODE',
+        'peta' => 'Species Map',
+        'home' => 'Garden Home',
+        'system_active' => 'System Active',
+    ],
 ];

@@ -1,11 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', __('admin.dashboard_title') . ' — Plant Guardian')
 
 @section('content')
 <div class="space-y-8 max-w-7xl mx-auto py-2">
 
-    <!-- Top Header Banner (Admin Dedicated Control Panel) -->
+    <!-- Section: Overview Header & Metrics -->
+    <div id="overview" class="space-y-8">
+        <!-- Top Header Banner (Admin Dedicated Control Panel) -->
     <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#152B16] via-[#1F3D20] to-[#2D4A2E] text-[#F5F4DA] p-6 sm:p-8 shadow-xl border border-[#E2E1C4]/20">
         <div class="relative z-10 space-y-3">
             <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FFD700]/20 text-[#FFD700] text-xs font-baloo font-bold backdrop-blur-md border border-[#FFD700]/30">
@@ -112,10 +114,10 @@
             </div>
         </div>
 
-    </div>
+    </div> <!-- End Overview -->
 
     <!-- Section: User Control & Role Management Table -->
-    <div class="card-gg p-6 space-y-5">
+    <div id="section-users" class="card-gg p-6 space-y-5">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1F3D20]/10 pb-4">
             <div>
                 <h2 class="font-baloo font-extrabold text-xl text-[#1F3D20] flex items-center gap-2">
@@ -237,7 +239,7 @@
     </div>
 
     <!-- Section: Sighting Reports Moderation Queue -->
-    <div class="card-gg p-6 space-y-5 border-l-4 border-l-[#C0392B]">
+    <div id="section-reports" class="card-gg p-6 space-y-5 border-l-4 border-l-[#C0392B]">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#1F3D20]/10 pb-4">
             <div>
                 <div class="flex items-center gap-2">
@@ -365,7 +367,7 @@
     </div>
 
     <!-- Section: Monitoring Log Activity (Recent Plant Sightings) -->
-    <div class="card-gg p-6 space-y-5">
+    <div id="section-monitoring" class="card-gg p-6 space-y-5">
         <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-4">
             <div>
                 <h2 class="font-baloo font-extrabold text-xl text-[#1F3D20] flex items-center gap-2">

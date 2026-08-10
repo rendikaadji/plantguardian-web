@@ -59,4 +59,16 @@ return [
     'status_rejected' => 'DITOLAK',
     'scanned_by' => 'Dipindai',
     'no_sightings_log' => 'Belum ada log temuan spesies tercatat.',
+
+    // Sidebar Navigation
+    'sidebar' => [
+        'overview' => 'Dashboard Utama',
+        'users' => 'Manajemen Pengguna',
+        'reports' => 'Moderasi Laporan',
+        'monitoring' => 'Monitoring Temuan',
+        'mode_explorer' => 'MODE PENJELAJAH',
+        'peta' => 'Peta Spesies',
+        'home' => 'Beranda Kebun',
+        'system_active' => 'Sistem Aktif',
+    ],
 ];

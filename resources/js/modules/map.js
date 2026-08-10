@@ -455,28 +455,28 @@ export default class MapManager {
 
       // Viewer Popup with "Temukan!" action (Hides real species name until claimed)
       popupHtml = `
-        <div style="font-family:'Nunito',sans-serif;width:235px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:6px;">
+        <div style="font-family:'Nunito',sans-serif;width:245px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">
+          <!-- Top Tag Badge (Clean clearance for close button X) -->
+          <div style="display:flex;align-items:center;margin-bottom:8px;padding-right:24px;">
             <span style="background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;letter-spacing:0.3px;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
               ${isDiscovered ? '🌿 ' + speciesCode : '❓ MYSTERY'}
             </span>
-            <span style="font-size:10px;color:#065F46;background-color:#DCFCE7;border:1px solid #A7F3D0;font-weight:700;padding:1.5px 7px;border-radius:9999px;">
-              ${isDiscovered ? '✓ ' + verifiedText : unclaimedBadge}
-            </span>
           </div>
 
-          <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:16px;margin:0 0 4px 0;color:#1F3D20;line-height:1.25;word-break:break-word;">
+          <!-- Species Name -->
+          <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:16px;margin:0 0 6px 0;color:#1F3D20;line-height:1.25;word-break:break-word;">
             ${isDiscovered ? speciesName : '❓ ' + mysteryPlantName}
           </h4>
 
-          <div style="display:flex;align-items:center;gap:5px;background-color:rgba(139,106,76,0.12);border:1px solid rgba(139,106,76,0.2);padding:3.5px 8px;border-radius:8px;margin:0 0 8px 0;" title="${uploaderLabelText}: ${uploaderName}">
-            <span style="font-size:11px;">👤</span>
-            <span style="font-size:10.5px;font-weight:700;color:#6B6B55;">${uploaderLabelText}:</span>
-            <strong style="font-size:10.5px;color:#8B6A4C;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px;">${uploaderName}</strong>
+          <!-- Full Uploading Ranger Name (No truncation) -->
+          <div style="font-size:11px;color:#6B6B55;background-color:rgba(139,106,76,0.12);border:1px solid rgba(139,106,76,0.2);padding:5px 9px;border-radius:10px;margin:0 0 8px 0;line-height:1.4;">
+            <span style="font-weight:700;">👤 ${uploaderLabelText}:</span>
+            <strong style="color:#8B6A4C;font-weight:800;display:inline;margin-left:3px;word-break:break-word;">${uploaderName}</strong>
           </div>
 
+          <!-- Specimen Image / Unclaimed Message -->
           ${isDiscovered 
-            ? `<div style="width:100%;height:120px;border-radius:14px;overflow:hidden;margin-bottom:8px;background-color:#1F3D20;border:1.5px solid rgba(31,61,32,0.15);box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+            ? `<div style="width:100%;height:125px;border-radius:14px;overflow:hidden;margin-bottom:8px;background-color:#1F3D20;border:1.5px solid rgba(31,61,32,0.15);box-shadow:0 4px 10px rgba(0,0,0,0.1);">
                 <img src="${photoUrl || '/images/logo-plantGuardian.jpeg'}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:100%;object-fit:cover;display:block;"/>
                </div>`
             : `<div style="background-color:rgba(226,225,196,0.45);border:1.5px dashed #8B6A4C;border-radius:14px;padding:10px 12px;text-align:center;margin-bottom:8px;font-size:11px;color:#6B6B55;font-style:italic;word-break:break-word;overflow-wrap:break-word;box-sizing:border-box;">
@@ -486,11 +486,12 @@ export default class MapManager {
 
           ${!isDiscovered ? distanceBadge : ''}
 
+          <!-- Action Button -->
           ${isDiscovered 
-            ? `<button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);display:flex;align-items:center;justify-content:center;gap:5px;transition:transform 0.15s ease;"><span>📖</span> <span>${alreadyDiscoveredText} — ${viewDetailText}</span></button>`
+            ? `<button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);display:flex;align-items:center;justify-content:center;gap:5px;transition:transform 0.15s ease;"><span>📖</span> <span>${alreadyDiscoveredText} — ${viewDetailText}</span></button>`
             : (!isClaimable
-                ? `<button disabled style="width:100%;background-color:#9CA3AF;color:#FFFFFF;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:11px;padding:8px 0;border-radius:9999px;border:none;cursor:not-allowed;box-shadow:none;">${buttonLabelText}</button>`
-                : `<button id="discover-btn-${sighting.id}" onclick="window.discoverPlantFromMap(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);transition:transform 0.15s ease;">${discoverText}</button>`
+                ? `<button disabled style="width:100%;background-color:#9CA3AF;color:#FFFFFF;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:11px;padding:8.5px 0;border-radius:9999px;border:none;cursor:not-allowed;box-shadow:none;">${buttonLabelText}</button>`
+                : `<button id="discover-btn-${sighting.id}" onclick="window.discoverPlantFromMap(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);transition:transform 0.15s ease;">${discoverText}</button>`
               )
           }
         </div>
@@ -509,45 +510,47 @@ export default class MapManager {
       const isOwnerOrAdmin = this.userRole === 'admin' || (currentUserId && sighting.ranger_id == currentUserId);
 
       popupHtml = `
-        <div style="font-family:'Nunito',sans-serif;width:235px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:6px;">
+        <div style="font-family:'Nunito',sans-serif;width:245px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">
+          <!-- Top Tag Badge (Clean clearance for close button X) -->
+          <div style="display:flex;align-items:center;margin-bottom:8px;padding-right:24px;">
             <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
               ${sightingTagText}
             </span>
-            <span style="font-size:10px;color:#1F3D20;background-color:#E2E1C4;font-weight:700;padding:1.5px 7px;border-radius:9999px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px;" title="${uploaderLabelText}: ${uploaderName}">
-              👤 ${uploaderName}
-            </span>
           </div>
 
+          <!-- Species Name -->
           <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:16px;margin:0 0 6px 0;color:#1F3D20;word-break:break-word;line-height:1.25;">
             ${speciesName}
           </h4>
+
+          <!-- Full Uploading Ranger Name (No truncation) -->
+          <div style="font-size:11px;color:#6B6B55;background-color:rgba(139,106,76,0.12);border:1px solid rgba(139,106,76,0.2);padding:5px 9px;border-radius:10px;margin:0 0 8px 0;line-height:1.4;">
+            <span style="font-weight:700;">👤 ${uploaderLabelText}:</span>
+            <strong style="color:#8B6A4C;font-weight:800;display:inline;margin-left:3px;word-break:break-word;">${uploaderName}</strong>
+          </div>
           
-          <div style="width:100%;height:120px;border-radius:14px;overflow:hidden;margin-bottom:8px;background-color:#1F3D20;border:1.5px solid rgba(31,61,32,0.15);box-shadow:0 4px 10px rgba(0,0,0,0.1);">
+          <!-- Specimen Image -->
+          <div style="width:100%;height:125px;border-radius:14px;overflow:hidden;margin-bottom:8px;background-color:#1F3D20;border:1.5px solid rgba(31,61,32,0.15);box-shadow:0 4px 10px rgba(0,0,0,0.1);">
             <img src="${photoUrl || '/images/logo-plantGuardian.jpeg'}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:100%;object-fit:cover;display:block;" />
           </div>
           
-          <div style="font-size:10.5px;color:#6B6B55;margin:0 0 8px 0;line-height:1.4;background-color:rgba(226,225,196,0.35);padding:6px 8px;border-radius:8px;border:1px solid rgba(31,61,32,0.08);">
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span>${statusLabelText}:</span>
-              <strong style="color:#1F3D20;text-transform:capitalize;">${sighting.verification_status}</strong>
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px;">
-              <span>${uploaderLabelText}:</span>
-              <strong style="color:#8B6A4C;">${uploaderName}</strong>
-            </div>
+          <!-- Status Info -->
+          <div style="font-size:11px;color:#6B6B55;margin:0 0 8px 0;line-height:1.4;background-color:rgba(226,225,196,0.35);padding:6px 9px;border-radius:10px;border:1px solid rgba(31,61,32,0.08);display:flex;justify-content:space-between;align-items:center;">
+            <span>${statusLabelText}:</span>
+            <strong style="color:#1F3D20;text-transform:capitalize;">${sighting.verification_status}</strong>
           </div>
 
+          <!-- Buttons -->
           <div style="display:flex;flex-direction:column;gap:6px;">
-            <button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(31,61,32,0.2);display:flex;align-items:center;justify-content:center;gap:4px;">
+            <button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(31,61,32,0.2);display:flex;align-items:center;justify-content:center;gap:4px;">
               <span>${viewDetailFloraText}</span>
             </button>
 
             ${isOwnerOrAdmin 
-              ? `<button onclick="window.openEditSightingModal(${sighting.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(139,106,76,0.2);">
+              ? `<button onclick="window.openEditSightingModal(${sighting.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(139,106,76,0.2);">
                   ${editDataBtnText}
                  </button>`
-              : `<div style="width:100%;background-color:#E2E1C4;color:#6B6B55;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:10px;padding:5.5px 6px;border-radius:9999px;text-align:center;border:1px solid rgba(31,61,32,0.15);box-sizing:border-box;">
+              : `<div style="width:100%;background-color:#E2E1C4;color:#6B6B55;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:10px;padding:6px 6px;border-radius:9999px;text-align:center;border:1px solid rgba(31,61,32,0.15);box-sizing:border-box;">
                   ${editRightsLockText}
                  </div>`
             }
@@ -558,6 +561,6 @@ export default class MapManager {
 
     L.marker([sighting.latitude, sighting.longitude], { icon: customTagIcon, riseOnHover: true, interactive: true })
       .addTo(this.markersGroup)
-      .bindPopup(popupHtml, { maxWidth: 240, minWidth: 200, autoPan: true });
+      .bindPopup(popupHtml, { maxWidth: 280, minWidth: 240, autoPan: true });
   }
 }

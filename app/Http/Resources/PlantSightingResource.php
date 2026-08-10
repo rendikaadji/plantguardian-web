@@ -56,16 +56,13 @@ class PlantSightingResource extends JsonResource
         ];
     }
 
-    private function resolvePhotoUrl(): ?string
+    private function resolvePhotoUrl(): string
     {
         if ($this->photo_path) {
             if (str_starts_with($this->photo_path, 'http')) {
                 return $this->photo_path;
             }
-            $cleanPath = ltrim($this->photo_path, '/');
-            if (file_exists(public_path('storage/' . $cleanPath)) || file_exists(storage_path('app/public/' . $cleanPath))) {
-                return asset('storage/' . $cleanPath);
-            }
+            return asset('storage/' . ltrim($this->photo_path, '/'));
         }
 
         if ($this->relationLoaded('plantSpecies') && $this->plantSpecies?->reference_image_path) {
@@ -73,10 +70,7 @@ class PlantSightingResource extends JsonResource
             if (str_starts_with($refPath, 'http')) {
                 return $refPath;
             }
-            $cleanRef = ltrim($refPath, '/');
-            if (file_exists(public_path('storage/' . $cleanRef)) || file_exists(storage_path('app/public/' . $cleanRef))) {
-                return asset('storage/' . $cleanRef);
-            }
+            return asset('storage/' . ltrim($refPath, '/'));
         }
 
         return asset('images/logo-plantGuardian.jpeg');

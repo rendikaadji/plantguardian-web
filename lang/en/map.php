@@ -65,7 +65,8 @@ return [
 
     // Auto-Follow & Claim Radar
     'auto_follow_on' => 'Auto-Follow On',
-    'recenter_gps' => 'Follow Me',
+    'auto_follow_off' => 'Enable Auto-Follow',
+    'recenter_gps' => 'Enable Auto-Follow',
     'claim_radius_title' => '🎯 Species Claim Zone (50 Meters)',
     'distance_too_far' => '📍 Distance: :dist m (Max 50m)',
     'distance_too_far_btn' => '🔒 Too Far (:dist m > 50m)',

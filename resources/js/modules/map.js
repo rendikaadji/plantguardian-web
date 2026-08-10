@@ -24,7 +24,7 @@ export default class MapManager {
     const defaultLat = -6.1754;
     const defaultLng = 106.8272;
 
-    this.defaultZoom = 19.5;
+    this.defaultZoom = 17.5;
 
     // 60FPS Hardware Accelerated Leaflet Map Config with Canvas & Atomic Layer Grouping
     this.map = L.map(this.mapContainerId, {
@@ -153,7 +153,7 @@ export default class MapManager {
     const t = window.translations || {};
 
     if (labelEl) {
-      labelEl.textContent = enabled ? (t.auto_follow_on || 'Auto-Follow On') : (t.recenter_gps || 'Ikuti Saya');
+      labelEl.textContent = enabled ? (t.auto_follow_on || 'Auto-Follow On') : (t.auto_follow_off || t.recenter_gps || 'Enable Auto-Follow');
     }
     if (btnEl) {
       if (enabled) {
@@ -169,7 +169,9 @@ export default class MapManager {
   recenterUser() {
     this.setAutoFollow(true);
     if (this.userLat != null && this.userLng != null && this.map) {
-      this.map.flyTo([this.userLat, this.userLng], 19.5, {
+      const currentZoom = this.map.getZoom();
+      const targetZoom = (currentZoom && currentZoom >= 15) ? currentZoom : (this.defaultZoom || 17.5);
+      this.map.flyTo([this.userLat, this.userLng], targetZoom, {
         animate: true,
         duration: 0.8
       });
@@ -219,7 +221,7 @@ export default class MapManager {
       this.userLng = lng;
 
       if (!hasCentered && this.map) {
-        this.map.setView([lat, lng], 19.5);
+        this.map.setView([lat, lng], this.defaultZoom || 17.5);
         hasCentered = true;
       }
 

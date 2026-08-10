@@ -59,8 +59,8 @@
 </div>
 
 <!-- Achievement Viewer Modal -->
-<div id="achievement-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-    <div class="card-gg max-w-lg w-full p-6 shadow-2xl space-y-5 bg-[#FBFAF0] max-h-[90vh] overflow-y-auto">
+<div id="achievement-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-40 flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 hidden">
+    <div class="card-gg max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-5 bg-[#FBFAF0] my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
         <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 rounded-2xl bg-[#1F3D20] text-[#F5F4DA] flex items-center justify-center text-xl">
@@ -134,8 +134,8 @@
 </div>
 
 <!-- Seedex Item Detail Modal -->
-<div id="gallery-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-50 flex items-center justify-center p-4 hidden">
-    <div class="card-gg max-w-md w-full p-6 shadow-2xl space-y-4 bg-[#FBFAF0] max-h-[90vh] overflow-y-auto">
+<div id="gallery-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-40 flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 hidden">
+    <div class="card-gg max-w-md w-full p-5 sm:p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
         <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
             <div>
                 <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">{{ __('gallery.modal_detail') }}</span>

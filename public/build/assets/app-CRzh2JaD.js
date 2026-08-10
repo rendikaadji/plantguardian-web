@@ -436,57 +436,74 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px;display:inline-block;">${u}</span>
       </div>
     `,p=L.divIcon({className:`gg-map-marker`,html:f,iconSize:null,iconAnchor:[60,14]}),m=``;if(this.userRole===`viewer`){let c=t.verified_badge||`Spesies Terverifikasi`,u=t.discover_button||`✨ Temukan & Klaim!`,d=t.already_discovered||`✓ Sudah Ditemukan`,f=t.unclaimed_badge||`🔒 Belum Diklaim`,p=t.unclaimed_tree||`Pohon ini belum diklaim! Tekan tombol di bawah untuk membuka dan mengklaim.`,h=this.calculateDistanceMeters(this.userLat,this.userLng,parseFloat(e.latitude),parseFloat(e.longitude)),g=``,_=!0,v=u,y=t.view_detail||`Detail`;if(h!==null){let e=Math.round(h);if(e>50){_=!1;let n=(t.distance_too_far||`📍 Jarak: :dist m (Maks 50m)`).replace(`:dist`,e),r=(t.distance_too_far_btn||`🔒 Terlalu Jauh (:dist m > 50m)`).replace(`:dist`,e);g=`<div style="font-size:10px;color:#DC2626;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#FEE2E2;padding:2px 6px;border-radius:9999px;">${n}</div>`,v=r}else g=`<div style="font-size:10px;color:#16A34A;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#DCFCE7;padding:2px 6px;border-radius:9999px;">${(t.distance_in_range||`📍 Jarak: :dist m (Dalam Jangkauan)`).replace(`:dist`,e)}</div>`}else g=`<div style="font-size:10px;color:#D97706;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#FEF3C7;padding:2px 6px;border-radius:9999px;">${t.distance_enable_gps||`📍 Aktifkan GPS untuk mengklaim (Maks 50m)`}</div>`;m=`
-        <div style="font-family:Nunito,sans-serif;max-width:220px;color:#2A2A22;padding:4px;box-sizing:border-box;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;gap:4px;">
-            <span style="background-color:#E2E1C4;color:#1F3D20;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;">${a?r:`MYSTERY`}</span>
-            <span style="font-size:10px;color:#6B6B55;font-weight:bold;">${a?`✓ `+c:f}</span>
+        <div style="font-family:'Nunito',sans-serif;width:235px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:6px;">
+            <span style="background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;letter-spacing:0.3px;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+              ${a?`🌿 `+r:`❓ MYSTERY`}
+            </span>
+            <span style="font-size:10px;color:#065F46;background-color:#DCFCE7;border:1px solid #A7F3D0;font-weight:700;padding:1.5px 7px;border-radius:9999px;">
+              ${a?`✓ `+c:f}
+            </span>
           </div>
 
-          <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:15px;margin:2px 0 2px 0;color:#1F3D20;line-height:1.2;word-break:break-word;">
+          <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:16px;margin:0 0 4px 0;color:#1F3D20;line-height:1.25;word-break:break-word;">
             ${a?n:`❓ `+l}
           </h4>
 
-          <div style="font-size:10.5px;color:#6B6B55;margin:0 0 6px 0;line-height:1.3;display:flex;align-items:center;gap:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${s}: ${o}">
+          <div style="display:flex;align-items:center;gap:5px;background-color:rgba(139,106,76,0.12);border:1px solid rgba(139,106,76,0.2);padding:3.5px 8px;border-radius:8px;margin:0 0 8px 0;" title="${s}: ${o}">
             <span style="font-size:11px;">👤</span>
-            <span style="font-weight:bold;color:#8B6A4C;">${s}: ${o}</span>
+            <span style="font-size:10.5px;font-weight:700;color:#6B6B55;">${s}:</span>
+            <strong style="font-size:10.5px;color:#8B6A4C;font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px;">${o}</strong>
           </div>
 
-          ${a?`<div style="width:100%;height:110px;border-radius:12px;overflow:hidden;margin-bottom:8px;background-color:#1F3D20;border:1.5px solid rgba(31,61,32,0.15);">
+          ${a?`<div style="width:100%;height:120px;border-radius:14px;overflow:hidden;margin-bottom:8px;background-color:#1F3D20;border:1.5px solid rgba(31,61,32,0.15);box-shadow:0 4px 10px rgba(0,0,0,0.1);">
                 <img src="${i||`/images/logo-plantGuardian.jpeg`}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:100%;object-fit:cover;display:block;"/>
-               </div>`:`<div style="background-color:rgba(226,225,196,0.4);border:1.5px dashed #8B6A4C;border-radius:12px;padding:10px 12px;text-align:center;margin-bottom:8px;font-size:11px;color:#6B6B55;font-style:italic;word-break:break-word;overflow-wrap:break-word;box-sizing:border-box;">
+               </div>`:`<div style="background-color:rgba(226,225,196,0.45);border:1.5px dashed #8B6A4C;border-radius:14px;padding:10px 12px;text-align:center;margin-bottom:8px;font-size:11px;color:#6B6B55;font-style:italic;word-break:break-word;overflow-wrap:break-word;box-sizing:border-box;">
                 ${p}
                </div>`}
 
           ${a?``:g}
 
-          ${a?`<button onclick="window.openViewSightingModal(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:center;gap:4px;"><span>📖</span> <span>${d} — ${y}</span></button>`:_?`<button id="discover-btn-${e.id}" onclick="window.discoverPlantFromMap(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:Baloo 2;font-weight:bold;font-size:12px;padding:7px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,0.2);">${u}</button>`:`<button disabled style="width:100%;background-color:#9CA3AF;color:#FFFFFF;font-family:Baloo 2;font-weight:bold;font-size:11px;padding:7px 0;border-radius:9999px;border:none;cursor:not-allowed;box-shadow:none;">${v}</button>`}
+          ${a?`<button onclick="window.openViewSightingModal(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);display:flex;align-items:center;justify-content:center;gap:5px;transition:transform 0.15s ease;"><span>📖</span> <span>${d} — ${y}</span></button>`:_?`<button id="discover-btn-${e.id}" onclick="window.discoverPlantFromMap(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);transition:transform 0.15s ease;">${u}</button>`:`<button disabled style="width:100%;background-color:#9CA3AF;color:#FFFFFF;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:11px;padding:8px 0;border-radius:9999px;border:none;cursor:not-allowed;box-shadow:none;">${v}</button>`}
         </div>
       `}else{let r=t.edit_data_button||`✏️ Edit Data Tumbuhan`,a=t.status_label||`Status`,o=t.sighting_tag||`TEMUAN RANGER`,s=t.uploader_label||`Ranger Pengunggah`,c=t.edit_rights_lock||`🔒 Hak Edit: Pembuat / Admin`,l=t.view_detail_flora||`📖 Lihat Detail Flora`,u=e.ranger?.name||e.ranger_name||`Ranger`,d=window.CURRENT_USER_ID,f=this.userRole===`admin`||d&&e.ranger_id==d;m=`
-        <div style="font-family:Nunito,sans-serif;max-width:215px;color:#2A2A22;padding:4px;box-sizing:border-box;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:4px;">
-            <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;white-space:nowrap;">${o}</span>
-            <span style="font-size:10px;color:#6B6B55;font-weight:bold;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px;" title="${s}: ${u}">👤 ${u}</span>
+        <div style="font-family:'Nunito',sans-serif;width:235px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;gap:6px;">
+            <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
+              ${o}
+            </span>
+            <span style="font-size:10px;color:#1F3D20;background-color:#E2E1C4;font-weight:700;padding:1.5px 7px;border-radius:9999px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px;" title="${s}: ${u}">
+              👤 ${u}
+            </span>
           </div>
 
-          <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:15px;margin:2px 0 4px 0;color:#1F3D20;word-break:break-word;">${n}</h4>
+          <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:16px;margin:0 0 6px 0;color:#1F3D20;word-break:break-word;line-height:1.25;">
+            ${n}
+          </h4>
           
-          <div style="width:100%;height:110px;border-radius:12px;overflow:hidden;margin-bottom:6px;background-color:#1F3D20;border:1px solid rgba(31,61,32,0.15);">
+          <div style="width:100%;height:120px;border-radius:14px;overflow:hidden;margin-bottom:8px;background-color:#1F3D20;border:1.5px solid rgba(31,61,32,0.15);box-shadow:0 4px 10px rgba(0,0,0,0.1);">
             <img src="${i||`/images/logo-plantGuardian.jpeg`}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" style="width:100%;height:100%;object-fit:cover;display:block;" />
           </div>
           
-          <div style="font-size:10.5px;color:#6B6B55;margin:0 0 6px 0;line-height:1.3;">
-            <span style="display:block;">${a}: <strong style="color:#1F3D20;">${e.verification_status}</strong></span>
-            <span style="display:block;">${s}: <strong style="color:#8B6A4C;">${u}</strong></span>
+          <div style="font-size:10.5px;color:#6B6B55;margin:0 0 8px 0;line-height:1.4;background-color:rgba(226,225,196,0.35);padding:6px 8px;border-radius:8px;border:1px solid rgba(31,61,32,0.08);">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span>${a}:</span>
+              <strong style="color:#1F3D20;text-transform:capitalize;">${e.verification_status}</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:2px;">
+              <span>${s}:</span>
+              <strong style="color:#8B6A4C;">${u}</strong>
+            </div>
           </div>
 
-          <div style="display:flex;flex-direction:column;gap:5px;margin-top:6px;">
-            <button onclick="window.openViewSightingModal(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:4px;">
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <button onclick="window.openViewSightingModal(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(31,61,32,0.2);display:flex;align-items:center;justify-content:center;gap:4px;">
               <span>${l}</span>
             </button>
 
-            ${f?`<button onclick="window.openEditSightingModal(${e.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);">
+            ${f?`<button onclick="window.openEditSightingModal(${e.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(139,106,76,0.2);">
                   ${r}
-                 </button>`:`<div style="width:100%;background-color:#E2E1C4;color:#6B6B55;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:10px;padding:5px 6px;border-radius:9999px;text-align:center;border:1px solid rgba(31,61,32,0.15);box-sizing:border-box;">
+                 </button>`:`<div style="width:100%;background-color:#E2E1C4;color:#6B6B55;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:10px;padding:5.5px 6px;border-radius:9999px;text-align:center;border:1px solid rgba(31,61,32,0.15);box-sizing:border-box;">
                   ${c}
                  </div>`}
           </div>

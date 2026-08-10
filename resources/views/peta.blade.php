@@ -12,39 +12,42 @@
 @endpush
 
 @section('content')
-<div class="space-y-4 sm:space-y-6 w-full">
+<div class="space-y-3 sm:space-y-4 w-full">
     <!-- Header -->
-    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
-        <div>
-            <span class="text-xs font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('map.radar_exploration') }}</span>
-            <h1 class="font-baloo font-extrabold text-2xl sm:text-3xl text-[#1F3D20]">
-                {{ in_array(auth()->user()->role, ['ranger', 'admin']) ? __('map.heading_ranger') : __('map.heading_viewer') }}
-            </h1>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4 px-1">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-[#1F3D20] text-[#F5F4DA] flex items-center justify-center font-baloo font-bold text-xl shadow-md border border-[#F5F4DA]/20 shrink-0">
+                🗺️
+            </div>
+            <div>
+                <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-widest">{{ __('map.radar_exploration') }}</span>
+                <h1 class="font-baloo font-extrabold text-xl sm:text-2xl text-[#1F3D20] leading-none">
+                    {{ in_array(auth()->user()->role, ['ranger', 'admin']) ? __('map.heading_ranger') : __('map.heading_viewer') }}
+                </h1>
+            </div>
         </div>
-        <div class="px-3 py-1 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-extrabold text-xs self-start sm:self-auto shadow-xs">
+        <div class="px-3.5 py-1 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-extrabold text-xs self-start sm:self-auto shadow-sm border border-[#F5F4DA]/20">
             {{ auth()->user()->role === 'admin' ? __('map.mode_admin') : (auth()->user()->role === 'ranger' ? __('map.mode_ranger') : __('map.mode_viewer')) }}
         </div>
     </div>
 
     <!-- Map Container Container (Responsive Full-Width & Dynamic Screen Height) -->
-    <div class="relative w-full h-[64vh] sm:h-[74vh] lg:h-[78vh] min-h-[420px] max-h-[780px] rounded-3xl overflow-hidden shadow-lg card-gg p-1 border-2 border-[#1F3D20]/15">
+    <div class="relative w-full h-[calc(100vh-200px)] sm:h-[calc(100vh-210px)] min-h-[560px] max-h-[860px] rounded-3xl overflow-hidden shadow-2xl card-gg p-1 border-2 border-[#1F3D20]/20">
         <div id="leaflet-map" class="w-full h-full rounded-2xl z-0"></div>
 
         <!-- Floating Recenter / Auto-Follow GPS Button -->
-        <button id="recenter-gps-btn" class="absolute top-4 right-4 z-20 px-3.5 py-2 bg-[#1F3D20] text-[#F5F4DA] backdrop-blur-md rounded-full border border-[#F5F4DA]/30 shadow-xl font-baloo font-bold text-xs flex items-center gap-1.5 hover:bg-[#2D4A2E] active:scale-95 transition-all cursor-pointer">
+        <button id="recenter-gps-btn" class="absolute top-4 right-4 z-20 px-4 py-2.5 bg-[#1F3D20]/95 text-[#F5F4DA] backdrop-blur-md rounded-full border border-[#F5F4DA]/30 shadow-2xl font-baloo font-bold text-xs flex items-center gap-2 hover:bg-[#2D4A2E] active:scale-95 transition-all cursor-pointer">
             <span class="animate-pulse text-sm">🎯</span>
             <span id="recenter-gps-label">{{ __('map.auto_follow_on') }}</span>
         </button>
 
         <!-- Floating Action Controls - FOR RANGER & ADMIN ROLES -->
         @if(in_array(auth()->user()->role, ['ranger', 'admin']))
-            <div class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 px-3 py-1.5 bg-[#1F3D20]/90 backdrop-blur-md rounded-full border border-[#F5F4DA]/20 shadow-2xl flex items-center gap-2 sm:gap-3 max-w-[95vw] sm:max-w-none">
-                <button id="open-ar-btn" class="px-3.5 py-2 rounded-full bg-[#F5F4DA] text-[#1F3D20] font-baloo font-extrabold text-xs flex items-center gap-1.5 shadow-sm hover:bg-white transition-all cursor-pointer whitespace-nowrap active:scale-95">
+            <div class="absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-20 px-3.5 py-2 bg-[#1F3D20]/95 backdrop-blur-md rounded-full border border-[#F5F4DA]/20 shadow-2xl flex items-center gap-2 sm:gap-3 max-w-[95vw] sm:max-w-none">
+                <button id="open-ar-btn" class="px-4 py-2 rounded-full bg-[#F5F4DA] text-[#1F3D20] font-baloo font-extrabold text-xs flex items-center gap-2 shadow-md hover:bg-white transition-all cursor-pointer whitespace-nowrap active:scale-95">
                     <span>📷</span>
                     <span>{{ __('map.open_ar_camera') }}</span>
                 </button>
-
-
             </div>
         @endif
     </div>

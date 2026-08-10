@@ -56,6 +56,13 @@ return [
     'col_role_action' => 'Aksi Kontrol Peran',
     'detail_btn' => '🔍 Detail',
     'save_btn' => 'Simpan',
+    'btn_reset_password' => '🔑 Reset Pass',
+    'btn_delete_user' => '🗑️ Hapus',
+    'reset_password_modal_title' => 'Reset Password Pengguna',
+    'reset_password_modal_sub' => 'Masukkan password baru untuk pengguna ini.',
+    'new_password_label' => 'Password Baru',
+    'confirm_password_label' => 'Konfirmasi Password Baru',
+    'delete_user_confirm' => 'Apakah Anda yakin ingin MENGHAPUS akun pengguna ini secara permanen?',
     'no_users_found' => 'Tidak ada pengguna yang ditemukan.',
 
     // Reports Moderation Table

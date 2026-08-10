@@ -86,6 +86,28 @@ class AdminService
     }
 
     /**
+     * Reset a user's password directly as Admin.
+     */
+    public function resetUserPassword(User $targetUser, string $newPassword): void
+    {
+        $targetUser->update([
+            'password' => \Illuminate\Support\Facades\Hash::make($newPassword),
+        ]);
+    }
+
+    /**
+     * Delete a user account from the platform.
+     */
+    public function deleteUser(User $targetUser, User $currentAdmin): void
+    {
+        if ($targetUser->id === $currentAdmin->id) {
+            throw new Exception('Anda tidak dapat menghapus akun Administrator Anda sendiri.');
+        }
+
+        $targetUser->delete();
+    }
+
+    /**
      * Get detailed activity and plant records for a specific user (Viewer or Ranger).
      */
     public function getUserActivityDetails(User $targetUser): array

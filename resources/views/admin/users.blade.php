@@ -6,11 +6,25 @@
 @section('content')
 <div class="space-y-6 max-w-7xl mx-auto py-2">
 
-    <!-- Alert Success Notification -->
+    <!-- Alert Success & Error Notifications -->
     @if(session('success'))
         <div class="p-4 rounded-2xl bg-[#27AE60]/15 border border-[#27AE60]/30 text-[#1F3D20] font-baloo font-bold text-sm flex items-center gap-3 shadow-xs">
             <span class="text-xl">✅</span>
             <span>{{ session('success') }}</span>
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="p-4 rounded-2xl bg-[#C0392B]/15 border border-[#C0392B]/30 text-[#C0392B] font-baloo font-bold text-sm space-y-1 shadow-xs">
+            <div class="flex items-center gap-2">
+                <span class="text-xl">⚠️</span>
+                <span>Terdapat kesalahan pada formulir:</span>
+            </div>
+            <ul class="list-disc list-inside text-xs font-nunito">
+                @foreach($errors->all() as $err)
+                    <li>{{ $err }}</li>
+                @endforeach
+            </ul>
         </div>
     @endif
 
@@ -119,23 +133,42 @@
                                 {{ $userItem->created_at ? $userItem->created_at->format('d M Y H:i') : '-' }}
                             </td>
 
-                            <!-- Role Change Form & Detail Action -->
+                            <!-- Role Change Form & Action Buttons -->
                             <td class="py-3.5 px-4 text-right">
-                                <div class="inline-flex items-center gap-2">
-                                    <button type="button" onclick='openUserDetailModal(@json($userItem))' class="px-2.5 py-1 rounded-lg bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors cursor-pointer shadow-xs">
+                                <div class="inline-flex items-center gap-1.5 flex-wrap justify-end">
+                                    <!-- Action 1: View User Detail -->
+                                    <button type="button" onclick='openUserDetailModal(@json($userItem))' class="px-2.5 py-1 rounded-lg bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors cursor-pointer shadow-2xs">
                                         {{ __('admin.detail_btn') }}
                                     </button>
-                                    <form method="POST" action="{{ route('admin.users.update-role', $userItem->id) }}" class="inline-flex items-center gap-1.5">
+
+                                    <!-- Action 2: Reset Password Button -->
+                                    <button type="button" onclick='openResetPasswordModal(@json($userItem))' class="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-800 font-baloo font-bold text-xs hover:bg-amber-600 hover:text-white transition-colors cursor-pointer shadow-2xs">
+                                        {{ __('admin.btn_reset_password') }}
+                                    </button>
+
+                                    <!-- Action 3: Change Role Form -->
+                                    <form method="POST" action="{{ route('admin.users.update-role', $userItem->id) }}" class="inline-flex items-center gap-1">
                                         @csrf
                                         <select name="role" class="px-2 py-1 rounded-lg border border-[#1F3D20]/20 bg-[#FBFAF0] font-baloo font-bold text-xs text-[#1F3D20] focus:outline-none">
                                             <option value="viewer" {{ $userItem->role === 'viewer' ? 'selected' : '' }}>Viewer</option>
                                             <option value="ranger" {{ $userItem->role === 'ranger' ? 'selected' : '' }}>Ranger</option>
                                             <option value="admin" {{ $userItem->role === 'admin' ? 'selected' : '' }}>Admin</option>
                                         </select>
-                                        <button type="submit" class="px-3 py-1 rounded-lg bg-[#1F3D20] hover:bg-[#2D4A2E] text-[#F5F4DA] font-baloo font-bold text-xs transition-colors cursor-pointer shadow-xs">
+                                        <button type="submit" class="px-2.5 py-1 rounded-lg bg-[#1F3D20] hover:bg-[#2D4A2E] text-[#F5F4DA] font-baloo font-bold text-xs transition-colors cursor-pointer shadow-2xs">
                                             {{ __('admin.save_btn') }}
                                         </button>
                                     </form>
+
+                                    <!-- Action 4: Delete User (If not self) -->
+                                    @if($userItem->id !== auth()->id())
+                                        <form method="POST" action="{{ route('admin.users.destroy', $userItem->id) }}" class="inline" onsubmit="return confirm('{{ __('admin.delete_user_confirm') }}');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="px-2.5 py-1 rounded-lg bg-[#C0392B] hover:bg-red-700 text-white font-baloo font-bold text-xs transition-colors cursor-pointer shadow-2xs">
+                                                {{ __('admin.btn_delete_user') }}
+                                            </button>
+                                        </form>
+                                    @endif
                                 </div>
                             </td>
                         </tr>
@@ -154,6 +187,49 @@
         <div class="pt-2">
             {{ $users->links() }}
         </div>
+    </div>
+</div>
+
+<!-- Reset Password Modal Component -->
+<div id="reset-password-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs hidden">
+    <div class="card-gg p-6 w-full max-w-md space-y-4 bg-[#FBFAF0] border-2 border-[#1F3D20]/20 shadow-2xl relative">
+        <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3">
+            <h3 class="font-baloo font-extrabold text-lg text-[#1F3D20] flex items-center gap-2">
+                <span>🔑</span>
+                <span>{{ __('admin.reset_password_modal_title') }}</span>
+            </h3>
+            <button type="button" onclick="closeResetPasswordModal()" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] font-baloo font-extrabold flex items-center justify-center hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors cursor-pointer">
+                ✕
+            </button>
+        </div>
+
+        <form id="reset-password-form" method="POST" action="" class="space-y-4 font-nunito text-xs">
+            @csrf
+            <div class="p-3 rounded-xl bg-white border border-[#1F3D20]/10 space-y-1">
+                <span class="text-[10px] font-baloo font-bold text-[#6B6B55] uppercase block">Target Pengguna:</span>
+                <div id="reset-modal-target-name" class="font-baloo font-bold text-sm text-[#1F3D20]">Name</div>
+                <div id="reset-modal-target-email" class="text-[11px] text-[#6B6B55]">email@example.com</div>
+            </div>
+
+            <div class="space-y-1">
+                <label for="new_password" class="font-baloo font-bold text-[#1F3D20] block">{{ __('admin.new_password_label') }}</label>
+                <input type="password" name="password" id="new_password" required minlength="8" placeholder="Minimal 8 karakter..." class="w-full px-3 py-2 rounded-xl border border-[#1F3D20]/20 bg-white font-nunito text-xs text-[#1F3D20] focus:outline-none focus:border-[#1F3D20] shadow-xs" />
+            </div>
+
+            <div class="space-y-1">
+                <label for="password_confirmation" class="font-baloo font-bold text-[#1F3D20] block">{{ __('admin.confirm_password_label') }}</label>
+                <input type="password" name="password_confirmation" id="password_confirmation" required minlength="8" placeholder="Ulangi password baru..." class="w-full px-3 py-2 rounded-xl border border-[#1F3D20]/20 bg-white font-nunito text-xs text-[#1F3D20] focus:outline-none focus:border-[#1F3D20] shadow-xs" />
+            </div>
+
+            <div class="pt-3 border-t border-[#1F3D20]/10 flex items-center justify-end gap-2">
+                <button type="button" onclick="closeResetPasswordModal()" class="px-4 py-2 rounded-xl bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs hover:bg-[#1F3D20]/10 transition-colors cursor-pointer">
+                    Batal
+                </button>
+                <button type="submit" class="px-4 py-2 rounded-xl bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs hover:bg-[#2D4A2E] transition-colors cursor-pointer shadow-xs">
+                    Simpan Password Baru
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -238,6 +314,19 @@
 </div>
 
 <script>
+    function openResetPasswordModal(user) {
+        document.getElementById('reset-modal-target-name').textContent = user.name || '-';
+        document.getElementById('reset-modal-target-email').textContent = user.email || '-';
+        document.getElementById('reset-password-form').action = `/admin/users/${user.id}/reset-password`;
+        document.getElementById('new_password').value = '';
+        document.getElementById('password_confirmation').value = '';
+        document.getElementById('reset-password-modal').classList.remove('hidden');
+    }
+
+    function closeResetPasswordModal() {
+        document.getElementById('reset-password-modal').classList.add('hidden');
+    }
+
     function openUserDetailModal(user) {
         document.getElementById('modal-avatar').textContent = user.name ? user.name.substring(0, 2).toUpperCase() : 'US';
         document.getElementById('modal-user-name').textContent = user.name || '-';

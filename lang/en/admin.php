@@ -56,6 +56,13 @@ return [
     'col_role_action' => 'Role Control Action',
     'detail_btn' => '🔍 Details',
     'save_btn' => 'Save',
+    'btn_reset_password' => '🔑 Reset Pass',
+    'btn_delete_user' => '🗑️ Delete',
+    'reset_password_modal_title' => 'Reset User Password',
+    'reset_password_modal_sub' => 'Enter a new password for this user.',
+    'new_password_label' => 'New Password',
+    'confirm_password_label' => 'Confirm New Password',
+    'delete_user_confirm' => 'Are you sure you want to PERMANENTLY DELETE this user account?',
     'no_users_found' => 'No users found.',
 
     // Reports Moderation Table

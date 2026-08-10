@@ -50,6 +50,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/users', [\App\Http\Controllers\AdminController::class, 'users'])->name('users');
     Route::get('/users/{user}/details', [\App\Http\Controllers\AdminController::class, 'userDetails'])->name('users.details');
     Route::post('/users/{user}/role', [\App\Http\Controllers\AdminController::class, 'updateRole'])->name('users.update-role');
+    Route::post('/users/{user}/reset-password', [\App\Http\Controllers\AdminController::class, 'resetPassword'])->name('users.reset-password');
+    Route::delete('/users/{user}', [\App\Http\Controllers\AdminController::class, 'destroyUser'])->name('users.destroy');
     Route::get('/reports', [\App\Http\Controllers\AdminController::class, 'reports'])->name('reports');
     Route::post('/reports/{report}/resolve', [\App\Http\Controllers\AdminController::class, 'resolveReport'])->name('reports.resolve');
     Route::get('/monitoring', [\App\Http\Controllers\AdminController::class, 'monitoring'])->name('monitoring');

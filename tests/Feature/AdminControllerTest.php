@@ -48,4 +48,31 @@ class AdminControllerTest extends TestCase
             'role' => 'ranger',
         ]);
     }
+
+    public function test_admin_can_reset_user_password(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $targetUser = User::factory()->create(['role' => 'viewer']);
+
+        $response = $this->actingAs($admin)->post("/admin/users/{$targetUser->id}/reset-password", [
+            'password' => 'newpassword123',
+            'password_confirmation' => 'newpassword123',
+        ]);
+
+        $response->assertRedirect();
+        $this->assertTrue(\Illuminate\Support\Facades\Hash::check('newpassword123', $targetUser->fresh()->password));
+    }
+
+    public function test_admin_can_delete_user_account(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $targetUser = User::factory()->create(['role' => 'viewer']);
+
+        $response = $this->actingAs($admin)->delete("/admin/users/{$targetUser->id}");
+
+        $response->assertRedirect();
+        $this->assertDatabaseMissing('users', [
+            'id' => $targetUser->id,
+        ]);
+    }
 }

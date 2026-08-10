@@ -108,6 +108,38 @@ class AdminController extends Controller
     }
 
     /**
+     * Reset a user's password directly as Admin.
+     */
+    public function resetPassword(Request $request, User $user): RedirectResponse
+    {
+        $validated = $request->validate([
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        try {
+            $this->adminService->resetUserPassword($user, $validated['password']);
+
+            return redirect()->back()->with('success', "Password pengguna {$user->name} berhasil diperbarui.");
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(['password' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Delete a user account from the system.
+     */
+    public function destroyUser(Request $request, User $user): RedirectResponse
+    {
+        try {
+            $this->adminService->deleteUser($user, $request->user());
+
+            return redirect()->back()->with('success', "Akun pengguna {$user->name} telah berhasil dihapus dari sistem.");
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors(['user' => $e->getMessage()]);
+        }
+    }
+
+    /**
      * Resolve a reported plant sighting (Delete marker sighting or Dismiss report).
      */
     public function resolveReport(Request $request, int $reportId): RedirectResponse

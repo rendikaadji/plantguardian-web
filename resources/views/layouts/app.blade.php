@@ -69,11 +69,11 @@
                     @auth
                         @if(auth()->user()->isAdmin())
                             <a href="{{ route('admin.dashboard') }}" class="px-3.5 py-1.5 rounded-full bg-[#FFD700] text-[#1F3D20] font-baloo font-extrabold text-xs shadow-xs hover:bg-[#FFD700]/90 transition-colors">
-                                👑 MODE ADMIN
+                                👑 {{ __('app.mode_admin') }}
                             </a>
                         @elseif(auth()->user()->role === 'ranger')
                             <a href="{{ route('ranger.dashboard') }}" class="px-3.5 py-1.5 rounded-full bg-[#8B6A4C] text-[#F5F4DA] font-baloo font-bold text-xs hover:bg-[#8B6A4C]/90 transition-colors shadow-xs">
-                                🌿 MODE RANGER
+                                🌿 {{ __('app.mode_ranger') }}
                             </a>
                         @else
                             <!-- NC (Nature Coin) Pill -->

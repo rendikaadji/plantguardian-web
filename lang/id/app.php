@@ -8,9 +8,9 @@ return [
     'exp' => 'EXP',
     'nc' => 'NC',
     'nav' => [
-        'home' => 'Beranda',
-        'admin' => 'Admin',
-        'map' => 'Peta',
+        'home' => 'Beranda Kebun',
+        'admin' => 'Admin Dashboard',
+        'map' => 'Peta Spesies',
         'plants' => 'Tumbuhan',
         'minigame' => 'Mini Game',
         'achievement' => 'Pencapaian',

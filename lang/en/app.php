@@ -8,9 +8,9 @@ return [
     'exp' => 'EXP',
     'nc' => 'NC',
     'nav' => [
-        'home' => 'Home',
-        'admin' => 'Admin',
-        'map' => 'Map',
+        'home' => 'Garden Home',
+        'admin' => 'Admin Dashboard',
+        'map' => 'Species Map',
         'plants' => 'Plants',
         'minigame' => 'Mini Game',
         'achievement' => 'Achievement',

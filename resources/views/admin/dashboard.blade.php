@@ -111,9 +111,9 @@
         <div class="card-gg p-5 bg-[#FBFAF0] border border-[#1F3D20]/15 space-y-3 shadow-sm">
             <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-2.5">
                 <h3 class="font-baloo font-bold text-sm text-[#1F3D20] flex items-center gap-1.5">
-                    <span>📊</span> <span>Distribusi Peran Pengguna</span>
+                    <span>📊</span> <span>{{ __('admin.user_distribution_title') }}</span>
                 </h3>
-                <span class="text-[10px] font-mono-code font-bold text-[#6B6B55]">Real-time</span>
+                <span class="text-[10px] font-mono-code font-bold text-[#6B6B55]">{{ __('admin.chart_realtime') }}</span>
             </div>
             <div class="h-48 relative">
                 <canvas id="userRoleChart"></canvas>
@@ -124,9 +124,9 @@
         <div class="card-gg p-5 bg-[#FBFAF0] border border-[#1F3D20]/15 space-y-3 shadow-sm">
             <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-2.5">
                 <h3 class="font-baloo font-bold text-sm text-[#1F3D20] flex items-center gap-1.5">
-                    <span>📈</span> <span>Ringkasan Katalog & Spesimen</span>
+                    <span>📈</span> <span>{{ __('admin.catalog_sightings_summary_title') }}</span>
                 </h3>
-                <span class="text-[10px] font-mono-code font-bold text-[#6B6B55]">Flora Data</span>
+                <span class="text-[10px] font-mono-code font-bold text-[#6B6B55]">{{ __('admin.chart_flora_data') }}</span>
             </div>
             <div class="h-48 relative">
                 <canvas id="sightingsChart"></canvas>
@@ -138,10 +138,10 @@
             <div>
                 <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-2.5">
                     <h3 class="font-baloo font-bold text-sm text-[#1F3D20] flex items-center gap-1.5">
-                        <span>⚠️</span> <span>Deteksi Anomali & Isu Sistem</span>
+                        <span>⚠️</span> <span>{{ __('admin.anomaly_title') }}</span>
                     </h3>
                     <span class="px-2 py-0.5 rounded-full bg-[#27AE60]/15 text-[#27AE60] font-baloo font-extrabold text-[10px]">
-                        100% Operasional
+                        {{ __('admin.system_operational') }}
                     </span>
                 </div>
 
@@ -151,12 +151,12 @@
                         <div class="flex items-center gap-2">
                             <span class="text-sm">🚩</span>
                             <div>
-                                <div class="font-baloo font-bold text-xs text-red-800">Laporan Temuan Peta</div>
-                                <div class="text-[10px] text-red-600 font-nunito">Membutuhkan peninjauan admin</div>
+                                <div class="font-baloo font-bold text-xs text-red-800">{{ __('admin.report_issue_title') }}</div>
+                                <div class="text-[10px] text-red-600 font-nunito">{{ __('admin.report_issue_sub') }}</div>
                             </div>
                         </div>
                         <span class="px-2.5 py-1 rounded-full bg-red-600 text-white font-baloo font-extrabold text-xs shadow-2xs group-hover:scale-105 transition-transform">
-                            {{ $stats['pending_reports'] }} Pending
+                            {{ $stats['pending_reports'] }} {{ __('admin.pending') }}
                         </span>
                     </a>
 
@@ -165,8 +165,8 @@
                         <div class="flex items-center gap-2">
                             <span class="text-sm">⭐</span>
                             <div>
-                                <div class="font-baloo font-bold text-xs text-[#1F3D20]">Total EXP Terbit</div>
-                                <div class="text-[10px] text-[#6B6B55] font-nunito">Akumulasi seluruh pemain</div>
+                                <div class="font-baloo font-bold text-xs text-[#1F3D20]">{{ __('admin.exp_issued_title') }}</div>
+                                <div class="text-[10px] text-[#6B6B55] font-nunito">{{ __('admin.exp_issued_sub') }}</div>
                             </div>
                         </div>
                         <span class="font-baloo font-extrabold text-sm text-[#7D5BA6]">
@@ -179,10 +179,10 @@
             <!-- Quick Action Buttons -->
             <div class="pt-3 border-t border-[#1F3D20]/10 flex items-center gap-2">
                 <a href="{{ route('admin.reports') }}" class="flex-1 py-2 rounded-xl bg-[#C0392B] text-white font-baloo font-bold text-xs text-center hover:bg-red-700 transition-colors shadow-2xs">
-                    🚩 Moderasi Laporan
+                    {{ __('admin.action_moderation') }}
                 </a>
                 <a href="{{ route('admin.users') }}" class="flex-1 py-2 rounded-xl bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs text-center hover:bg-[#2D4A2E] transition-colors shadow-2xs">
-                    👥 Manajemen User
+                    {{ __('admin.action_user_mgmt') }}
                 </a>
             </div>
         </div>
@@ -195,12 +195,12 @@
             <div>
                 <h2 class="font-baloo font-extrabold text-xl text-[#1F3D20] flex items-center gap-2">
                     <span>📍</span>
-                    <span>Ringkasan Temuan Spesies Terbaru</span>
+                    <span>{{ __('admin.recent_sightings_title') }}</span>
                 </h2>
-                <p class="font-nunito text-xs text-[#6B6B55]">Aktivitas pemindaian flora terbaru dari seluruh Ranger di lapangan.</p>
+                <p class="font-nunito text-xs text-[#6B6B55]">{{ __('admin.recent_sightings_sub') }}</p>
             </div>
             <a href="{{ route('admin.monitoring') }}" class="px-3.5 py-1.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs hover:bg-[#2D4A2E] transition-colors shadow-2xs">
-                Lihat Selengkapnya &rarr;
+                {!! __('admin.view_all') !!}
             </a>
         </div>
 
@@ -230,7 +230,7 @@
                                 {{ $sighting->species ? $sighting->species->scientific_name : '-' }}
                             </p>
                             <p class="text-[10px] text-[#8B6A4C] font-semibold mt-0.5">
-                                Dipindai: {{ $sighting->ranger ? $sighting->ranger->name : 'System' }}
+                                {{ __('admin.scanned_by') }}: {{ $sighting->ranger ? $sighting->ranger->name : 'System' }}
                             </p>
                         </div>
                     </div>
@@ -242,7 +242,7 @@
                 </div>
             @empty
                 <div class="col-span-full text-center py-8 text-[#6B6B55] font-baloo font-bold text-sm bg-white rounded-2xl border border-[#1F3D20]/10 p-4">
-                    Belum ada log temuan spesies tercatat.
+                    {{ __('admin.no_sightings_log') }}
                 </div>
             @endforelse
         </div>
@@ -286,9 +286,9 @@
             new Chart(ctxSightings, {
                 type: 'bar',
                 data: {
-                    labels: ['Katalog Spesies', 'Temuan Peta'],
+                    labels: ['{{ __('admin.chart_catalog_label') }}', '{{ __('admin.chart_sightings_label') }}'],
                     datasets: [{
-                        label: 'Jumlah Item',
+                        label: '{{ __('admin.chart_flora_data') }}',
                         data: [{{ $stats['total_species_catalog'] }}, {{ $stats['total_sightings'] }}],
                         backgroundColor: ['#27AE60', '#D96C63'],
                         borderRadius: 8

@@ -29,7 +29,7 @@ class AdminControllerTest extends TestCase
         $response = $this->actingAs($admin)->get('/admin/dashboard');
 
         $response->assertStatus(200)
-            ->assertSee('Dashboard Administrator')
+            ->assertSee('Administrator Dashboard')
             ->assertSee('Manajemen');
     }
 

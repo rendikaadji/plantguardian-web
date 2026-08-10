@@ -240,6 +240,7 @@
                 <span id="view-conservation-status" class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">COMMON</span>
                 <h3 id="view-common-name" class="font-baloo font-extrabold text-2xl text-[#1F3D20] mt-1">Nama Tumbuhan</h3>
                 <p id="view-scientific-name" class="font-nunito text-xs text-[#6B6B55] italic">Scientific Name</p>
+                <span id="view-uploader-badge" class="inline-block mt-1 text-[10px] font-nunito font-bold text-[#8B6A4C] bg-[#8B6A4C]/15 px-2.5 py-0.5 rounded-full">👤 Ranger: ...</span>
             </div>
             <button id="close-view-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors">&times;</button>
         </div>
@@ -291,6 +292,12 @@
 
             const sciNameEl = document.querySelector('#view-scientific-name');
             if (sciNameEl) sciNameEl.textContent = species.scientific_name || '';
+
+            const uploaderEl = document.querySelector('#view-uploader-badge');
+            if (uploaderEl) {
+                const uploaderName = sighting.ranger?.name || sighting.ranger_name || 'Ranger';
+                uploaderEl.textContent = `👤 Pengunggah: Ranger ${uploaderName}`;
+            }
 
             const statusEl = document.querySelector('#view-conservation-status');
             if (statusEl) {

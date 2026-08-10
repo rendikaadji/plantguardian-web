@@ -470,11 +470,17 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
             <span style="display:block;">Ranger Pengunggah: <strong style="color:#8B6A4C;">${b}</strong></span>
           </div>
 
-          ${S?`<button onclick="window.openEditSightingModal(${e.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);">
-                ${v}
-               </button>`:`<div style="width:100%;background-color:#E2E1C4;color:#6B6B55;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:10px;padding:5.5px 6px;border-radius:9999px;text-align:center;border:1px solid rgba(31,61,32,0.15);box-sizing:border-box;">
-                🔒 Hak Edit: Pembuat / Admin
-               </div>`}
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:6px;">
+            <button onclick="window.openViewSightingModal(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:4px;">
+              <span>📖</span> <span>Lihat Detail Flora</span>
+            </button>
+
+            ${S?`<button onclick="window.openEditSightingModal(${e.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);">
+                  ${v}
+                 </button>`:`<div style="width:100%;background-color:#E2E1C4;color:#6B6B55;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:10px;padding:5px 6px;border-radius:9999px;text-align:center;border:1px solid rgba(31,61,32,0.15);box-sizing:border-box;">
+                  🔒 Hak Edit: Pembuat / Admin
+                 </div>`}
+          </div>
         </div>
       `}L.marker([e.latitude,e.longitude],{icon:d,riseOnHover:!0}).addTo(this.markersGroup).bindPopup(f)}},c=class{constructor(e={}){this.containerElement=e.containerElement||document.querySelector(`#shop-container`),this.catalog=[],this.inventory=[],this.userCoin=0,this.activeCategory=`all`,this.currentAvatar=`default`}async init(){await this.loadShopData(),this.bindEvents()}async loadShopData(){try{let t=await e.get(`/shop`);this.catalog=t.catalog||[],this.inventory=t.inventory||[],this.userCoin=t.user_coin||0,this.currentAvatar=t.current_avatar||`default`,typeof window.updateUserCoin==`function`&&window.updateUserCoin(this.userCoin),this.render()}catch(e){console.error(`Gagal memuat data Shop:`,e),this.containerElement&&(this.containerElement.innerHTML=`
           <div class="text-center py-12 text-[#6B6B55]">

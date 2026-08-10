@@ -99,8 +99,11 @@
                                    <button data-delete-id="${item.id}" class="delete-btn px-3 py-1.5 border border-red-700 text-red-700 font-mono-code text-xs font-bold rounded-xs hover:bg-red-700 hover:text-white transition-all cursor-pointer" style="font-family: 'IBM Plex Mono', monospace;">
                                     🗑️ HAPUS
                                    </button>`
-                                : `<span class="px-3 py-1.5 border border-[#5C574C]/30 text-[#5C574C] font-mono-code text-xs rounded-xs" style="font-family: 'IBM Plex Mono', monospace;">
-                                    🔒 Hak Edit: Pembuat / Admin
+                                : `<button onclick="window.openViewSightingModal(${item.id})" class="px-3 py-1.5 bg-[#1F3D20] text-[#F5F4DA] font-mono-code text-xs font-bold rounded-xs hover:bg-[#2D4A2E] transition-all cursor-pointer" style="font-family: 'IBM Plex Mono', monospace;">
+                                    📖 LIHAT DETAIL
+                                   </button>
+                                   <span class="px-3 py-1.5 border border-[#5C574C]/30 text-[#5C574C] font-mono-code text-xs rounded-xs" style="font-family: 'IBM Plex Mono', monospace;">
+                                    🔒 Pembuat: ${uploaderName}
                                    </span>`
                             }
                         </div>

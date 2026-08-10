@@ -502,14 +502,20 @@ export default class MapManager {
             <span style="display:block;">Ranger Pengunggah: <strong style="color:#8B6A4C;">${uploaderName}</strong></span>
           </div>
 
-          ${isOwnerOrAdmin 
-            ? `<button onclick="window.openEditSightingModal(${sighting.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);">
-                ${editDataBtnText}
-               </button>`
-            : `<div style="width:100%;background-color:#E2E1C4;color:#6B6B55;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:10px;padding:5.5px 6px;border-radius:9999px;text-align:center;border:1px solid rgba(31,61,32,0.15);box-sizing:border-box;">
-                🔒 Hak Edit: Pembuat / Admin
-               </div>`
-          }
+          <div style="display:flex;flex-direction:column;gap:5px;margin-top:6px;">
+            <button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:4px;">
+              <span>📖</span> <span>Lihat Detail Flora</span>
+            </button>
+
+            ${isOwnerOrAdmin 
+              ? `<button onclick="window.openEditSightingModal(${sighting.id})" style="width:100%;background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);">
+                  ${editDataBtnText}
+                 </button>`
+              : `<div style="width:100%;background-color:#E2E1C4;color:#6B6B55;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:10px;padding:5px 6px;border-radius:9999px;text-align:center;border:1px solid rgba(31,61,32,0.15);box-sizing:border-box;">
+                  🔒 Hak Edit: Pembuat / Admin
+                 </div>`
+            }
+          </div>
         </div>
       `;
     }

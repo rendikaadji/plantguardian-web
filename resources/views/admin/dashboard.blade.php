@@ -114,7 +114,93 @@
             </div>
         </div>
 
-    </div> <!-- End Overview -->
+    </div>
+
+    <!-- Visual Data Analytics & Anomaly Detection Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- Chart 1: User Distribution -->
+        <div class="card-gg p-5 bg-[#FBFAF0] border border-[#1F3D20]/15 space-y-3 shadow-sm">
+            <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-2.5">
+                <h3 class="font-baloo font-bold text-sm text-[#1F3D20] flex items-center gap-1.5">
+                    <span>📊</span> <span>Distribusi Peran Pengguna</span>
+                </h3>
+                <span class="text-[10px] font-mono-code font-bold text-[#6B6B55]">Real-time</span>
+            </div>
+            <div class="h-48 relative">
+                <canvas id="userRoleChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Chart 2: Sighting & Verification Status -->
+        <div class="card-gg p-5 bg-[#FBFAF0] border border-[#1F3D20]/15 space-y-3 shadow-sm">
+            <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-2.5">
+                <h3 class="font-baloo font-bold text-sm text-[#1F3D20] flex items-center gap-1.5">
+                    <span>📈</span> <span>Status Verifikasi Temuan</span>
+                </h3>
+                <span class="text-[10px] font-mono-code font-bold text-[#6B6B55]">Flora Data</span>
+            </div>
+            <div class="h-48 relative">
+                <canvas id="sightingsChart"></canvas>
+            </div>
+        </div>
+
+        <!-- Card 3: Anomaly & System Health Hub -->
+        <div class="card-gg p-5 bg-[#FBFAF0] border border-[#1F3D20]/15 space-y-3 flex flex-col justify-between shadow-sm">
+            <div>
+                <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-2.5">
+                    <h3 class="font-baloo font-bold text-sm text-[#1F3D20] flex items-center gap-1.5">
+                        <span>⚠️</span> <span>Deteksi Anomali & Isu Sistem</span>
+                    </h3>
+                    <span class="px-2 py-0.5 rounded-full bg-[#27AE60]/15 text-[#27AE60] font-baloo font-extrabold text-[10px]">
+                        100% Operasional
+                    </span>
+                </div>
+
+                <div class="space-y-2.5 mt-3">
+                    <!-- Issue 1: Pending Reports -->
+                    <a href="#section-reports" class="p-2.5 rounded-xl border border-red-200 bg-red-50/60 flex items-center justify-between hover:bg-red-100/60 transition-colors group">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm">🚩</span>
+                            <div>
+                                <div class="font-baloo font-bold text-xs text-red-800">Laporan Temuan Peta</div>
+                                <div class="text-[10px] text-red-600 font-nunito">Membutuhkan peninjauan admin</div>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-red-600 text-white font-baloo font-extrabold text-xs shadow-2xs group-hover:scale-105 transition-transform">
+                            {{ $stats['pending_reports'] }} Pending
+                        </span>
+                    </a>
+
+                    <!-- Issue 2: Pending Verifications -->
+                    <a href="#section-monitoring" class="p-2.5 rounded-xl border border-amber-200 bg-amber-50/60 flex items-center justify-between hover:bg-amber-100/60 transition-colors group">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm">⏳</span>
+                            <div>
+                                <div class="font-baloo font-bold text-xs text-amber-800">Spesimen Belum Diverifikasi</div>
+                                <div class="text-[10px] text-amber-700 font-nunito">Menunggu konfirmasi Ranger/Admin</div>
+                            </div>
+                        </div>
+                        <span class="px-2.5 py-1 rounded-full bg-amber-600 text-white font-baloo font-extrabold text-xs shadow-2xs group-hover:scale-105 transition-transform">
+                            {{ $stats['pending_verifications'] }} Queue
+                        </span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Action Buttons -->
+            <div class="pt-3 border-t border-[#1F3D20]/10 flex items-center gap-2">
+                <a href="#section-reports" class="flex-1 py-2 rounded-xl bg-[#C0392B] text-white font-baloo font-bold text-xs text-center hover:bg-red-700 transition-colors">
+                    🚩 Tinjau Laporan
+                </a>
+                <a href="#section-users" class="flex-1 py-2 rounded-xl bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs text-center hover:bg-[#2D4A2E] transition-colors">
+                    👥 Kelola User
+                </a>
+            </div>
+        </div>
+
+    </div>
+</div> <!-- End Overview -->
 
     <!-- Section: User Control & Role Management Table -->
     <div id="section-users" class="card-gg p-6 space-y-5">
@@ -601,6 +687,71 @@
         function closeUserDetailModal() {
             document.getElementById('user-detail-modal').classList.add('hidden');
         }
+
+        // Render Data Visualization Charts
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof Chart === 'undefined') return;
+
+            // Chart 1: User Role Distribution (Doughnut Chart)
+            const ctxRole = document.getElementById('userRoleChart');
+            if (ctxRole) {
+                new Chart(ctxRole, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Viewer', 'Ranger', 'Admin'],
+                        datasets: [{
+                            data: [{{ $stats['total_viewers'] }}, {{ $stats['total_rangers'] }}, {{ $stats['total_admins'] }}],
+                            backgroundColor: ['#4C8C4A', '#8B6A4C', '#FFD700'],
+                            borderWidth: 3,
+                            borderColor: '#FBFAF0'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { font: { family: 'Baloo 2', size: 11, weight: 'bold' } }
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Chart 2: Sightings Status Breakdown (Bar Chart)
+            const ctxSightings = document.getElementById('sightingsChart');
+            if (ctxSightings) {
+                new Chart(ctxSightings, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Terverifikasi', 'Pending', 'Ditolak'],
+                        datasets: [{
+                            label: 'Jumlah Spesimen',
+                            data: [{{ $stats['verified_sightings'] }}, {{ $stats['pending_verifications'] }}, {{ $stats['rejected_sightings'] }}],
+                            backgroundColor: ['#27AE60', '#D96C63', '#C0392B'],
+                            borderRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: { precision: 0, font: { family: 'Nunito', size: 10 } }
+                            },
+                            x: {
+                                ticks: { font: { family: 'Baloo 2', size: 11, weight: 'bold' } }
+                            }
+                        }
+                    }
+                });
+            }
+        });
     </script>
 </div>
 @endsection

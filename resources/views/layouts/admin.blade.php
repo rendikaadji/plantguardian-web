@@ -11,11 +11,21 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
+    <!-- Chart.js for Executive Visual Data Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <style>
         html, body {
             background-color: #F5F4DA !important;
             color: #2A2A22 !important;
             font-family: 'Nunito', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .sidebar-link-active {
+            background-color: rgba(251, 250, 240, 0.15) !important;
+            color: #FFD700 !important;
+            border-left: 4px solid #FFD700 !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
     </style>
 
@@ -50,17 +60,17 @@
                     NAVIGASI KONTROL
                 </div>
 
-                <a href="#overview" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl bg-[#FBFAF0]/10 text-[#FFD700] border border-[#FFD700]/30 transition-all shadow-2xs">
+                <a href="#overview" data-section="overview" class="admin-sidebar-link sidebar-link-active flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
                     <span class="text-base">📊</span>
                     <span>{{ __('admin.sidebar.overview') }}</span>
                 </a>
 
-                <a href="#section-users" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
+                <a href="#section-users" data-section="section-users" class="admin-sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
                     <span class="text-base">👥</span>
                     <span>{{ __('admin.sidebar.users') }}</span>
                 </a>
 
-                <a href="#section-reports" class="flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
+                <a href="#section-reports" data-section="section-reports" class="admin-sidebar-link flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
                     <div class="flex items-center gap-3">
                         <span class="text-base">🚩</span>
                         <span>{{ __('admin.sidebar.reports') }}</span>
@@ -72,7 +82,7 @@
                     @endif
                 </a>
 
-                <a href="#section-monitoring" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
+                <a href="#section-monitoring" data-section="section-monitoring" class="admin-sidebar-link flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[#F5F4DA]/80 hover:text-[#F5F4DA] hover:bg-[#FBFAF0]/10 transition-all">
                     <span class="text-base">📍</span>
                     <span>{{ __('admin.sidebar.monitoring') }}</span>
                 </a>
@@ -216,6 +226,42 @@
 
         if (openBtn) openBtn.addEventListener('click', toggleAdminDrawer);
         if (closeBtn) closeBtn.addEventListener('click', toggleAdminDrawer);
+
+        // Sidebar active link highlighting & smooth scroll
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarLinks = document.querySelectorAll('.admin-sidebar-link');
+            
+            function setActiveLink(sectionId) {
+                sidebarLinks.forEach(link => {
+                    if (link.getAttribute('data-section') === sectionId) {
+                        link.classList.add('sidebar-link-active');
+                    } else {
+                        link.classList.remove('sidebar-link-active');
+                    }
+                });
+            }
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const secId = this.getAttribute('data-section');
+                    if (secId) {
+                        setActiveLink(secId);
+                    }
+                });
+            });
+
+            // IntersectionObserver for auto-highlighting during scroll
+            const sections = document.querySelectorAll('#overview, #section-users, #section-reports, #section-monitoring');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setActiveLink(entry.target.id);
+                    }
+                });
+            }, { threshold: 0.25 });
+
+            sections.forEach(sec => observer.observe(sec));
+        });
     </script>
 </body>
 </html>

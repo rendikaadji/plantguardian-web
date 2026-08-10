@@ -62,6 +62,10 @@ return [
     'mystery_plant' => 'Mysterious Plant',
     'edit_data_button' => '✏️ Edit Plant Data',
     'status_label' => 'Status',
+    'sighting_tag' => 'RANGER SIGHTING',
+    'uploader_label' => 'Uploading Ranger',
+    'edit_rights_lock' => '🔒 Edit Rights: Creator / Admin',
+    'view_detail_flora' => '📖 View Flora Details',
 
     // Auto-Follow & Claim Radar
     'auto_follow_on' => 'Auto-Follow On',

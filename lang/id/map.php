@@ -62,6 +62,10 @@ return [
     'mystery_plant' => 'Tanaman Misterius',
     'edit_data_button' => '✏️ Edit Data Tumbuhan',
     'status_label' => 'Status',
+    'sighting_tag' => 'TEMUAN RANGER',
+    'uploader_label' => 'Ranger Pengunggah',
+    'edit_rights_lock' => '🔒 Hak Edit: Pembuat / Admin',
+    'view_detail_flora' => '📖 Lihat Detail Flora',
 
     // Auto-Follow & Claim Radar
     'auto_follow_on' => 'Pelacakan Otomatis Aktif',

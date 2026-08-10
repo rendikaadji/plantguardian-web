@@ -486,16 +486,20 @@ export default class MapManager {
       // Ranger / Admin Popup with Edit Action & Uploader Info
       const editDataBtnText = t.edit_data_button || '✏️ Edit Data Tumbuhan';
       const statusLabelText = t.status_label || 'Status';
+      const sightingTagText = t.sighting_tag || 'TEMUAN RANGER';
+      const uploaderLabelText = t.uploader_label || 'Ranger Pengunggah';
+      const editRightsLockText = t.edit_rights_lock || '🔒 Hak Edit: Pembuat / Admin';
+      const viewDetailFloraText = t.view_detail_flora || '📖 Lihat Detail Flora';
+
       const uploaderName = sighting.ranger?.name || sighting.ranger_name || 'Ranger';
       const currentUserId = window.CURRENT_USER_ID;
-      const roleUpper = (this.userRole || 'RANGER').toUpperCase();
       const isOwnerOrAdmin = this.userRole === 'admin' || (currentUserId && sighting.ranger_id == currentUserId);
 
       popupHtml = `
         <div style="font-family:Nunito,sans-serif;max-width:215px;color:#2A2A22;padding:4px;box-sizing:border-box;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:4px;">
-            <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;white-space:nowrap;">${roleUpper} SIGHTING</span>
-            <span style="font-size:10px;color:#6B6B55;font-weight:bold;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px;" title="Pengunggah: ${uploaderName}">👤 ${uploaderName}</span>
+            <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:bold;padding:1px 6px;border-radius:9999px;white-space:nowrap;">${sightingTagText}</span>
+            <span style="font-size:10px;color:#6B6B55;font-weight:bold;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:110px;" title="${uploaderLabelText}: ${uploaderName}">👤 ${uploaderName}</span>
           </div>
 
           <h4 style="font-family:'Baloo 2',sans-serif;font-weight:800;font-size:15px;margin:2px 0 4px 0;color:#1F3D20;word-break:break-word;">${speciesName}</h4>
@@ -506,12 +510,12 @@ export default class MapManager {
           
           <div style="font-size:10.5px;color:#6B6B55;margin:0 0 6px 0;line-height:1.3;">
             <span style="display:block;">${statusLabelText}: <strong style="color:#1F3D20;">${sighting.verification_status}</strong></span>
-            <span style="display:block;">Ranger Pengunggah: <strong style="color:#8B6A4C;">${uploaderName}</strong></span>
+            <span style="display:block;">${uploaderLabelText}: <strong style="color:#8B6A4C;">${uploaderName}</strong></span>
           </div>
 
           <div style="display:flex;flex-direction:column;gap:5px;margin-top:6px;">
             <button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:6px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 6px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;gap:4px;">
-              <span>📖</span> <span>Lihat Detail Flora</span>
+              <span>${viewDetailFloraText}</span>
             </button>
 
             ${isOwnerOrAdmin 
@@ -519,7 +523,7 @@ export default class MapManager {
                   ${editDataBtnText}
                  </button>`
               : `<div style="width:100%;background-color:#E2E1C4;color:#6B6B55;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:10px;padding:5px 6px;border-radius:9999px;text-align:center;border:1px solid rgba(31,61,32,0.15);box-sizing:border-box;">
-                  🔒 Hak Edit: Pembuat / Admin
+                  ${editRightsLockText}
                  </div>`
             }
           </div>

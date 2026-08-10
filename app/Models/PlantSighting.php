@@ -96,4 +96,19 @@ class PlantSighting extends Model
     {
         return $this->belongsTo(User::class, 'verified_by');
     }
+
+    /**
+     * Get public URL for the sighting photo (or species photo fallback).
+     */
+    public function getPhotoUrlAttribute(): ?string
+    {
+        if ($this->photo_path) {
+            if (filter_var($this->photo_path, FILTER_VALIDATE_URL)) {
+                return $this->photo_path;
+            }
+            return asset('storage/' . $this->photo_path);
+        }
+
+        return $this->plantSpecies ? $this->plantSpecies->photo_url : null;
+    }
 }

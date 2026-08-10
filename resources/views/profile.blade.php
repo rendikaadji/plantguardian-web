@@ -456,8 +456,8 @@
 </div>
 
 <!-- Modal 1: Tambah Aliansi / Cari Teman & Permintaan Masuk -->
-<div id="add-friend-modal" class="fixed inset-0 z-40 flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 bg-black/60 backdrop-blur-xs hidden">
-    <div class="card-gg p-6 w-full max-w-lg space-y-4 bg-[#FBFAF0] border-2 border-[#1F3D20]/20 shadow-2xl relative my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
+<div id="add-friend-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
+    <div class="card-gg p-5 sm:p-6 w-full max-w-lg space-y-4 bg-[#FBFAF0] border-2 border-[#1F3D20]/20 shadow-2xl relative my-auto max-h-[85vh] overflow-y-auto">
         <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3">
             <div>
                 <span class="text-[10px] font-baloo font-extrabold px-2.5 py-0.5 rounded-full bg-[#1F3D20] text-[#F5F4DA] uppercase">TAMBAH ALIANSI</span>
@@ -494,8 +494,8 @@
 </div>
 
 <!-- Modal 2: Minta Barang Shop dari Teman -->
-<div id="request-item-modal" class="fixed inset-0 z-40 flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 bg-black/60 backdrop-blur-xs hidden">
-    <div class="card-gg p-6 w-full max-w-md space-y-4 bg-[#FBFAF0] border-2 border-[#1F3D20]/20 shadow-2xl relative my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
+<div id="request-item-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
+    <div class="card-gg p-5 sm:p-6 w-full max-w-md space-y-4 bg-[#FBFAF0] border-2 border-[#1F3D20]/20 shadow-2xl relative my-auto max-h-[85vh] overflow-y-auto">
         <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3">
             <div>
                 <span class="text-[10px] font-baloo font-extrabold px-2.5 py-0.5 rounded-full bg-[#8B6A4C] text-[#F5F4DA] uppercase">MINTA BARANG SHOP</span>
@@ -536,8 +536,8 @@
 </div>
 
 <!-- Modal 3: Beri Barang Shop ke Teman (Transfer dari Inventaris) -->
-<div id="gift-item-modal" class="fixed inset-0 z-40 flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 bg-black/60 backdrop-blur-xs hidden">
-    <div class="card-gg p-6 w-full max-w-md space-y-4 bg-[#FBFAF0] border-2 border-[#1F3D20]/20 shadow-2xl relative my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
+<div id="gift-item-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
+    <div class="card-gg p-5 sm:p-6 w-full max-w-md space-y-4 bg-[#FBFAF0] border-2 border-[#1F3D20]/20 shadow-2xl relative my-auto max-h-[85vh] overflow-y-auto">
         <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3">
             <div>
                 <span class="text-[10px] font-baloo font-extrabold px-2.5 py-0.5 rounded-full bg-[#27AE60] text-white uppercase">HADIAHKAN BARANG</span>
@@ -568,8 +568,8 @@
 </div>
 
 <!-- Avatar Selection Modal -->
-<div id="avatar-modal" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-xs flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 hidden">
-    <div class="card-gg bg-[#FBFAF0] w-full max-w-md p-6 space-y-4 rounded-3xl relative shadow-2xl border-2 border-[#1F3D20]/20 my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
+<div id="avatar-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
+    <div class="card-gg bg-[#FBFAF0] w-full max-w-md p-5 sm:p-6 space-y-4 rounded-3xl relative shadow-2xl border-2 border-[#1F3D20]/20 my-auto max-h-[85vh] overflow-y-auto">
         <div class="flex items-center justify-between border-b border-[#1F3D20]/10 pb-3">
             <h3 class="font-baloo font-extrabold text-lg text-[#1F3D20] flex items-center gap-2">
                 <span>🖼️</span> Pilih Foto Profil

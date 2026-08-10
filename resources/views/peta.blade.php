@@ -56,8 +56,8 @@
 
 <!-- AR Scanner Modal View (Ranger & Admin) -->
 @if(in_array(auth()->user()->role, ['ranger', 'admin']))
-    <div id="ar-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-40 flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 hidden">
-        <div class="card-gg max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 relative bg-[#FBFAF0] my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
+    <div id="ar-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
+        <div class="card-gg max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 relative bg-[#FBFAF0] my-auto max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
                 <div>
                     <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">{{ __('map.ar_scan_mode') }}</span>
@@ -99,8 +99,8 @@
     </div>
 
     <!-- Scan Result & Plant Data Form Modal (Ranger & Admin On-Site Data Entry) -->
-    <div id="scan-result-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-40 flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 hidden overflow-y-auto">
-        <div class="card-gg max-w-lg w-full p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
+    <div id="scan-result-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
+        <div class="card-gg max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
                 <div>
                     <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">{{ __('map.field_species_form') }}</span>
@@ -171,8 +171,8 @@
     </div>
 
     <!-- Direct On-Map Verification Queue Modal (Ranger & Admin) -->
-    <div id="verification-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-40 flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 hidden overflow-y-auto">
-        <div class="card-gg max-w-xl w-full p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
+    <div id="verification-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
+        <div class="card-gg max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
                 <div>
                     <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">{{ __('map.moderation_queue') }}</span>
@@ -188,8 +188,8 @@
     </div>
 
     <!-- Edit Marker Sighting Modal (For Ranger & Admin editing plant markers directly from map popups) -->
-    <div id="edit-sighting-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-40 flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 hidden overflow-y-auto">
-        <div class="card-gg max-w-lg w-full p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
+    <div id="edit-sighting-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
+        <div class="card-gg max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[85vh] overflow-y-auto">
             <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
                 <div>
                     <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#8B6A4C] px-2.5 py-0.5 rounded-full uppercase">{{ __('map.edit_sighting_tag') }}</span>
@@ -252,8 +252,8 @@
 @endif
 
 <!-- View Discovered Plant Detail Modal (For Viewers & All Roles viewing plant details directly from map) -->
-<div id="view-sighting-modal" class="fixed inset-0 bg-[#1F3D20]/80 backdrop-blur-md z-40 flex items-center justify-center p-3 pb-28 sm:p-6 sm:pb-32 hidden overflow-y-auto">
-    <div class="card-gg max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[calc(100vh-140px)] sm:max-h-[calc(100vh-160px)] overflow-y-auto">
+<div id="view-sighting-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
+    <div class="card-gg max-w-lg w-full p-5 sm:p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[85vh] overflow-y-auto">
         <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
             <div>
                 <span id="view-conservation-status" class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">COMMON</span>

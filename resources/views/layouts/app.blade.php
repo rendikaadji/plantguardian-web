@@ -23,7 +23,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen flex flex-col antialiased" style="background-color: #F5F4DA !important; color: #2A2A22 !important;">    <!-- Top Header Bar (Plant Guardian Premium Design System) -->
-    <header class="sticky top-0 z-50 border-b border-[#1F3D20]/15 shadow-sm" style="background-color: rgba(245, 244, 218, 0.96) !important; backdrop-filter: blur(12px);">
+    <header class="sticky top-0 z-30 border-b border-[#1F3D20]/15 shadow-sm" style="background-color: rgba(245, 244, 218, 0.96) !important; backdrop-filter: blur(12px);">
         <div class="max-w-7xl mx-auto px-3 sm:px-6 py-2 sm:py-2.5">
             <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 sm:gap-4">
                 
@@ -139,7 +139,7 @@
 
     <!-- Bottom Navigation Bar (Mobile & Floating Signature Component) -->
     @auth
-        <div class="fixed bottom-3 inset-x-0 z-50 pointer-events-none flex justify-center px-3 sm:px-4">
+        <div class="fixed bottom-3 inset-x-0 z-30 pointer-events-none flex justify-center px-3 sm:px-4">
             <nav class="pointer-events-auto p-1.5 sm:p-2 flex items-center justify-between gap-1 sm:gap-2 bg-[#1F3D20] text-[#F5F4DA] border-2 border-[#FBFAF0]/20 shadow-2xl rounded-full max-w-lg w-full">
                 @if(auth()->user()->isAdmin())
                     <!-- ADMIN NAVBAR -->

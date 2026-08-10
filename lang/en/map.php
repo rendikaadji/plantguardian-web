@@ -7,7 +7,7 @@ return [
     'heading_viewer' => 'Species Sighting Map',
     'mode_ranger' => 'RANGER MODE',
     'mode_admin' => 'ADMIN MODE',
-    'mode_viewer' => 'VIEWER CATCH MODE',
+    'mode_viewer' => 'EXPLORER MODE',
     'open_ar_camera' => 'AR Scan Camera',
     'moderation_queue' => 'Moderation Queue',
 

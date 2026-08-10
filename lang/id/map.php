@@ -7,7 +7,7 @@ return [
     'heading_viewer' => 'Peta Temuan Spesies',
     'mode_ranger' => 'MODE RANGER',
     'mode_admin' => 'MODE ADMIN',
-    'mode_viewer' => 'MODE CATCH VIEWER',
+    'mode_viewer' => 'MODE PENJELAJAH',
     'open_ar_camera' => 'Kamera Scan AR',
     'moderation_queue' => 'Moderasi Temuan',
 

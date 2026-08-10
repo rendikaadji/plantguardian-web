@@ -30,19 +30,19 @@
 
     <!-- Top Summary Metrics for User Page -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-        <div class="card-gg p-4 bg-[#FBFAF0] border-l-4 border-l-[#1F3D20] space-y-1">
+        <div class="card-gg p-4 bg-[#FBFAF0] border-l-4 border-l-[#1F3D20] space-y-1 shadow-sm">
             <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('admin.total_users') }}</span>
             <div class="font-baloo font-extrabold text-2xl text-[#1F3D20]">{{ number_format($stats['total_users']) }}</div>
         </div>
-        <div class="card-gg p-4 bg-[#FBFAF0] border-l-4 border-l-[#4C8C4A] space-y-1">
+        <div class="card-gg p-4 bg-[#FBFAF0] border-l-4 border-l-[#4C8C4A] space-y-1 shadow-sm">
             <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('admin.viewers') }}</span>
             <div class="font-baloo font-extrabold text-2xl text-[#4C8C4A]">{{ number_format($stats['total_viewers']) }}</div>
         </div>
-        <div class="card-gg p-4 bg-[#FBFAF0] border-l-4 border-l-[#8B6A4C] space-y-1">
+        <div class="card-gg p-4 bg-[#FBFAF0] border-l-4 border-l-[#8B6A4C] space-y-1 shadow-sm">
             <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">{{ __('admin.rangers') }}</span>
             <div class="font-baloo font-extrabold text-2xl text-[#8B6A4C]">{{ number_format($stats['total_rangers']) }}</div>
         </div>
-        <div class="card-gg p-4 bg-[#FBFAF0] border-l-4 border-l-[#FFD700] space-y-1">
+        <div class="card-gg p-4 bg-[#FBFAF0] border-l-4 border-l-[#FFD700] space-y-1 shadow-sm">
             <span class="text-[11px] font-baloo font-bold text-[#6B6B55] uppercase tracking-wider">ADMINS</span>
             <div class="font-baloo font-extrabold text-2xl text-[#8B6A4C]">{{ number_format($stats['total_admins']) }}</div>
         </div>
@@ -62,7 +62,7 @@
             <!-- Search Form -->
             <form method="GET" action="{{ route('admin.users') }}" class="flex items-center gap-2">
                 <input type="text" name="search" value="{{ $search }}" placeholder="{{ __('admin.search_placeholder') }}" class="px-4 py-2 rounded-xl border border-[#1F3D20]/20 bg-white font-nunito text-xs text-[#1F3D20] focus:outline-none focus:border-[#1F3D20] w-64 shadow-xs" />
-                <button type="submit" class="px-4 py-2 rounded-xl bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs hover:bg-[#2D4A2E] transition-colors cursor-pointer">
+                <button type="submit" class="px-4 py-2 rounded-xl bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs hover:bg-[#2D4A2E] transition-colors cursor-pointer shadow-xs">
                     {{ __('admin.search_btn') }}
                 </button>
                 @if($search)
@@ -76,21 +76,21 @@
             <table class="w-full text-left border-collapse">
                 <thead>
                     <tr class="bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs tracking-wider">
-                        <th class="py-3.5 px-4">{{ __('admin.col_user') }}</th>
-                        <th class="py-3.5 px-4">{{ __('admin.col_current_role') }}</th>
-                        <th class="py-3.5 px-4 text-center">{{ __('admin.col_level_exp') }}</th>
-                        <th class="py-3.5 px-4 text-center">{{ __('admin.col_coin') }}</th>
-                        <th class="py-3.5 px-4">{{ __('admin.col_joined') }}</th>
-                        <th class="py-3.5 px-4 text-right">{{ __('admin.col_role_action') }}</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">{{ __('admin.col_user') }}</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">{{ __('admin.col_current_role') }}</th>
+                        <th class="py-3.5 px-4 text-center whitespace-nowrap">{{ __('admin.col_level_exp') }}</th>
+                        <th class="py-3.5 px-4 text-center whitespace-nowrap">{{ __('admin.col_coin') }}</th>
+                        <th class="py-3.5 px-4 whitespace-nowrap">{{ __('admin.col_joined') }}</th>
+                        <th class="py-3.5 px-4 text-right whitespace-nowrap">{{ __('admin.col_role_action') }}</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-[#1F3D20]/10 font-nunito text-xs bg-white">
                     @forelse($users as $userItem)
                         <tr class="hover:bg-[#FBFAF0] transition-colors">
                             <!-- User Info -->
-                            <td class="py-3.5 px-4">
+                            <td class="py-3.5 px-4 whitespace-nowrap">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-9 h-9 rounded-full bg-[#E2E1C4] font-baloo font-extrabold text-sm text-[#1F3D20] flex items-center justify-center shrink-0">
+                                    <div class="w-9 h-9 rounded-full bg-[#E2E1C4] font-baloo font-extrabold text-sm text-[#1F3D20] flex items-center justify-center shrink-0 shadow-2xs">
                                         {{ strtoupper(substr($userItem->name, 0, 2)) }}
                                     </div>
                                     <div>
@@ -101,7 +101,7 @@
                             </td>
 
                             <!-- Role Badge -->
-                            <td class="py-3.5 px-4">
+                            <td class="py-3.5 px-4 whitespace-nowrap">
                                 @if($userItem->role === 'admin')
                                     <span class="px-2.5 py-1 rounded-full bg-[#FFD700]/30 text-[#8B6A4C] font-baloo font-extrabold text-[11px] border border-[#FFD700] inline-flex items-center gap-1">
                                         👑 ADMIN
@@ -118,53 +118,51 @@
                             </td>
 
                             <!-- Level & EXP -->
-                            <td class="py-3.5 px-4 text-center font-baloo font-bold text-[#1F3D20]">
+                            <td class="py-3.5 px-4 text-center whitespace-nowrap font-baloo font-bold text-[#1F3D20]">
                                 <div>Lvl {{ $userItem->level }}</div>
                                 <span class="text-[10px] text-[#6B6B55] font-extrabold block">{{ number_format($userItem->exp) }} EXP</span>
                             </td>
 
                             <!-- Coin -->
-                            <td class="py-3.5 px-4 text-center font-baloo font-extrabold text-[#1F3D20]">
+                            <td class="py-3.5 px-4 text-center whitespace-nowrap font-baloo font-extrabold text-[#1F3D20]">
                                 🪙 {{ number_format($userItem->coin) }} NC
                             </td>
 
                             <!-- Join Date -->
-                            <td class="py-3.5 px-4 text-[#6B6B55] font-mono-code text-[11px]">
+                            <td class="py-3.5 px-4 whitespace-nowrap text-[#6B6B55] font-mono-code text-[11px]">
                                 {{ $userItem->created_at ? $userItem->created_at->format('d M Y H:i') : '-' }}
                             </td>
 
-                            <!-- Role Change Form & Action Buttons -->
-                            <td class="py-3.5 px-4 text-right">
-                                <div class="inline-flex items-center gap-1.5 flex-wrap justify-end">
-                                    <!-- Action 1: View User Detail -->
-                                    <button type="button" onclick='openUserDetailModal(@json($userItem))' class="px-2.5 py-1 rounded-lg bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors cursor-pointer shadow-2xs">
-                                        {{ __('admin.detail_btn') }}
-                                    </button>
+                            <!-- Role Change Form & Action Buttons (Single-line Flex Toolbar) -->
+                            <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                                <div class="inline-flex items-center gap-1.5 justify-end">
 
-                                    <!-- Action 2: Reset Password Button -->
-                                    <button type="button" onclick='openResetPasswordModal(@json($userItem))' class="px-2.5 py-1 rounded-lg bg-amber-100 text-amber-800 font-baloo font-bold text-xs hover:bg-amber-600 hover:text-white transition-colors cursor-pointer shadow-2xs">
-                                        {{ __('admin.btn_reset_password') }}
-                                    </button>
-
-                                    <!-- Action 3: Change Role Form -->
-                                    <form method="POST" action="{{ route('admin.users.update-role', $userItem->id) }}" class="inline-flex items-center gap-1">
+                                    <!-- Action 1: Auto-Submitting Role Select -->
+                                    <form method="POST" action="{{ route('admin.users.update-role', $userItem->id) }}" class="inline">
                                         @csrf
-                                        <select name="role" class="px-2 py-1 rounded-lg border border-[#1F3D20]/20 bg-[#FBFAF0] font-baloo font-bold text-xs text-[#1F3D20] focus:outline-none">
+                                        <select name="role" onchange="this.form.submit()" title="Ubah Role Pengguna" class="px-2.5 py-1 rounded-xl border border-[#1F3D20]/20 bg-[#FBFAF0] font-baloo font-bold text-xs text-[#1F3D20] focus:outline-none focus:border-[#1F3D20] cursor-pointer shadow-2xs hover:bg-white transition-colors">
                                             <option value="viewer" {{ $userItem->role === 'viewer' ? 'selected' : '' }}>Viewer</option>
                                             <option value="ranger" {{ $userItem->role === 'ranger' ? 'selected' : '' }}>Ranger</option>
                                             <option value="admin" {{ $userItem->role === 'admin' ? 'selected' : '' }}>Admin</option>
                                         </select>
-                                        <button type="submit" class="px-2.5 py-1 rounded-lg bg-[#1F3D20] hover:bg-[#2D4A2E] text-[#F5F4DA] font-baloo font-bold text-xs transition-colors cursor-pointer shadow-2xs">
-                                            {{ __('admin.save_btn') }}
-                                        </button>
                                     </form>
+
+                                    <!-- Action 2: View User Detail -->
+                                    <button type="button" onclick='openUserDetailModal(@json($userItem))' title="{{ __('admin.detail_btn') }}" class="px-2.5 py-1 rounded-xl bg-[#E2E1C4] text-[#1F3D20] font-baloo font-bold text-xs hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-all cursor-pointer shadow-2xs">
+                                        {{ __('admin.detail_btn') }}
+                                    </button>
+
+                                    <!-- Action 3: Reset Password Button -->
+                                    <button type="button" onclick='openResetPasswordModal(@json($userItem))' title="{{ __('admin.reset_password_modal_title') }}" class="px-2.5 py-1 rounded-xl bg-amber-100 text-amber-800 font-baloo font-bold text-xs hover:bg-amber-600 hover:text-white transition-all cursor-pointer shadow-2xs">
+                                        {{ __('admin.btn_reset_password') }}
+                                    </button>
 
                                     <!-- Action 4: Delete User (If not self) -->
                                     @if($userItem->id !== auth()->id())
                                         <form method="POST" action="{{ route('admin.users.destroy', $userItem->id) }}" class="inline" onsubmit="return confirm('{{ __('admin.delete_user_confirm') }}');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="px-2.5 py-1 rounded-lg bg-[#C0392B] hover:bg-red-700 text-white font-baloo font-bold text-xs transition-colors cursor-pointer shadow-2xs">
+                                            <button type="submit" title="Hapus User" class="px-2.5 py-1 rounded-xl bg-[#C0392B]/15 text-[#C0392B] hover:bg-[#C0392B] hover:text-white font-baloo font-bold text-xs transition-all cursor-pointer shadow-2xs">
                                                 {{ __('admin.btn_delete_user') }}
                                             </button>
                                         </form>

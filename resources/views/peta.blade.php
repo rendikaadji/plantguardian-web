@@ -44,11 +44,7 @@
                     <span>{{ __('map.open_ar_camera') }}</span>
                 </button>
 
-                <button id="open-verif-btn" class="px-3.5 py-2 rounded-full bg-[#8B6A4C] text-[#FBFAF0] font-baloo font-bold text-xs flex items-center gap-1.5 shadow-sm hover:bg-[#a67e5a] transition-all cursor-pointer whitespace-nowrap active:scale-95 border border-[#FBFAF0]/20">
-                    <span>📋</span>
-                    <span>{{ __('map.moderation_queue') }}</span>
-                    <span id="verif-badge-count" class="px-2 py-0.5 rounded-full bg-[#FBFAF0] text-[#8B6A4C] font-extrabold text-[10px]">0</span>
-                </button>
+
             </div>
         @endif
     </div>
@@ -170,22 +166,7 @@
         </div>
     </div>
 
-    <!-- Direct On-Map Verification Queue Modal (Ranger & Admin) -->
-    <div id="verification-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
-        <div class="card-gg max-w-xl w-full p-5 sm:p-6 shadow-2xl space-y-4 bg-[#FBFAF0] my-auto max-h-[85vh] overflow-y-auto">
-            <div class="flex justify-between items-start border-b border-[#1F3D20]/10 pb-3">
-                <div>
-                    <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">{{ __('map.moderation_queue') }}</span>
-                    <h3 class="font-baloo font-extrabold text-2xl text-[#1F3D20] mt-1">{{ __('map.moderation_title') }}</h3>
-                </div>
-                <button id="close-verif-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>
-            </div>
 
-            <div id="verif-modal-list" class="space-y-3">
-                <p class="text-xs text-[#6B6B55] text-center py-4 font-nunito">...</p>
-            </div>
-        </div>
-    </div>
 
     <!-- Edit Marker Sighting Modal (For Ranger & Admin editing plant markers directly from map popups) -->
     <div id="edit-sighting-modal" class="fixed inset-0 bg-[#1F3D20]/85 backdrop-blur-md z-[100] flex items-center justify-center p-4 sm:p-6 hidden overflow-y-auto">
@@ -363,77 +344,7 @@
 
         // AR Scanner, On-Map Verification Modal & Live Form logic for Ranger & Admin
         if (window.USER_ROLE === 'ranger' || window.USER_ROLE === 'admin') {
-            const openVerifBtn = document.querySelector('#open-verif-btn');
-            const verifModal = document.querySelector('#verification-modal');
-            const closeVerifModalBtn = document.querySelector('#close-verif-modal-btn');
-            const verifListEl = document.querySelector('#verif-modal-list');
-            const verifBadgeCount = document.querySelector('#verif-badge-count');
-            const t = window.translations || {};
 
-            const fetchPendingVerifications = async () => {
-                try {
-                    const res = await window.apiClient.get('/ranger/verifications/pending');
-                    const pendingList = res.data?.pending_sightings || res.pending_sightings || [];
-                    if (verifBadgeCount) verifBadgeCount.textContent = pendingList.length;
-
-                    if (!verifListEl) return;
-                    if (pendingList.length === 0) {
-                        verifListEl.innerHTML = `
-                            <div class="p-6 text-center border border-dashed border-[#1F3D20]/20 rounded-2xl">
-                                <p class="font-baloo font-bold text-base text-[#1F3D20]">${t.moderation_empty || 'Antrean Kosong ✨'}</p>
-                                <p class="text-xs text-[#6B6B55] font-nunito">${t.moderation_empty_desc || 'Seluruh temuan tumbuhan telah diverifikasi.'}</p>
-                            </div>
-                        `;
-                        return;
-                    }
-
-                    verifListEl.innerHTML = pendingList.map(item => `
-                        <div class="p-4 border border-[#1F3D20]/15 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-white shadow-xs">
-                            <div class="flex items-start gap-3">
-                                <div class="w-16 h-16 bg-[#E2E1C4] rounded-xl overflow-hidden shrink-0 flex items-center justify-center border border-[#1F3D20]/10">
-                                    ${(item.photo_url || item.photo_path) ? `<img src="${item.photo_url || '/storage/' + item.photo_path.replace(/^\//, '')}" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" class="w-full h-full object-cover" />` : `<span class="text-[10px] text-[#6B6B55]">NO FOTO</span>`}
-                                </div>
-                                <div class="space-y-0.5">
-                                    <span class="text-[10px] font-baloo font-bold text-[#8B6A4C] uppercase block">Pengguna: ${item.user?.name || 'Viewer'}</span>
-                                    <h4 class="font-baloo font-bold text-sm text-[#1F3D20]">${item.plant_species ? item.plant_species.common_name : 'Spesies Lapangan'}</h4>
-                                    <span class="text-[10px] text-[#6B6B55] block font-nunito">AI Confidence: ${item.confidence_score ? (item.confidence_score * 100).toFixed(0) + '%' : '-'}</span>
-                                </div>
-                            </div>
-                            <div class="flex items-center gap-2 w-full sm:w-auto justify-end border-t sm:border-t-0 pt-2 sm:pt-0 border-[#1F3D20]/10">
-                                <button onclick="window.decideMapSighting(${item.id}, 'verified')" class="px-3.5 py-1.5 bg-[#1F3D20] text-[#F5F4DA] font-baloo font-bold text-xs rounded-full hover:bg-[#2D4A2E] cursor-pointer">${t.verify_btn || 'VERIFIKASI'}</button>
-                                <button onclick="window.decideMapSighting(${item.id}, 'rejected')" class="px-3.5 py-1.5 border border-red-600 text-red-600 font-baloo font-bold text-xs rounded-full hover:bg-red-600 hover:text-white cursor-pointer">${t.reject_btn || 'TOLAK'}</button>
-                            </div>
-                        </div>
-                    `).join('');
-                } catch (err) {
-                    console.warn('Gagal memuat verifikasi map:', err.message);
-                }
-            };
-
-            // Fetch initial pending count for badge
-            fetchPendingVerifications();
-
-            if (openVerifBtn && verifModal) {
-                openVerifBtn.addEventListener('click', async () => {
-                    verifModal.classList.remove('hidden');
-                    await fetchPendingVerifications();
-                });
-            }
-
-            if (closeVerifModalBtn && verifModal) {
-                closeVerifModalBtn.addEventListener('click', () => verifModal.classList.add('hidden'));
-            }
-
-            window.decideMapSighting = async function(id, status) {
-                try {
-                    await window.apiClient.post(`/ranger/verifications/sightings/${id}`, { status });
-                    alert(`Status berhasil diperbarui ke: ${status}`);
-                    await fetchPendingVerifications();
-                    if (mapManager) await mapManager.refreshMarkers();
-                } catch (err) {
-                    alert('Gagal memproses verifikasi: ' + err.message);
-                }
-            };
 
             // AR Camera Scanner logic
             if (window.ArScanner) {

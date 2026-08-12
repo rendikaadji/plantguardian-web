@@ -436,17 +436,20 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
         <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:150px;display:inline-block;">${u}</span>
       </div>
     `,p=L.divIcon({className:`gg-map-marker`,html:f,iconSize:null,iconAnchor:[60,14]}),m=``;if(this.userRole===`viewer`){t.verified_badge;let c=t.discover_button||`✨ Temukan & Klaim!`,u=t.already_discovered||`✓ Sudah Ditemukan`;t.unclaimed_badge;let d=t.unclaimed_tree||`Pohon ini belum diklaim! Tekan tombol di bawah untuk membuka dan mengklaim.`,f=this.calculateDistanceMeters(this.userLat,this.userLng,parseFloat(e.latitude),parseFloat(e.longitude)),p=``,h=!0,g=c,_=t.view_detail||`Detail`;if(f!==null){let e=Math.round(f);if(e>50){h=!1;let n=(t.distance_too_far||`📍 Jarak: :dist m (Maks 50m)`).replace(`:dist`,e),r=(t.distance_too_far_btn||`🔒 Terlalu Jauh (:dist m > 50m)`).replace(`:dist`,e);p=`<div style="font-size:10px;color:#DC2626;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#FEE2E2;padding:2px 6px;border-radius:9999px;">${n}</div>`,g=r}else p=`<div style="font-size:10px;color:#16A34A;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#DCFCE7;padding:2px 6px;border-radius:9999px;">${(t.distance_in_range||`📍 Jarak: :dist m (Dalam Jangkauan)`).replace(`:dist`,e)}</div>`}else p=`<div style="font-size:10px;color:#D97706;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#FEF3C7;padding:2px 6px;border-radius:9999px;">${t.distance_enable_gps||`📍 Aktifkan GPS untuk mengklaim (Maks 50m)`}</div>`;m=`
-        <div style="font-family:'Nunito',sans-serif;width:245px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;position:relative;">
-          <!-- Symbol-Only Report Button (Sejajar dengan Leaflet Close Button X di top:10px) -->
-          <button onclick="window.openReportSightingModal(${e.id})" class="leaflet-popup-report-button" title="${t.report_sighting||`Laporkan Tumbuhan`}" aria-label="${t.report_sighting||`Laporkan Tumbuhan`}">
-            🚩
-          </button>
-
-          <!-- Top Tag Badge (Clean clearance for both Report 🚩 & Close X buttons) -->
-          <div style="display:flex;align-items:center;margin-bottom:8px;padding-right:70px;">
+        <div style="font-family:'Nunito',sans-serif;width:245px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">
+          <!-- Top Header: Tag Badge (Left) & Action Buttons (Right: Report 🚩 and Close ✕ side-by-side) -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
             <span style="background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;letter-spacing:0.3px;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
               ${a?`🌿 `+r:`❓ MYSTERY`}
             </span>
+            <div style="display:flex;align-items:center;gap:6px;">
+              <button onclick="window.openReportSightingModal(${e.id})" title="${t.report_sighting||`Laporkan Tumbuhan`}" aria-label="${t.report_sighting||`Laporkan Tumbuhan`}" style="background-color:rgba(192,57,43,0.1);color:#C0392B;border:1px solid rgba(192,57,43,0.25);width:24px;height:24px;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;transition:all 0.2s;line-height:1;box-sizing:border-box;padding:0;" onmouseover="this.style.backgroundColor='rgba(192,57,43,0.25)'" onmouseout="this.style.backgroundColor='rgba(192,57,43,0.1)'">
+                🚩
+              </button>
+              <button onclick="const p = this.closest('.leaflet-popup'); if (p) { const c = p.querySelector('.leaflet-popup-close-button'); if (c) c.click(); else p.remove(); }" title="Tutup" aria-label="Tutup" style="background-color:#E2E1C4;color:#1F3D20;border:none;width:24px;height:24px;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:bold;transition:all 0.2s;line-height:1;box-sizing:border-box;padding:0;" onmouseover="this.style.backgroundColor='#1F3D20';this.style.color='#F5F4DA';" onmouseout="this.style.backgroundColor='#E2E1C4';this.style.color='#1F3D20';">
+                &times;
+              </button>
+            </div>
           </div>
 
           <!-- Species Name -->
@@ -474,11 +477,14 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
         </div>
       `}else{let r=t.edit_data_button||`✏️ Edit Data Tumbuhan`,a=t.status_label||`Status`,o=t.sighting_tag||`TEMUAN RANGER`,s=t.uploader_label||`Ranger Pengunggah`,c=t.edit_rights_lock||`🔒 Hak Edit: Pembuat / Admin`,l=t.view_detail_flora||`📖 Lihat Detail Flora`,u=e.ranger?.name||e.ranger_name||`Ranger`,d=window.CURRENT_USER_ID,f=this.userRole===`admin`||d&&e.ranger_id==d;m=`
         <div style="font-family:'Nunito',sans-serif;width:245px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">
-          <!-- Top Tag Badge (Clean clearance for close button X) -->
-          <div style="display:flex;align-items:center;margin-bottom:8px;padding-right:24px;">
+          <!-- Top Tag Badge & Close Button -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
             <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
               ${o}
             </span>
+            <button onclick="const p = this.closest('.leaflet-popup'); if (p) { const c = p.querySelector('.leaflet-popup-close-button'); if (c) c.click(); else p.remove(); }" title="Tutup" aria-label="Tutup" style="background-color:#E2E1C4;color:#1F3D20;border:none;width:24px;height:24px;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:bold;transition:all 0.2s;line-height:1;box-sizing:border-box;padding:0;" onmouseover="this.style.backgroundColor='#1F3D20';this.style.color='#F5F4DA';" onmouseout="this.style.backgroundColor='#E2E1C4';this.style.color='#1F3D20';">
+              &times;
+            </button>
           </div>
 
           <!-- Species Name -->

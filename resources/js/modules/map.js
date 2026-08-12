@@ -455,15 +455,17 @@ export default class MapManager {
 
       // Viewer Popup with "Temukan!" action (Hides real species name until claimed)
       popupHtml = `
-        <div style="font-family:'Nunito',sans-serif;width:245px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">
-          <!-- Top Tag Badge & Symbol-Only Report Button (Clean clearance for close button X) -->
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-right:24px;">
+        <div style="font-family:'Nunito',sans-serif;width:245px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;position:relative;">
+          <!-- Symbol-Only Report Button (Sejajar dengan Leaflet Close Button X di top:10px) -->
+          <button onclick="window.openReportSightingModal(${sighting.id})" class="leaflet-popup-report-button" title="${t.report_sighting || 'Laporkan Tumbuhan'}" aria-label="${t.report_sighting || 'Laporkan Tumbuhan'}">
+            🚩
+          </button>
+
+          <!-- Top Tag Badge (Clean clearance for both Report 🚩 & Close X buttons) -->
+          <div style="display:flex;align-items:center;margin-bottom:8px;padding-right:70px;">
             <span style="background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;letter-spacing:0.3px;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
               ${isDiscovered ? '🌿 ' + speciesCode : '❓ MYSTERY'}
             </span>
-            <button onclick="window.openReportSightingModal(${sighting.id})" title="${t.report_sighting || 'Laporkan Tumbuhan'}" aria-label="${t.report_sighting || 'Laporkan Tumbuhan'}" style="background-color:rgba(192,57,43,0.08);color:#C0392B;border:1px solid rgba(192,57,43,0.25);width:24px;height:24px;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;transition:all 0.2s;flex-shrink:0;" onmouseover="this.style.backgroundColor='rgba(192,57,43,0.2)'" onmouseout="this.style.backgroundColor='rgba(192,57,43,0.08)'">
-              🚩
-            </button>
           </div>
 
           <!-- Species Name -->

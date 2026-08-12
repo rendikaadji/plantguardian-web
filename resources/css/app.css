@@ -218,6 +218,31 @@ html, body {
     color: #F5F4DA !important;
 }
 
+.leaflet-popup-report-button {
+    color: #C0392B !important;
+    padding: 0 !important;
+    width: 24px !important;
+    height: 24px !important;
+    border-radius: 9999px !important;
+    background-color: rgba(192, 57, 43, 0.12) !important;
+    border: 1px solid rgba(192, 57, 43, 0.25) !important;
+    position: absolute !important;
+    top: 10px !important;
+    right: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 11px !important;
+    cursor: pointer !important;
+    transition: all 0.2s ease !important;
+    z-index: 10 !important;
+}
+
+.leaflet-popup-report-button:hover {
+    background-color: rgba(192, 57, 43, 0.25) !important;
+    transform: scale(1.05);
+}
+
 .leaflet-control-zoom {
     border: none !important;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2) !important;

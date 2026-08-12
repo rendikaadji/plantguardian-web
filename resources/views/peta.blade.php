@@ -251,7 +251,12 @@
                 <p id="view-scientific-name" class="font-nunito text-xs text-[#6B6B55] italic">Scientific Name</p>
                 <span id="view-uploader-badge" class="inline-block mt-1 text-[10px] font-nunito font-bold text-[#8B6A4C] bg-[#8B6A4C]/15 px-2.5 py-0.5 rounded-full">👤 Ranger: ...</span>
             </div>
-            <button id="close-view-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors">&times;</button>
+            <div class="flex items-center gap-2">
+                <button type="button" id="modal-report-trigger-btn" title="{{ __('map.report_sighting') }}" aria-label="{{ __('map.report_sighting') }}" class="w-8 h-8 rounded-full bg-red-50 text-[#C0392B] hover:bg-red-100 hover:text-red-700 border border-red-200/60 flex items-center justify-center font-bold text-xs cursor-pointer transition-colors shadow-2xs">
+                    🚩
+                </button>
+                <button id="close-view-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors">&times;</button>
+            </div>
         </div>
 
         <!-- Preview Photo -->
@@ -271,14 +276,10 @@
                 <p id="view-care-instructions" class="font-nunito text-xs text-[#1F3D20]/80 leading-relaxed font-medium">...</p>
             </div>
 
-            <div class="pt-2 flex flex-col gap-2">
+            <div class="pt-2">
                 <a href="/gallery" class="w-full btn-gg-primary py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md text-xs font-baloo font-bold text-center">
                     <span>{{ __('map.modal_open_seedex') }}</span>
                 </a>
-
-                <button type="button" id="modal-report-trigger-btn" class="w-full py-2.5 rounded-full bg-red-100/80 hover:bg-red-200/80 text-[#C0392B] font-baloo font-bold text-xs flex items-center justify-center gap-1.5 transition-colors border border-red-300/40 cursor-pointer">
-                    <span>{{ __('map.report_sighting') }}</span>
-                </button>
             </div>
         </div>
     </div>

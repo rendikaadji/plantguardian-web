@@ -437,11 +437,14 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
       </div>
     `,p=L.divIcon({className:`gg-map-marker`,html:f,iconSize:null,iconAnchor:[60,14]}),m=``;if(this.userRole===`viewer`){t.verified_badge;let c=t.discover_button||`✨ Temukan & Klaim!`,u=t.already_discovered||`✓ Sudah Ditemukan`;t.unclaimed_badge;let d=t.unclaimed_tree||`Pohon ini belum diklaim! Tekan tombol di bawah untuk membuka dan mengklaim.`,f=this.calculateDistanceMeters(this.userLat,this.userLng,parseFloat(e.latitude),parseFloat(e.longitude)),p=``,h=!0,g=c,_=t.view_detail||`Detail`;if(f!==null){let e=Math.round(f);if(e>50){h=!1;let n=(t.distance_too_far||`📍 Jarak: :dist m (Maks 50m)`).replace(`:dist`,e),r=(t.distance_too_far_btn||`🔒 Terlalu Jauh (:dist m > 50m)`).replace(`:dist`,e);p=`<div style="font-size:10px;color:#DC2626;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#FEE2E2;padding:2px 6px;border-radius:9999px;">${n}</div>`,g=r}else p=`<div style="font-size:10px;color:#16A34A;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#DCFCE7;padding:2px 6px;border-radius:9999px;">${(t.distance_in_range||`📍 Jarak: :dist m (Dalam Jangkauan)`).replace(`:dist`,e)}</div>`}else p=`<div style="font-size:10px;color:#D97706;font-weight:bold;margin-bottom:6px;text-align:center;background-color:#FEF3C7;padding:2px 6px;border-radius:9999px;">${t.distance_enable_gps||`📍 Aktifkan GPS untuk mengklaim (Maks 50m)`}</div>`;m=`
         <div style="font-family:'Nunito',sans-serif;width:245px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">
-          <!-- Top Tag Badge (Clean clearance for close button X) -->
-          <div style="display:flex;align-items:center;margin-bottom:8px;padding-right:24px;">
+          <!-- Top Tag Badge & Symbol-Only Report Button (Clean clearance for close button X) -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding-right:24px;">
             <span style="background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;letter-spacing:0.3px;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
               ${a?`🌿 `+r:`❓ MYSTERY`}
             </span>
+            <button onclick="window.openReportSightingModal(${e.id})" title="${t.report_sighting||`Laporkan Tumbuhan`}" aria-label="${t.report_sighting||`Laporkan Tumbuhan`}" style="background-color:rgba(192,57,43,0.08);color:#C0392B;border:1px solid rgba(192,57,43,0.25);width:24px;height:24px;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;transition:all 0.2s;flex-shrink:0;" onmouseover="this.style.backgroundColor='rgba(192,57,43,0.2)'" onmouseout="this.style.backgroundColor='rgba(192,57,43,0.08)'">
+              🚩
+            </button>
           </div>
 
           <!-- Species Name -->
@@ -466,11 +469,6 @@ var e=new class{constructor(){this.baseUrl=`/api`}getCsrfToken(){let e=document.
 
           <!-- Action Button -->
           ${a?`<button onclick="window.openViewSightingModal(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);display:flex;align-items:center;justify-content:center;gap:5px;transition:transform 0.15s ease;"><span>📖</span> <span>${u} — ${_}</span></button>`:h?`<button id="discover-btn-${e.id}" onclick="window.discoverPlantFromMap(${e.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);transition:transform 0.15s ease;">${c}</button>`:`<button disabled style="width:100%;background-color:#9CA3AF;color:#FFFFFF;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:11px;padding:8.5px 0;border-radius:9999px;border:none;cursor:not-allowed;box-shadow:none;">${g}</button>`}
-
-          <!-- Report Button -->
-          <button onclick="window.openReportSightingModal(${e.id})" style="width:100%;margin-top:6px;background-color:rgba(192,57,43,0.08);color:#C0392B;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:11.5px;padding:5.5px 0;border-radius:9999px;border:1px solid rgba(192,57,43,0.25);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;transition:all 0.2s;" onmouseover="this.style.backgroundColor='rgba(192,57,43,0.18)'" onmouseout="this.style.backgroundColor='rgba(192,57,43,0.08)'">
-            <span>🚩 ${t.report_sighting||`Laporkan Tumbuhan`}</span>
-          </button>
         </div>
       `}else{let r=t.edit_data_button||`✏️ Edit Data Tumbuhan`,a=t.status_label||`Status`,o=t.sighting_tag||`TEMUAN RANGER`,s=t.uploader_label||`Ranger Pengunggah`,c=t.edit_rights_lock||`🔒 Hak Edit: Pembuat / Admin`,l=t.view_detail_flora||`📖 Lihat Detail Flora`,u=e.ranger?.name||e.ranger_name||`Ranger`,d=window.CURRENT_USER_ID,f=this.userRole===`admin`||d&&e.ranger_id==d;m=`
         <div style="font-family:'Nunito',sans-serif;width:245px;color:#2A2A22;padding:2px 2px 4px 2px;box-sizing:border-box;">

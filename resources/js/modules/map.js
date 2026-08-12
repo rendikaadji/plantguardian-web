@@ -501,10 +501,30 @@ export default class MapManager {
 
           <!-- Action Button -->
           ${isDiscovered 
-            ? `<button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);display:flex;align-items:center;justify-content:center;gap:5px;transition:transform 0.15s ease;"><span>📖</span> <span>${alreadyDiscoveredText} — ${viewDetailText}</span></button>`
+            ? `<div style="font-size:10.5px;color:#16A34A;font-weight:700;margin-bottom:7px;text-align:center;background-color:#DCFCE7;padding:3.5px 8px;border-radius:9999px;border:1px solid rgba(22,163,74,0.25);display:flex;align-items:center;justify-content:center;gap:4px;">
+                <span>✓</span> <span>${alreadyDiscoveredText.replace(/^✓\s*/, '')}</span>
+               </div>
+               <button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:9.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.22);display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s ease;letter-spacing:0.2px;" onmouseover="this.style.backgroundColor='#2D5A2F';this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='#1F3D20';this.style.transform='translateY(0)';">
+                <svg style="width:14px;height:14px;display:block;flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+                <span>${viewDetailText}</span>
+               </button>`
             : (!isClaimable
-                ? `<button disabled style="width:100%;background-color:#9CA3AF;color:#FFFFFF;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:11px;padding:8.5px 0;border-radius:9999px;border:none;cursor:not-allowed;box-shadow:none;">${buttonLabelText}</button>`
-                : `<button id="discover-btn-${sighting.id}" onclick="window.discoverPlantFromMap(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12.5px;padding:8.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.25);transition:transform 0.15s ease;">${discoverText}</button>`
+                ? `<button disabled style="width:100%;background-color:#9CA3AF;color:#FFFFFF;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:11px;padding:9px 0;border-radius:9999px;border:none;cursor:not-allowed;box-shadow:none;display:flex;align-items:center;justify-content:center;gap:5px;">
+                    <svg style="width:13px;height:13px;display:block;flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                      <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                    </svg>
+                    <span>${buttonLabelText}</span>
+                   </button>`
+                : `<button id="discover-btn-${sighting.id}" onclick="window.discoverPlantFromMap(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:9.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.22);display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s ease;letter-spacing:0.2px;" onmouseover="this.style.backgroundColor='#2D5A2F';this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='#1F3D20';this.style.transform='translateY(0)';">
+                    <svg style="width:14px;height:14px;display:block;flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    <span>${discoverText}</span>
+                   </button>`
               )
           }
         </div>
@@ -561,7 +581,11 @@ export default class MapManager {
 
           <!-- Buttons -->
           <div style="display:flex;flex-direction:column;gap:6px;">
-            <button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:7.5px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 3px 8px rgba(31,61,32,0.2);display:flex;align-items:center;justify-content:center;gap:4px;">
+            <button onclick="window.openViewSightingModal(${sighting.id})" style="width:100%;background-color:#1F3D20;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-weight:bold;font-size:12px;padding:9px 0;border-radius:9999px;border:none;cursor:pointer;box-shadow:0 4px 12px rgba(31,61,32,0.2);display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s ease;" onmouseover="this.style.backgroundColor='#2D5A2F';this.style.transform='translateY(-1px)';" onmouseout="this.style.backgroundColor='#1F3D20';this.style.transform='translateY(0)';">
+              <svg style="width:14px;height:14px;display:block;flex-shrink:0;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
               <span>${viewDetailFloraText}</span>
             </button>
 

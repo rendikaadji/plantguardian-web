@@ -142,7 +142,12 @@
                 <h3 id="modal-title" class="font-baloo font-extrabold text-2xl text-[#1F3D20] mt-1">{{ __('gallery.modal_detail') }}</h3>
                 <p id="modal-scientific" class="font-nunito text-xs text-[#6B6B55] italic"></p>
             </div>
-            <button id="modal-close-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>
+            <button id="modal-close-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] hover:bg-[#1F3D20] hover:text-[#F5F4DA] border border-[#1F3D20]/15 flex items-center justify-center cursor-pointer transition-all duration-200 p-0 shrink-0 shadow-xs" title="Tutup" aria-label="Tutup">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
         </div>
 
         <!-- Foto Spesimen -->

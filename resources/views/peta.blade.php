@@ -68,7 +68,12 @@
                     <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">{{ __('map.ar_scan_mode') }}</span>
                     <h3 class="font-baloo font-extrabold text-xl text-[#1F3D20] mt-1">{{ __('map.computer_vision_scan') }}</h3>
                 </div>
-                <button id="close-ar-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] hover:bg-[#1F3D20] hover:text-[#F5F4DA] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>
+                <button id="close-ar-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] hover:bg-[#1F3D20] hover:text-[#F5F4DA] border border-[#1F3D20]/15 flex items-center justify-center cursor-pointer transition-all duration-200 p-0 shrink-0 shadow-xs" title="Tutup" aria-label="Tutup">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
             </div>
 
             <!-- Video Stream Container -->
@@ -111,7 +116,12 @@
                     <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#1F3D20] px-2.5 py-0.5 rounded-full uppercase">{{ __('map.field_species_form') }}</span>
                     <h3 class="font-baloo font-extrabold text-2xl text-[#1F3D20] mt-1">{{ __('map.field_plant_data') }}</h3>
                 </div>
-                <button id="close-result-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>
+                <button id="close-result-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] hover:bg-[#1F3D20] hover:text-[#F5F4DA] border border-[#1F3D20]/15 flex items-center justify-center cursor-pointer transition-all duration-200 p-0 shrink-0 shadow-xs" title="Tutup" aria-label="Tutup">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
             </div>
 
             <!-- Preview Photo Captured / File Upload Option -->
@@ -185,7 +195,12 @@
                     <span class="text-[10px] font-baloo font-bold text-[#F5F4DA] bg-[#8B6A4C] px-2.5 py-0.5 rounded-full uppercase">{{ __('map.edit_sighting_tag') }}</span>
                     <h3 class="font-baloo font-extrabold text-2xl text-[#1F3D20] mt-1">{{ __('map.edit_plant_data') }}</h3>
                 </div>
-                <button id="close-edit-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer">&times;</button>
+                <button id="close-edit-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] hover:bg-[#1F3D20] hover:text-[#F5F4DA] border border-[#1F3D20]/15 flex items-center justify-center cursor-pointer transition-all duration-200 p-0 shrink-0 shadow-xs" title="Tutup" aria-label="Tutup">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
             </div>
 
             <!-- Preview Photo -->
@@ -301,7 +316,12 @@
                 <h3 class="font-baloo font-extrabold text-2xl text-[#1F3D20] mt-1">{{ __('map.report_sighting_title') }}</h3>
                 <p class="font-nunito text-xs text-[#6B6B55] mt-0.5 leading-relaxed">{{ __('map.report_sighting_subtitle') }}</p>
             </div>
-            <button id="close-report-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer hover:bg-[#C0392B] hover:text-white transition-colors">&times;</button>
+            <button id="close-report-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] hover:bg-[#1F3D20] hover:text-[#F5F4DA] border border-[#1F3D20]/15 flex items-center justify-center cursor-pointer transition-all duration-200 p-0 shrink-0 shadow-xs" title="Tutup" aria-label="Tutup">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
         </div>
 
         <form id="report-sighting-form" class="space-y-3.5 pt-1">

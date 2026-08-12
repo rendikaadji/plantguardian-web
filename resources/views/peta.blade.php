@@ -252,10 +252,17 @@
                 <span id="view-uploader-badge" class="inline-block mt-1 text-[10px] font-nunito font-bold text-[#8B6A4C] bg-[#8B6A4C]/15 px-2.5 py-0.5 rounded-full">👤 Ranger: ...</span>
             </div>
             <div class="flex items-center gap-2">
-                <button type="button" id="modal-report-trigger-btn" title="{{ __('map.report_sighting') }}" aria-label="{{ __('map.report_sighting') }}" class="w-8 h-8 rounded-full bg-red-50 text-[#C0392B] hover:bg-red-100 hover:text-red-700 border border-red-200/60 flex items-center justify-center font-bold text-xs cursor-pointer transition-colors shadow-2xs">
-                    🚩
+                <button type="button" id="modal-report-trigger-btn" title="{{ __('map.report_sighting') }}" aria-label="{{ __('map.report_sighting') }}" class="w-8 h-8 rounded-full bg-red-50 text-[#C0392B] hover:bg-red-100 hover:text-red-700 border border-red-200/60 flex items-center justify-center cursor-pointer transition-colors shadow-2xs p-0">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M14.4 6L14 4H5V21H7V14H12.6L13 16H20V6H14.4Z"/>
+                    </svg>
                 </button>
-                <button id="close-view-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center font-bold text-lg cursor-pointer hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors">&times;</button>
+                <button id="close-view-modal-btn" class="w-8 h-8 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center cursor-pointer hover:bg-[#1F3D20] hover:text-[#F5F4DA] transition-colors border border-[#1F3D20]/15 p-0">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
             </div>
         </div>
 

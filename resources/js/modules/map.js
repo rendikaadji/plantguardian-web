@@ -462,11 +462,16 @@ export default class MapManager {
               ${isDiscovered ? '🌿 ' + speciesCode : '❓ MYSTERY'}
             </span>
             <div style="display:flex;align-items:center;gap:6px;">
-              <button onclick="window.openReportSightingModal(${sighting.id})" title="${t.report_sighting || 'Laporkan Tumbuhan'}" aria-label="${t.report_sighting || 'Laporkan Tumbuhan'}" style="background-color:rgba(192,57,43,0.1);color:#C0392B;border:1px solid rgba(192,57,43,0.25);width:24px;height:24px;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:11px;transition:all 0.2s;line-height:1;box-sizing:border-box;padding:0;" onmouseover="this.style.backgroundColor='rgba(192,57,43,0.25)'" onmouseout="this.style.backgroundColor='rgba(192,57,43,0.1)'">
-                🚩
+              <button onclick="window.openReportSightingModal(${sighting.id})" title="${t.report_sighting || 'Laporkan Tumbuhan'}" aria-label="${t.report_sighting || 'Laporkan Tumbuhan'}" style="width:24px;height:24px;border-radius:9999px;background-color:rgba(192,57,43,0.12);color:#C0392B;border:1px solid rgba(192,57,43,0.25);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;margin:0;box-sizing:border-box;transition:all 0.2s;flex-shrink:0;" onmouseover="this.style.backgroundColor='rgba(192,57,43,0.25)'" onmouseout="this.style.backgroundColor='rgba(192,57,43,0.12)'">
+                <svg style="width:12px;height:12px;display:block;" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M14.4 6L14 4H5V21H7V14H12.6L13 16H20V6H14.4Z"/>
+                </svg>
               </button>
-              <button onclick="const p = this.closest('.leaflet-popup'); if (p) { const c = p.querySelector('.leaflet-popup-close-button'); if (c) c.click(); else p.remove(); }" title="Tutup" aria-label="Tutup" style="background-color:#E2E1C4;color:#1F3D20;border:none;width:24px;height:24px;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:bold;transition:all 0.2s;line-height:1;box-sizing:border-box;padding:0;" onmouseover="this.style.backgroundColor='#1F3D20';this.style.color='#F5F4DA';" onmouseout="this.style.backgroundColor='#E2E1C4';this.style.color='#1F3D20';">
-                &times;
+              <button onclick="const p = this.closest('.leaflet-popup'); if (p) { const c = p.querySelector('.leaflet-popup-close-button'); if (c) c.click(); else p.remove(); }" title="Tutup" aria-label="Tutup" style="width:24px;height:24px;border-radius:9999px;background-color:#E2E1C4;color:#1F3D20;border:1px solid rgba(31,61,32,0.2);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;margin:0;box-sizing:border-box;transition:all 0.2s;flex-shrink:0;" onmouseover="this.style.backgroundColor='#1F3D20';this.style.color='#F5F4DA';" onmouseout="this.style.backgroundColor='#E2E1C4';this.style.color='#1F3D20';">
+                <svg style="width:12px;height:12px;display:block;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
               </button>
             </div>
           </div>
@@ -524,8 +529,11 @@ export default class MapManager {
             <span style="background-color:#8B6A4C;color:#F5F4DA;font-family:'Baloo 2',sans-serif;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;white-space:nowrap;box-shadow:0 2px 4px rgba(0,0,0,0.1);">
               ${sightingTagText}
             </span>
-            <button onclick="const p = this.closest('.leaflet-popup'); if (p) { const c = p.querySelector('.leaflet-popup-close-button'); if (c) c.click(); else p.remove(); }" title="Tutup" aria-label="Tutup" style="background-color:#E2E1C4;color:#1F3D20;border:none;width:24px;height:24px;border-radius:9999px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:14px;font-weight:bold;transition:all 0.2s;line-height:1;box-sizing:border-box;padding:0;" onmouseover="this.style.backgroundColor='#1F3D20';this.style.color='#F5F4DA';" onmouseout="this.style.backgroundColor='#E2E1C4';this.style.color='#1F3D20';">
-              &times;
+            <button onclick="const p = this.closest('.leaflet-popup'); if (p) { const c = p.querySelector('.leaflet-popup-close-button'); if (c) c.click(); else p.remove(); }" title="Tutup" aria-label="Tutup" style="width:24px;height:24px;border-radius:9999px;background-color:#E2E1C4;color:#1F3D20;border:1px solid rgba(31,61,32,0.2);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;padding:0;margin:0;box-sizing:border-box;transition:all 0.2s;flex-shrink:0;" onmouseover="this.style.backgroundColor='#1F3D20';this.style.color='#F5F4DA';" onmouseout="this.style.backgroundColor='#E2E1C4';this.style.color='#1F3D20';">
+              <svg style="width:12px;height:12px;display:block;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
             </button>
           </div>
 

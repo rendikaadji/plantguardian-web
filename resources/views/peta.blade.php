@@ -598,21 +598,43 @@
                                 (pos) => {
                                     currentLat = pos.coords.latitude;
                                     currentLng = pos.coords.longitude;
-                                    if (mapManager && mapManager.addUserMarker) {
-                                        mapManager.addUserMarker(currentLat, currentLng);
+                                    if (mapManager) {
+                                        mapManager.userLat = currentLat;
+                                        mapManager.userLng = currentLng;
+                                        if (typeof mapManager.addUserMarker === 'function') {
+                                            mapManager.addUserMarker(currentLat, currentLng);
+                                        }
                                     }
                                     resolve({ lat: currentLat, lng: currentLng });
                                 },
                                 (err) => {
-                                    console.warn('Gagal memperoleh GPS presisi, menggunakan fallback:', err.message);
-                                    if ((currentLat === null || currentLat === -6.2088) && mapManager && mapManager.map) {
-                                        const center = mapManager.map.getCenter();
-                                        currentLat = center.lat;
-                                        currentLng = center.lng;
-                                    }
-                                    resolve({ lat: currentLat, lng: currentLng });
+                                    console.warn('Gagal memperoleh GPS presisi, mencoba mode jaringan (Wi-Fi/cell):', err.message);
+                                    navigator.geolocation.getCurrentPosition(
+                                        (fallbackPos) => {
+                                            currentLat = fallbackPos.coords.latitude;
+                                            currentLng = fallbackPos.coords.longitude;
+                                            if (mapManager) {
+                                                mapManager.userLat = currentLat;
+                                                mapManager.userLng = currentLng;
+                                                if (typeof mapManager.addUserMarker === 'function') {
+                                                    mapManager.addUserMarker(currentLat, currentLng);
+                                                }
+                                            }
+                                            resolve({ lat: currentLat, lng: currentLng });
+                                        },
+                                        (fallbackErr) => {
+                                            console.warn('Gagal memperoleh lokasi (Fallback):', fallbackErr.message);
+                                            if ((currentLat === null || currentLat === -6.2088) && mapManager && mapManager.map) {
+                                                const center = mapManager.map.getCenter();
+                                                currentLat = center.lat;
+                                                currentLng = center.lng;
+                                            }
+                                            resolve({ lat: currentLat, lng: currentLng });
+                                        },
+                                        { enableHighAccuracy: false, timeout: 8000, maximumAge: 30000 }
+                                    );
                                 },
-                                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+                                { enableHighAccuracy: true, timeout: 7000, maximumAge: 0 }
                             );
                         } else {
                             if ((currentLat === null || currentLat === -6.2088) && mapManager && mapManager.map) {

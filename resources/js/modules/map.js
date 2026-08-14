@@ -168,7 +168,12 @@ export default class MapManager {
 
   recenterUser() {
     this.setAutoFollow(true);
-    if (this.userLat != null && this.userLng != null && this.map) {
+
+    if (this.map) {
+      this.map.invalidateSize();
+    }
+
+    if (this.userLat != null && this.userLng != null && !isNaN(this.userLat) && !isNaN(this.userLng) && this.map) {
       const currentZoom = this.map.getZoom();
       const targetZoom = (currentZoom && currentZoom >= 15) ? currentZoom : (this.defaultZoom || 17.5);
       this.map.flyTo([this.userLat, this.userLng], targetZoom, {
@@ -176,6 +181,95 @@ export default class MapManager {
         duration: 0.8
       });
     }
+
+    this.requestFreshLocation(true);
+  }
+
+  /**
+   * Request fresh user position from browser Geolocation API with High Accuracy -> Low Accuracy Fallback
+   */
+  requestFreshLocation(isManualClick = false) {
+    if (!navigator.geolocation) {
+      if (isManualClick && window.showToast) {
+        window.showToast('⚠️ Perangkat/browser kamu tidak mendukung Geolocation GPS.', 'error');
+      }
+      return;
+    }
+
+    const t = window.translations || {};
+
+    const highAccuracyOptions = {
+      enableHighAccuracy: true,
+      timeout: 8000,
+      maximumAge: 0
+    };
+
+    const lowAccuracyOptions = {
+      enableHighAccuracy: false,
+      timeout: 12000,
+      maximumAge: 30000
+    };
+
+    const handleSuccess = (position) => {
+      const lat = position.coords.latitude;
+      const lng = position.coords.longitude;
+
+      if (lat == null || lng == null || isNaN(lat) || isNaN(lng) || (lat === 0 && lng === 0)) {
+        console.warn('Variabel koordinat GPS tidak valid.');
+        return;
+      }
+
+      this.userLat = lat;
+      this.userLng = lng;
+
+      if (this.map) {
+        this.map.invalidateSize();
+        const currentZoom = this.map.getZoom();
+        const targetZoom = (currentZoom && currentZoom >= 15) ? currentZoom : (this.defaultZoom || 17.5);
+        this.map.flyTo([lat, lng], targetZoom, {
+          animate: true,
+          duration: 0.8
+        });
+      }
+
+      this.addUserMarker(lat, lng);
+      this.refreshMarkers();
+
+      if (isManualClick && window.showToast) {
+        window.showToast(t.gps_centered_success || '📍 Posisi peta berhasil dipusatkan ke lokasi kamu!', 'success');
+      }
+    };
+
+    const handleError = (err) => {
+      console.warn('Gagal memperoleh GPS High Accuracy, mencoba mode akurasi jaringan (Wi-Fi/cell):', err.message);
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => handleSuccess(pos),
+        (fallbackErr) => {
+          console.warn('Gagal memperoleh lokasi GPS (Fallback):', fallbackErr.message);
+
+          if (isManualClick) {
+            let errMsg = '⚠️ Gagal memusatkan lokasi.';
+            if (fallbackErr.code === 1) {
+              errMsg = '⚠️ Akses GPS ditolak. Harap izinkan akses lokasi di pengaturan browser kamu.';
+            } else if (fallbackErr.code === 2) {
+              errMsg = '⚠️ Informasi lokasi tidak tersedia pada perangkat kamu.';
+            } else if (fallbackErr.code === 3) {
+              errMsg = '⚠️ Waktu permintaan GPS habis. Pastikan layanan lokasi/GPS sudah aktif.';
+            }
+
+            if (window.showToast) {
+              window.showToast(errMsg, 'error');
+            } else if (typeof alert !== 'undefined') {
+              alert(errMsg);
+            }
+          }
+        },
+        lowAccuracyOptions
+      );
+    };
+
+    navigator.geolocation.getCurrentPosition(handleSuccess, handleError, highAccuracyOptions);
   }
 
   calculateHeading(lat1, lon1, lat2, lon2) {
@@ -194,18 +288,24 @@ export default class MapManager {
   startGpsTracking() {
     if (!navigator.geolocation) return;
 
-    const options = {
-      enableHighAccuracy: true,
-      timeout: 15000,
-      maximumAge: 0
-    };
+    // Perform initial fresh location check with automatic high/low accuracy fallback
+    this.requestFreshLocation(false);
 
-    let hasCentered = false;
+    // Setup continuous watch position for smooth movement updates as user moves
+    const watchOptions = {
+      enableHighAccuracy: true,
+      timeout: 20000,
+      maximumAge: 10000
+    };
 
     const handleGpsUpdate = (position) => {
       const lat = position.coords.latitude;
       const lng = position.coords.longitude;
       const hwHeading = position.coords.heading;
+
+      if (lat == null || lng == null || isNaN(lat) || isNaN(lng) || (lat === 0 && lng === 0)) {
+        return;
+      }
 
       if (hwHeading !== null && !isNaN(hwHeading) && hwHeading !== 0) {
         this.updateHeading(hwHeading);
@@ -217,12 +317,13 @@ export default class MapManager {
         }
       }
 
+      const isFirstFix = (this.userLat === null || this.userLng === null);
       this.userLat = lat;
       this.userLng = lng;
 
-      if (!hasCentered && this.map) {
+      if (isFirstFix && this.map) {
+        this.map.invalidateSize();
         this.map.setView([lat, lng], this.defaultZoom || 17.5);
-        hasCentered = true;
       }
 
       this.addUserMarker(lat, lng);
@@ -238,21 +339,21 @@ export default class MapManager {
       this.lastLng = lng;
     };
 
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        handleGpsUpdate(position);
-        this.refreshMarkers();
-      },
-      (err) => console.warn('Akses lokasi GPS ditolak/tidak tersedia:', err.message),
-      options
-    );
-
     this.watchId = navigator.geolocation.watchPosition(
       (position) => {
         handleGpsUpdate(position);
       },
-      (err) => console.warn('GPS Watch Error:', err.message),
-      options
+      (err) => {
+        console.warn('GPS Watch Position Warning:', err.message);
+        if (err.code === 3 || err.code === 2) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => handleGpsUpdate(pos),
+            null,
+            { enableHighAccuracy: false, timeout: 15000, maximumAge: 30000 }
+          );
+        }
+      },
+      watchOptions
     );
   }
 

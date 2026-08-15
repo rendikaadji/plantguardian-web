@@ -30,8 +30,8 @@
     <!-- Schema.org Organization Logo for Google Search -->
     <script type="application/ld+json">
     {
-      "@context": "https://schema.org",
-      "@type": "Organization",
+      "@@context": "https://schema.org",
+      "@@type": "Organization",
       "name": "Plant Guardian",
       "url": "{{ url('/') }}",
       "logo": "{{ asset('images/logo-plantGuardian.jpeg') }}"

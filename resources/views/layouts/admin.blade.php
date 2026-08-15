@@ -14,6 +14,30 @@
     <!-- Chart.js for Executive Visual Data Analytics -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+    <!-- Favicon & Brand Icons -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+
+    <!-- Meta & Open Graph Tags -->
+    <meta property="og:title" content="Plant Guardian — Admin Dashboard">
+    <meta property="og:image" content="{{ asset('images/logo-plantGuardian.jpeg') }}">
+    <meta name="twitter:image" content="{{ asset('images/logo-plantGuardian.jpeg') }}">
+
+    <!-- Schema.org Organization Logo -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Plant Guardian",
+      "url": "{{ url('/') }}",
+      "logo": "{{ asset('images/logo-plantGuardian.jpeg') }}"
+    }
+    </script>
+
     <style>
         html, body {
             background-color: #F5F4DA !important;
@@ -30,7 +54,6 @@
         }
     </style>
 
-    <link rel="icon" type="image/jpeg" href="{{ asset('images/logo-plantGuardian.jpeg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen flex flex-col antialiased bg-[#F5F4DA] text-[#2A2A22]">

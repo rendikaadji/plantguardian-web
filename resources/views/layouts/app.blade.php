@@ -19,7 +19,33 @@
         }
     </style>
 
-    <link rel="icon" type="image/jpeg" href="{{ asset('images/logo-plantGuardian.jpeg') }}">
+    <!-- Favicon & Brand Icons -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+
+    <!-- Meta & Open Graph Tags for Search Engines & Social Previews -->
+    <meta property="og:title" content="Plant Guardian — Konservasi & Kebun Fantasi">
+    <meta property="og:description" content="Jelajahi keanekaragaman flora dan lindungi kebun fantasi bersama Plant Guardian.">
+    <meta property="og:image" content="{{ asset('images/logo-plantGuardian.jpeg') }}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="{{ asset('images/logo-plantGuardian.jpeg') }}">
+
+    <!-- Schema.org Organization Logo for Google Search -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Plant Guardian",
+      "url": "{{ url('/') }}",
+      "logo": "{{ asset('images/logo-plantGuardian.jpeg') }}"
+    }
+    </script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-screen flex flex-col antialiased" style="background-color: #F5F4DA !important; color: #2A2A22 !important;">    <!-- Top Header Bar (Plant Guardian Premium Design System) -->

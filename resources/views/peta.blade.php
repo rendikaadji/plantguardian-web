@@ -127,7 +127,7 @@
             <!-- Preview Photo Captured / File Upload Option -->
             <div class="space-y-2">
                 <div class="h-40 rounded-2xl overflow-hidden bg-[#1F3D20] relative border border-[#1F3D20]/20 flex items-center justify-center">
-                    <img id="result-img" src="" class="w-full h-full object-cover hidden" />
+                    <img id="result-img" src="{{ asset('images/logo-plantGuardian.jpeg') }}" class="w-full h-full object-cover hidden" onerror="this.onerror=null; this.src='{{ asset('images/logo-plantGuardian.jpeg') }}';" />
                     <div id="no-photo-placeholder" class="text-center p-3">
                         <span class="text-3xl block mb-1">📷</span>
                         <span class="text-xs text-[#F5F4DA] font-baloo font-bold block">Belum Ada Foto Tumbuhan</span>
@@ -205,7 +205,7 @@
 
             <!-- Preview Photo -->
             <div class="h-40 rounded-2xl overflow-hidden bg-[#1F3D20] relative border border-[#1F3D20]/20">
-                <img id="edit-sighting-img" src="" class="w-full h-full object-cover" />
+                <img id="edit-sighting-img" src="{{ asset('images/logo-plantGuardian.jpeg') }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='{{ asset('images/logo-plantGuardian.jpeg') }}';" />
             </div>
 
             <!-- Form Edit Inputs -->
@@ -283,7 +283,7 @@
 
         <!-- Preview Photo -->
         <div class="h-48 rounded-2xl overflow-hidden bg-[#1F3D20] relative border border-[#1F3D20]/20 shadow-xs">
-            <img id="view-sighting-img" src="" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='/images/logo-plantGuardian.jpeg';" />
+            <img id="view-sighting-img" src="{{ asset('images/logo-plantGuardian.jpeg') }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='{{ asset('images/logo-plantGuardian.jpeg') }}';" />
         </div>
 
         <!-- Details Content -->

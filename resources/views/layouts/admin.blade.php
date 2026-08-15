@@ -70,8 +70,8 @@
                         <img src="{{ asset('images/logo-plantGuardian.jpeg') }}" alt="PlantGuardian Logo" class="w-full h-full object-cover rounded-xl">
                     </div>
                     <div>
-                        <h1 class="font-baloo font-extrabold text-lg leading-none text-[#F5F4DA]">Plant Guardian</h1>
-                        <span class="inline-block mt-1 text-[9px] font-baloo font-extrabold px-2 py-0.5 rounded-full bg-[#FFD700]/20 text-[#FFD700] border border-[#FFD700]/30 tracking-wider uppercase">
+                        <h1 class="font-baloo font-extrabold text-xl leading-none text-[#F5F4DA] tracking-tight">Plant Guardian</h1>
+                        <span class="inline-block mt-1.5 text-[10px] font-baloo font-extrabold px-2.5 py-0.5 rounded-full bg-[#FFD700]/20 text-[#FFD700] border border-[#FFD700]/30 tracking-wider uppercase">
                             ADMIN PANEL
                         </span>
                     </div>

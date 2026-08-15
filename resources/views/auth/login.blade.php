@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="google-site-verification" content="czz5LCT5nx585AfXccHZgb0RoTsg2ZBifc6Y_nfQfu4">
     <title>{{ __('auth.login_title') }}</title>
 
     <!-- Google Fonts: Fraunces, Public Sans, IBM Plex Mono -->

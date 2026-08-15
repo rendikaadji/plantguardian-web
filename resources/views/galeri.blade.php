@@ -152,7 +152,7 @@
 
         <!-- Foto Spesimen -->
         <div class="h-48 rounded-2xl overflow-hidden bg-[#1F3D20] border border-[#1F3D20]/10">
-            <img id="modal-img" src="{{ asset('images/logo-plantGuardian.jpeg') }}" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='{{ asset('images/logo-plantGuardian.jpeg') }}';" />
+            <img id="modal-img" src="{{ asset('images/logo-plantGuardian.jpeg') }}" class="w-full h-full object-cover" loading="lazy" onerror="this.onerror=null; this.src='{{ asset('images/logo-plantGuardian.jpeg') }}';" />
         </div>
 
         <!-- Deskripsi Spesies -->

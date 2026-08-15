@@ -47,10 +47,9 @@
             scroll-behavior: smooth;
         }
         .sidebar-link-active {
-            background-color: rgba(251, 250, 240, 0.15) !important;
+            background-color: rgba(251, 250, 240, 0.18) !important;
             color: #FFD700 !important;
-            border-left: 4px solid #FFD700 !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: inset 0 0 0 1px rgba(255, 215, 0, 0.3), 0 2px 6px rgba(0,0,0,0.25);
             font-weight: 800 !important;
         }
     </style>

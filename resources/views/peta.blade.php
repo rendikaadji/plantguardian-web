@@ -299,7 +299,7 @@
             </div>
 
             <div class="pt-2">
-                <a href="/gallery" class="w-full btn-gg-primary py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md text-xs font-baloo font-bold text-center">
+                <a href="{{ route('galeri') }}" class="w-full btn-gg-primary py-3 rounded-full flex items-center justify-center gap-2 cursor-pointer shadow-md text-xs font-baloo font-bold text-center">
                     <span>{{ __('map.modal_open_seedex') }}</span>
                 </a>
             </div>

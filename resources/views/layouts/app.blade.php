@@ -123,29 +123,29 @@
                         @endif
 
                         <!-- Controls Group: Language Switcher & Logout -->
-                        <div class="flex items-center gap-1.5 ml-auto sm:ml-0">
+                        <div class="flex items-center gap-1.5 ml-auto sm:ml-0 shrink-0">
                             <!-- Language Switcher (EN / ID) -->
-                            <div class="flex items-center bg-[#E2E1C4] p-1 rounded-full border border-[#1F3D20]/15 font-baloo font-extrabold text-[12px] text-[#1F3D20] shadow-2xs">
-                                <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                            <div class="h-8 sm:h-8.5 p-0.5 flex items-center bg-[#E2E1C4] rounded-full border border-[#1F3D20]/15 font-baloo font-extrabold text-xs text-[#1F3D20] shadow-2xs shrink-0">
+                                <form method="POST" action="{{ route('locale.switch') }}" class="h-full inline-flex">
                                     @csrf
                                     <input type="hidden" name="locale" value="en">
-                                    <button type="submit" class="px-3 py-1 rounded-full transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1F3D20] {{ app()->getLocale() === 'en' ? 'bg-[#1F3D20] text-[#F5F4DA] shadow-2xs' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
+                                    <button type="submit" class="h-full w-7.5 sm:w-8.5 flex items-center justify-center rounded-full transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1F3D20] {{ app()->getLocale() === 'en' ? 'bg-[#1F3D20] text-[#F5F4DA] shadow-2xs' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
                                         EN
                                     </button>
                                 </form>
-                                <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                                <form method="POST" action="{{ route('locale.switch') }}" class="h-full inline-flex">
                                     @csrf
                                     <input type="hidden" name="locale" value="id">
-                                    <button type="submit" class="px-3 py-1 rounded-full transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1F3D20] {{ app()->getLocale() === 'id' ? 'bg-[#1F3D20] text-[#F5F4DA] shadow-2xs' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
+                                    <button type="submit" class="h-full w-7.5 sm:w-8.5 flex items-center justify-center rounded-full transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-[#1F3D20] {{ app()->getLocale() === 'id' ? 'bg-[#1F3D20] text-[#F5F4DA] shadow-2xs' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
                                         ID
                                     </button>
                                 </form>
                             </div>
 
                             <!-- Logout Button -->
-                            <form method="POST" action="{{ route('logout') }}" class="inline">
+                            <form method="POST" action="{{ route('logout') }}" class="inline shrink-0">
                                 @csrf
-                                <button type="submit" class="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center hover:bg-[#C0392B] hover:text-white transition-all cursor-pointer shadow-2xs border border-[#1F3D20]/10 active:scale-95" title="Keluar">
+                                <button type="submit" class="w-8 h-8 sm:w-8.5 sm:h-8.5 rounded-full bg-[#E2E1C4] text-[#1F3D20] flex items-center justify-center hover:bg-[#C0392B] hover:text-white transition-all cursor-pointer shadow-2xs border border-[#1F3D20]/10 active:scale-95 shrink-0" title="Keluar">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
                                     </svg>

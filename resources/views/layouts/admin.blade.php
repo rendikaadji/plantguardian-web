@@ -207,18 +207,18 @@
                         </a>
 
                         <!-- Language Switcher -->
-                        <div class="flex items-center bg-[#E2E1C4] p-0.5 rounded-full border border-[#1F3D20]/15 font-baloo font-extrabold text-[11px] text-[#1F3D20]">
-                            <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                        <div class="h-8 sm:h-8.5 p-0.5 flex items-center bg-[#E2E1C4] rounded-full border border-[#1F3D20]/15 font-baloo font-extrabold text-xs text-[#1F3D20] shadow-2xs shrink-0">
+                            <form method="POST" action="{{ route('locale.switch') }}" class="h-full inline-flex">
                                 @csrf
                                 <input type="hidden" name="locale" value="en">
-                                <button type="submit" class="px-2.5 py-0.5 rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'en' ? 'bg-[#1F3D20] text-[#F5F4DA]' : 'text-[#6B6B55]' }}">
+                                <button type="submit" class="h-full w-7.5 sm:w-8.5 flex items-center justify-center rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'en' ? 'bg-[#1F3D20] text-[#F5F4DA] shadow-2xs' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
                                     EN
                                 </button>
                             </form>
-                            <form method="POST" action="{{ route('locale.switch') }}" class="inline">
+                            <form method="POST" action="{{ route('locale.switch') }}" class="h-full inline-flex">
                                 @csrf
                                 <input type="hidden" name="locale" value="id">
-                                <button type="submit" class="px-2.5 py-0.5 rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'id' ? 'bg-[#1F3D20] text-[#F5F4DA]' : 'text-[#6B6B55]' }}">
+                                <button type="submit" class="h-full w-7.5 sm:w-8.5 flex items-center justify-center rounded-full transition-all cursor-pointer {{ app()->getLocale() === 'id' ? 'bg-[#1F3D20] text-[#F5F4DA] shadow-2xs' : 'text-[#6B6B55] hover:text-[#1F3D20]' }}">
                                     ID
                                 </button>
                             </form>
